@@ -1,0 +1,15 @@
+# Latar Belakang dan Urgensi Penelitian
+
+Penelitian mengenai **"Transformasi Spatiotemporal Tutupan Lahan di Kalimantan dengan Pendekatan Dual-Drivers (IKN dan Tambang)"** memiliki urgensi yang sangat tinggi, baik dari sudut pandang akademis maupun kebijakan tata ruang nasional. Urgensi tersebut dapat diuraikan ke dalam empat poin utama berikut:
+
+### 1. Urgensi Ekologis: Ancaman terhadap *Paru-Paru Dunia*
+Kalimantan menyimpan salah satu hutan hujan tropis tertua dan terluas di dunia yang berfungsi sebagai penyerap karbon global (*carbon sink*). Hilangnya tutupan hutan (deforestasi) secara masif tidak hanya mengancam keanekaragaman hayati endemik, tetapi juga menggagalkan komitmen target *FOLU (Forestry and Other Land Use) Net Sink 2030* Indonesia. Memetakan lokasi dan laju kehilangan hutan ini secara *real-time* dan akurat dari tahun ke tahun menjadi kebutuhan mendesak bagi para pembuat kebijakan.
+
+### 2. Urgensi Kebijakan Tata Ruang: Efek *Spill-Over* Pembangunan IKN
+Pemindahan Ibu Kota Negara (IKN) Nusantara adalah mega-proyek terbesar di Indonesia dekade ini. Janji pemerintah adalah membangun *Forest City* yang ramah lingkungan. Namun, secara teoritis, pusat pertumbuhan baru berpotensi menciptakan **"Spill-Over Effect"**—yaitu urbanisasi tak terkendali, migrasi penduduk, dan konversi lahan pertanian/hutan secara masif di daerah penyangga (*hinterland*) di sekitar zona inti IKN. Penelitian ini mendesak dilakukan untuk membuktikan secara empiris apakah pembangunan IKN benar-benar terkendali, atau justru memicu *urban sprawl* yang merusak tutupan lahan hijau di sekitarnya.
+
+### 3. Urgensi Ekonomi-Lingkungan: Memisahkan Dampak IKN vs Ekspansi Tambang
+Seringkali, narasi publik langsung menyalahkan pembangunan infrastruktur (IKN) sebagai perusak lingkungan utama. Padahal, Kalimantan Timur dan sekitarnya memiliki sejarah panjang sebagai zona ekstraktif (khususnya tambang batu bara terbuka / *open-pit mining*). Oleh karena itu, mengidentifikasi **siapa aktor utama** penyebab degradasi lingkungan sangatlah krusial. Penelitian ini secara spesifik mencoba melakukan pemisahan (*disentanglement*) secara spasial: seberapa besar deforestasi yang murni didorong oleh gaya sentripetal IKN, dibandingkan dengan deforestasi yang murni didorong oleh pembukaan lahan tambang baru. Analisis *Dual-Driver* ini penting agar evaluasi dampak lingkungan menjadi lebih objektif dan presisi.
+
+### 4. Urgensi Metodologis: Objektivitas Pengawasan Berbasis *Machine Learning*
+Laporan alih fungsi lahan tradisional seringkali memiliki *time-lag* (keterlambatan rilis) berbulan-bulan hingga bertahun-tahun, serta rentan terhadap bias pelaporan manual. Penggunaan citra satelit **Sentinel-2** yang dikombinasikan dengan algoritma **Machine Learning (LightGBM)** memberikan terobosan berupa "Audit Spasial Independen". Metode ini menawarkan cara yang jauh lebih cepat, transparan, objektif, dan tahan dari manipulasi administratif, yang menjadi *tools* pengawasan independen masa depan bagi akademisi maupun pemerintah.

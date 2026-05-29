@@ -1,0 +1,15 @@
+data/
+# *.csv
+# *.sql
+
+# Large files
+*.pkl
+*.shp
+*.shx
+*.dbf
+*.cpg
+*.prj
+*.npz
+
+# Legacy archive
+_ARCHIVE/

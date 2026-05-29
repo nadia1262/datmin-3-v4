@@ -1,0 +1,1458 @@
+PROPOSAL PENELITIAN 
+Program Studi D-IV Komputasi Statistik 
+Sekolah Tinggi Ilmu Statistik (STIS) 
+ 
+ 
+ 
+Analisis Transformasi Tutupan Lahan Spatiotemporal di 
+Kalimantan 
+Tahun 2018–2024 Menggunakan Sentinel-2 dan Machine 
+Learning 
+untuk Mengkaji Dampak Dual-Driver IKN dan Ekspansi 
+Pertambangan 
+ 
+Mata Kuliah: Seminar / Tugas Akhir 
+Dosen Pengampu: Robert Kurniawan, S.S.T., M.Si. 
+ 
+ 
+Jakarta, Mei 2025 
+ 
+ 
+RINGKASAN 
+Pulau Kalimantan menjadi salah satu kawasan dengan tekanan spasial terbesar di 
+Indonesia akibat konvergensi dua driver perubahan tutupan lahan yang bersifat masif dan 
+simultan: pembangunan Ibu Kota Nusantara (IKN) di Kalimantan Timur serta ekspansi 
+aktivitas pertambangan dan gangguan lahan terbuka (bare land disturbance) yang terus 
+meluas di berbagai provinsi. Meskipun terdapat polemik politik mengenai kepastian 
+perpindahan aparatur sipil negara, pembangunan fisik infrastruktur IKN tetap berlangsung 
+secara intensif, yang berarti transformasi spasial di kawasan tersebut telah dan terus terjadi 
+secara nyata. Di sisi lain, ekspansi pertambangan batubara dan nikel di Kalimantan Tengah, 
+Selatan, dan Timur menambah tekanan terhadap hutan tropis yang tersisa. 
+Penelitian ini mengusulkan pendekatan klasifikasi tutupan lahan berbasis 
+supervised machine learning dengan menggunakan citra Sentinel-2 SR Harmonized yang 
+diakses melalui platform Google Earth Engine (GEE) untuk periode 2018 hingga 2024. 
+Framework metodologi yang digunakan adalah CRISP-DM. Sebanyak enam algoritma 
+machine learning dibandingkan, yaitu Random Forest, XGBoost, LightGBM, Logistic 
+Regression, Support Vector Machine (SVM), dan Multilayer Perceptron (MLP). Label 
+kelas tutupan lahan bersumber dari ESA WorldCover 2021 yang diperkaya dengan 
+interpretasi visual. Fitur yang digunakan meliputi band spektral Sentinel-2 (B2, B3, B4, 
+B8, B11, B12) serta indeks turunan NDVI, NDBI, NDMI, dan BSI, ditambah fitur topografi 
+dari SRTM dan faktor iklim dari CHIRPS. 
+Evaluasi model dilakukan menggunakan Spatial Block Cross Validation untuk 
+menghindari spatial autocorrelation leakage, dengan metrik Overall Accuracy, F1 Macro, 
+Cohen Kappa, IoU per kelas, Producer's Accuracy, dan User's Accuracy. Deteksi 
+perubahan tutupan lahan dilakukan melalui post-classification comparison dan transition 
+matrix untuk memvisualisasikan arah perubahan antar kelas pada periode 2018, 2020, 
+2022, dan 2024. Interpretabilitas model dianalisis menggunakan SHAP (SHapley Additive 
+exPlanations) untuk memahami kontribusi masing-masing fitur spektral dan lingkungan 
+terhadap prediksi kelas tutupan lahan. Hasil penelitian disajikan dalam bentuk 
+dashboard/web GIS interaktif yang dilengkapi temporal slider, change detection map, 
+hotspot analysis, dan SHAP visualization. 
+ 
+ 
+I. PENDAHULUAN 
+1.1 Latar Belakang 
+Kalimantan merupakan pulau terbesar ketiga di dunia dan rumah bagi salah satu 
+kawasan hutan tropis dengan keanekaragaman hayati paling tinggi di planet ini. Sebagian 
+besar wilayahnya masuk ke dalam ekosistem hutan hujan tropis dataran rendah yang 
+memiliki fungsi ekologis kritis: sebagai penyimpan karbon dalam skala global, sebagai 
+habitat bagi spesies endemik seperti orangutan Borneo (Pongo pygmaeus) dan bekantan 
+(Nasalis larvatus), serta sebagai pengatur siklus hidrologi regional. Namun, dalam dua 
+dekade 
+terakhir, 
+Kalimantan 
+telah 
+mengalami 
+laju 
+deforestasi 
+yang 
+sangat 
+mengkhawatirkan akibat ekspansi perkebunan kelapa sawit, eksploitasi tambang, dan 
+pembukaan lahan untuk keperluan infrastruktur. Menurut analisis Hansen et al. yang 
+dipublikasikan melalui platform Global Forest Watch, Kalimantan telah kehilangan lebih 
+dari 20% tutupan pohon aslinya dalam periode 2000–2020, dengan laju kerugian yang 
+semakin meningkat seiring meningkatnya permintaan komoditas dan aksesibilitas 
+infrastruktur. 
+Tekanan terhadap tutupan lahan Kalimantan semakin kompleks dengan hadirnya 
+dua fenomena besar yang bersifat simultan. Pertama adalah proyek pembangunan Ibu Kota 
+Nusantara (IKN) di Kalimantan Timur yang secara resmi dimulai konstruksinya sejak tahun 
+2022 berdasarkan Undang-Undang Nomor 3 Tahun 2022. IKN mencakup kawasan inti 
+pemerintahan pusat seluas 5.619 km² dan kawasan pengembangan seluas 35.692 km² yang 
+meliputi sebagian wilayah Kabupaten Penajam Paser Utara dan Kabupaten Kutai 
+Kartanegara. Meskipun terdapat dinamika kebijakan dan polemik publik mengenai 
+kemungkinan pusat pemerintahan tetap dipertahankan di Jakarta—yang diperkuat oleh 
+berbagai pernyataan pejabat pemerintah pada tahun 2024 dan 2025—fakta lapangan 
+menunjukkan bahwa pembangunan fisik infrastruktur di kawasan IKN, mencakup jalan tol, 
+gedung pemerintahan, kawasan permukiman, dan fasilitas pendukung, terus berlangsung. 
+Hal ini berarti bahwa konversi tutupan lahan dari hutan tropis dan lahan pertanian menjadi 
+kawasan terbangun telah dan akan terus terjadi terlepas dari kepastian status perpindahan 
+aparatur sipil negara (ASN). Transformasi spasial yang dipicu oleh IKN dengan demikian 
+merupakan fenomena yang harus dipantau secara ilmiah dan empiris, bukan spekulatif. 
+Kedua adalah ekspansi aktivitas pertambangan yang semakin meluas di seluruh 
+Kalimantan. Kalimantan Timur, Kalimantan Selatan, dan Kalimantan Tengah merupakan 
+provinsi dengan konsesi pertambangan batubara terbesar di Indonesia. Sementara itu, 
+pertambangan nikel sedang berkembang pesat di berbagai kabupaten, didorong oleh 
+meningkatnya permintaan global untuk bahan baku baterai kendaraan listrik. Aktivitas 
+pertambangan menciptakan dampak spasial yang khas: pembukaan lahan vegetasi dalam 
+skala besar, penggalian yang meninggalkan lahan terbuka (bare land) dan kolam 
+penampungan, serta pembangunan infrastruktur akses seperti jalan hauling dan pelabuhan 
+yang memotong kawasan hutan. Karakteristik spektral lahan tambang, yang didominasi 
+oleh tanah terbuka dan batuan, dapat dibedakan dari kelas tutupan lahan lainnya melalui 
+analisis citra multispektral. Meskipun demikian, penting untuk dicatat bahwa identifikasi 
+pertambangan dalam penelitian ini dilakukan melalui pendekatan proxy berbasis deteksi 
+bare land dan perubahan spektral, bukan melalui konfirmasi lapangan langsung, sehingga 
+interpretasi harus dilakukan dengan kehati-hatian ilmiah. 
+Konvergensi dua driver perubahan tutupan lahan ini—IKN dan pertambangan—
+menciptakan apa yang dapat disebut sebagai double pressure terhadap ekosistem 
+Kalimantan. Kedua fenomena tersebut beroperasi pada skala spasial yang berbeda namun 
+saling berinteraksi: IKN bersifat terkonsentrasi pada satu zona geografis tertentu namun 
+berdampak sangat intensif, sementara pertambangan bersifat tersebar dan terus berekspansi 
+secara temporal. Memahami dinamika perubahan tutupan lahan yang dipicu oleh kedua 
+driver ini secara simultan merupakan kontribusi penting bagi ilmu pengetahuan dan 
+kebijakan berbasis bukti (evidence-based policy). 
+Pemantauan perubahan tutupan lahan secara konvensional melalui survei lapangan 
+(field survey) memiliki keterbatasan fundamental dalam konteks ini. Cakupan spasial 
+survei lapangan sangat terbatas mengingat luas Kalimantan yang mencapai lebih dari 
+743.000 km², sementara biaya dan waktu yang diperlukan sangat besar. Di sisi lain, data 
+administrasi pertanahan dan izin usaha pertambangan (IUP) seringkali tidak mencerminkan 
+kondisi aktual di lapangan akibat kelemahan dalam pengawasan dan penegakan hukum. 
+Pendekatan pengindraan jauh (remote sensing) berbasis citra satelit menawarkan solusi 
+yang superior dalam konteks ini: cakupan spasial yang luas, kemampuan pemantauan 
+multitemporal secara konsisten, biaya akuisisi data yang semakin terjangkau, dan 
+kemampuan untuk mengekstraksi informasi tentang permukaan bumi secara kuantitatif dari 
+nilai reflektansi spektral. 
+Satelit Sentinel-2 dari program Copernicus milik European Space Agency (ESA) 
+merupakan salah satu platform pengindraan jauh paling relevan untuk pemetaan tutupan 
+lahan di wilayah tropis. Dengan resolusi spasial 10 meter untuk band visible dan NIR, 
+resolusi 20 meter untuk band SWIR, serta revisit time 5 hari untuk satu satelit (2–3 hari 
+dengan dua satelit kembar), Sentinel-2 menyediakan data yang sangat kaya untuk analisis 
+multitemporal. Tersedianya produk Surface Reflectance (SR) Harmonized yang telah 
+terkoreksi atmosfer melalui algoritma FORCE/Sen2Cor memastikan konsistensi 
+radiometrik antar waktu yang dibutuhkan untuk analisis temporal yang valid. Seluruh arsip 
+Sentinel-2 sejak 2015 dapat diakses secara gratis melalui platform Google Earth Engine 
+(GEE), yang menyediakan kapabilitas komputasi awan (cloud computing) untuk 
+memproses data citra bervolume besar tanpa perlu infrastruktur komputasi lokal. 
+Dalam konteks machine learning untuk land cover classification, perkembangan 
+algoritma ensemble dan boosting telah menghasilkan peningkatan akurasi yang signifikan 
+dibandingkan pendekatan klasifikasi konvensional seperti maximum likelihood. Random 
+Forest, yang merupakan ensemble dari decision trees, telah terbukti sangat efektif untuk 
+klasifikasi tutupan lahan karena kemampuannya menangani fitur yang saling berkorelasi, 
+robustness terhadap outlier, dan kemampuan menghasilkan feature importance. Algoritma 
+gradient boosting seperti XGBoost dan LightGBM menawarkan kecepatan komputasi yang 
+lebih tinggi dengan akurasi yang kompetitif. Integrasi multiple algoritma dalam satu 
+framework komparatif memungkinkan peneliti untuk mengidentifikasi metode yang paling 
+optimal untuk karakteristik data tertentu. 
+Namun demikian, klasifikasi tutupan lahan berbasis citra satelit menghadapi 
+tantangan metodologis yang serius dalam hal evaluasi model: spatial autocorrelation. Data 
+citra satelit memiliki ketergantungan spasial (spatial dependency) yang inheren—piksel 
+yang berdekatan cenderung memiliki nilai yang mirip karena berasal dari objek atau 
+kondisi yang sama secara fisik. Jika sampel training dan testing dipilih secara acak tanpa 
+mempertimbangkan struktur spasial ini, model cenderung menghasilkan estimasi akurasi 
+yang inflated (terlalu optimistis) karena sampel test secara tidak langsung sudah 'bocor' 
+informasinya ke dalam training set. Spatial Block Cross Validation (SBCV) merupakan 
+pendekatan yang semakin banyak diadopsi dalam komunitas geospatial machine learning 
+untuk mengatasi masalah ini dengan memastikan bahwa blok spasial yang digunakan 
+sebagai validation set secara geografis terpisah dari blok training. 
+Di luar akurasi, interpretabilitas model machine learning juga merupakan aspek 
+penting yang sering diabaikan dalam penelitian tutupan lahan. Memahami fitur mana yang 
+paling berkontribusi terhadap prediksi kelas tertentu memiliki nilai ilmiah dan praktis: 
+secara ilmiah, ini memvalidasi apakah model belajar dari hubungan yang masuk akal secara 
+spektral dan ekologis; secara praktis, ini membantu dalam optimasi fitur untuk penelitian 
+selanjutnya. SHAP (SHapley Additive exPlanations) yang dikembangkan oleh Lundberg 
+dan Lee (2017) menyediakan framework yang kuat untuk interpretabilitas model dengan 
+landasan teoretis yang solid dari teori permainan kooperatif (cooperative game theory). 
+Berdasarkan uraian di atas, terdapat kesenjangan (gap) penelitian yang signifikan: 
+belum ada penelitian yang secara sistematis menganalisis transformasi tutupan lahan 
+Kalimantan secara multitemporal dengan mempertimbangkan secara simultan dua driver 
+utama (IKN dan pertambangan), menggunakan framework machine learning yang 
+komprehensif dengan evaluasi metodologis yang ketat (SBCV), serta dilengkapi dengan 
+analisis interpretabilitas model (SHAP) dan visualisasi hasil melalui dashboard spasial 
+interaktif. Penelitian ini hadir untuk mengisi gap tersebut dengan kontribusi yang bersifat 
+metodologis, empiris, dan praktis. 
+ 
+1.2 Identifikasi Masalah 
+Berdasarkan latar belakang yang telah diuraikan, terdapat beberapa permasalahan 
+yang teridentifikasi dalam penelitian ini: 
+1. Belum tersedianya peta tutupan lahan multitemporal Kalimantan yang secara 
+komprehensif mencakup periode 2018–2024 dengan resolusi spasial memadai 
+berbasis Sentinel-2. 
+2. Belum adanya kajian komparatif performa algoritma machine learning (Random 
+Forest, XGBoost, LightGBM, Logistic Regression, SVM, dan MLP) untuk 
+klasifikasi tutupan lahan Kalimantan dengan evaluasi berbasis Spatial Block Cross 
+Validation. 
+3. Belum ada penelitian yang menganalisis secara simultan pengaruh dual-driver 
+IKN dan ekspansi pertambangan terhadap transformasi spasial tutupan lahan 
+Kalimantan dalam satu kerangka analisis terpadu. 
+4. Terbatasnya penerapan analisis interpretabilitas model berbasis SHAP dalam 
+konteks klasifikasi tutupan lahan tropis menggunakan data Sentinel-2 
+multitemporal. 
+5. Belum tersedianya platform visualisasi spasial interaktif yang mengintegrasikan 
+hasil klasifikasi multitemporal, deteksi perubahan, dan analisis hotspot tutupan 
+lahan Kalimantan secara terpadu. 
+ 
+1.3 Rumusan Masalah 
+Berdasarkan identifikasi masalah yang telah diuraikan, rumusan masalah dalam 
+penelitian ini adalah sebagai berikut: 
+1. Bagaimana performa komparatif algoritma Random Forest, XGBoost, LightGBM, 
+Logistic Regression, SVM, dan MLP dalam mengklasifikasikan tutupan lahan 
+Kalimantan berbasis fitur spektral Sentinel-2 dan indeks turunannya, diukur 
+dengan Spatial Block Cross Validation? 
+2. Bagaimana pola transformasi tutupan lahan Kalimantan selama periode 2018–
+2024, dan ke arah mana transisi antar kelas tutupan lahan yang paling dominan 
+terjadi? 
+3. Bagaimana karakteristik spasio-temporal perubahan tutupan lahan di sekitar 
+kawasan IKN dibandingkan dengan kawasan pertambangan, dan apakah terdapat 
+perbedaan yang dapat diidentifikasi dalam pola perubahan yang dihasilkan oleh 
+kedua driver tersebut? 
+4. Fitur spektral dan lingkungan mana yang memiliki kontribusi terbesar terhadap 
+klasifikasi kelas tutupan lahan tertentu berdasarkan analisis SHAP? 
+5. Bagaimana mengintegrasikan hasil analisis ke dalam platform dashboard/web GIS 
+interaktif yang dapat digunakan sebagai alat pemantauan tutupan lahan berbasis 
+bukti? 
+ 
+1.4 Tujuan Penelitian 
+Tujuan penelitian ini adalah sebagai berikut: 
+1. Mengembangkan model klasifikasi tutupan lahan Kalimantan berbasis fitur 
+spektral Sentinel-2 SR Harmonized dan indeks turunannya menggunakan enam 
+algoritma supervised machine learning. 
+2. Membandingkan performa algoritma Random Forest, XGBoost, LightGBM, 
+Logistic Regression, SVM, dan MLP menggunakan Spatial Block Cross 
+Validation untuk mengidentifikasi model terbaik. 
+3. Mendeteksi dan memetakan perubahan tutupan lahan Kalimantan selama periode 
+2018–2024 melalui post-classification comparison dan analisis transition matrix. 
+4. Menganalisis karakteristik spasio-temporal perubahan tutupan lahan yang 
+berkaitan dengan dual-driver IKN dan ekspansi pertambangan/bare land. 
+5. Mengidentifikasi kontribusi fitur spektral dan lingkungan terhadap prediksi kelas 
+tutupan lahan menggunakan analisis SHAP. 
+6. Mengembangkan dashboard/web GIS interaktif untuk visualisasi hasil penelitian 
+yang dapat digunakan sebagai alat pemantauan spasial berbasis web. 
+ 
+1.5 Manfaat Penelitian 
+1.5.1 Manfaat Akademis 
+Secara akademis, penelitian ini diharapkan memberikan kontribusi metodologis 
+dalam pengembangan kerangka analisis machine learning untuk klasifikasi tutupan lahan 
+tropis yang mempertimbangkan aspek spatial autocorrelation melalui Spatial Block Cross 
+Validation. Selain itu, penelitian ini berkontribusi pada pemahaman tentang penerapan 
+SHAP interpretability dalam konteks geospatial machine learning, yang masih relatif 
+jarang didokumentasikan dalam literatur berbahasa Indonesia. Integrasi dual-driver 
+analysis dalam satu framework penelitian juga merupakan kontribusi konseptual yang 
+dapat menjadi referensi bagi penelitian-penelitian berikutnya. 
+1.5.2 Manfaat Praktis 
+Secara praktis, peta perubahan tutupan lahan yang dihasilkan dapat menjadi 
+referensi bagi pemerintah daerah, kementerian terkait (KLHK, ATR/BPN, ESDM), serta 
+lembaga riset dalam perencanaan tata ruang berbasis bukti. Identifikasi hotspot deforestasi 
+dan ekspansi lahan terbuka yang berkorelasi dengan aktivitas pertambangan dapat 
+mendukung upaya pengawasan dan penegakan hukum di sektor tersebut. Dashboard spasial 
+interaktif yang dihasilkan dapat dimanfaatkan sebagai alat komunikasi data yang efektif 
+kepada berbagai pemangku kepentingan, termasuk masyarakat umum, organisasi 
+lingkungan hidup, dan peneliti. 
+ 
+ 
+II. TINJAUAN PUSTAKA 
+2.1 Konsep Tutupan Lahan dan Perubahannya 
+Tutupan lahan (land cover) didefinisikan sebagai kondisi fisik permukaan bumi 
+yang terobservasi, mencakup berbagai kategori seperti hutan, lahan pertanian, badan air, 
+lahan terbangun, dan lahan terbuka. Berbeda dengan penggunaan lahan (land use) yang 
+merujuk pada tujuan sosio-ekonomis pemanfaatan lahan, tutupan lahan merupakan 
+deskripsi biofisik yang dapat diukur secara langsung melalui pengindraan jauh. Perubahan 
+tutupan lahan (land cover change) merupakan transformasi dari satu kategori ke kategori 
+lain dalam rentang waktu tertentu, yang dapat disebabkan oleh faktor alami (seperti 
+kebakaran hutan, banjir, atau suksesi vegetasi) maupun faktor antropogenik (seperti 
+deforestasi, urbanisasi, atau konversi pertanian). 
+Pemantauan perubahan tutupan lahan secara multitemporal memiliki urgensi yang 
+tinggi dalam konteks kebijakan lingkungan global. Konvensi Kerangka Kerja PBB tentang 
+Perubahan Iklim (UNFCCC) mewajibkan negara-negara anggota untuk melaporkan 
+perubahan tutupan lahan sebagai bagian dari inventarisasi gas rumah kaca, mengingat 
+sektor kehutanan dan penggunaan lahan merupakan sumber emisi karbon yang signifikan. 
+Di tingkat nasional, Indonesia memiliki komitmen untuk menurunkan emisi gas rumah 
+kaca sebesar 41% dengan dukungan internasional pada tahun 2030 (NDC Indonesia), yang 
+sebagian besar bergantung pada keberhasilan pengelolaan tutupan lahan hutan. Dalam 
+konteks ini, pemantauan tutupan lahan yang akurat dan berkala menjadi kebutuhan 
+fundamental. 
+2.2 Pengindraan Jauh untuk Pemetaan Tutupan Lahan 
+Pengindraan jauh (remote sensing) merupakan ilmu dan teknologi untuk 
+memperoleh informasi tentang objek, area, atau fenomena dari jarak jauh tanpa kontak fisik 
+langsung, umumnya menggunakan sensor berbasis satelit atau pesawat yang merekam 
+energi elektromagnetik yang dipantulkan atau dipancarkan oleh permukaan bumi. Dalam 
+konteks pemetaan tutupan lahan, prinsip dasar yang dimanfaatkan adalah perbedaan 
+karakteristik reflektansi spektral (spectral signature) antara berbagai jenis tutupan lahan. 
+Vegetasi sehat, misalnya, memiliki absorpsi tinggi pada panjang gelombang merah (red) 
+karena klorofil, dan reflektansi sangat tinggi pada near-infrared (NIR) akibat struktur sel 
+mesofil daun. Lahan terbangun cenderung memiliki reflektansi tinggi di seluruh spektrum 
+visible, sementara badan air memiliki absorpsi tinggi di NIR dan SWIR. 
+Citra multispektral yang merekam reflektansi di beberapa band spektral secara 
+simultan memungkinkan diskriminasi antar kelas tutupan lahan berdasarkan perbedaan 
+signature spektral ini. Akurasi diskriminasi dapat ditingkatkan dengan menggunakan 
+indeks spektral turunan yang mengoptimalkan kontras antara kelas-kelas tertentu. NDVI 
+(Normalized Difference Vegetation Index), yang dihitung dari rasio band NIR dan Red, 
+merupakan indeks paling banyak digunakan untuk memantau vegetasi. NDBI (Normalized 
+Difference Built-up Index) menggunakan band SWIR dan NIR untuk mendeteksi kawasan 
+terbangun. NDMI (Normalized Difference Moisture Index) sensitif terhadap kandungan air 
+vegetasi menggunakan NIR dan SWIR1. BSI (Bare Soil Index) mengkombinasikan band 
+SWIR2, Red, NIR, dan Blue untuk mendeteksi lahan terbuka tanpa vegetasi. 
+2.3 Sentinel-2 dan Google Earth Engine 
+Program Copernicus milik European Space Agency (ESA) meluncurkan pasangan 
+satelit Sentinel-2A (2015) dan Sentinel-2B (2017) yang membentuk satu konstelasi 
+pengindraan jauh multi-spektral untuk pemantauan daratan. Sensor Multispectral 
+Instrument (MSI) pada Sentinel-2 merekam data pada 13 band spektral dengan resolusi 
+spasial yang bervariasi: 10 meter untuk band visible dan NIR (B2, B3, B4, B8), 20 meter 
+untuk band red-edge dan SWIR (B5, B6, B7, B8A, B11, B12), dan 60 meter untuk band 
+koreksi atmosfer (B1, B9, B10). Revisit time konstelasi Sentinel-2 adalah 5 hari di ekuator, 
+yang merupakan frekuensi pemerolehan data yang memadai untuk analisis multitemporal 
+dengan cakupan temporal yang baik meskipun terdapat tutupan awan. 
+Produk Sentinel-2 Level-2A (Surface Reflectance/SR) telah terkoreksi dari efek 
+atmosfer menggunakan algoritma Sen2Cor, menghasilkan nilai reflektansi permukaan 
+(Bottom-of-Atmosphere/BOA) yang lebih stabil secara temporal dibandingkan reflektansi 
+puncak atmosfer (Top-of-Atmosphere/TOA). Koleksi Sentinel-2 SR Harmonized di 
+Google Earth Engine (GEE) telah menerapkan harmonisasi tambahan untuk meminimalkan 
+perbedaan antara sensor Sentinel-2A dan 2B, sehingga menghasilkan time series yang lebih 
+konsisten untuk analisis perubahan. Ini sangat penting untuk analisis tutupan lahan 
+multitemporal yang memerlukan konsistensi radiometrik antar akuisisi. 
+Google Earth Engine (GEE) merupakan platform komputasi geospatial berbasis 
+cloud yang dikembangkan oleh Google, menyediakan akses terhadap petabyte data citra 
+satelit historis dan kemampuan komputasi masif untuk analisis spasial. GEE 
+memungkinkan pengguna untuk menulis skrip JavaScript atau Python (melalui Earth 
+Engine Python API) untuk mengakses, memproses, dan menganalisis data citra satelit 
+dalam skala global tanpa perlu mengunduh data ke komputer lokal. Kemampuan ini sangat 
+krusial untuk penelitian ini yang memerlukan pemrosesan koleksi citra Sentinel-2 selama 
+enam tahun (2018–2024) di seluruh Pulau Kalimantan, yang secara praktis tidak 
+memungkinkan dilakukan dengan komputasi lokal mengingat volume data yang besar. 
+2.4 ESA WorldCover sebagai Referensi Klasifikasi 
+ESA WorldCover merupakan peta tutupan lahan global dengan resolusi 10 meter 
+yang dihasilkan oleh European Space Agency menggunakan data Sentinel-1 dan Sentinel-
+2. Versi pertama (2020) dan versi kedua (2021) dari ESA WorldCover menyediakan 
+klasifikasi ke dalam 11 kelas tutupan lahan yang mencakup: Tree Cover, Shrubland, 
+Grassland, Cropland, Built-up, Bare/Sparse Vegetation, Snow and Ice, Permanent Water 
+Bodies, Herbaceous Wetland, Mangroves, dan Moss and Lichen. Akurasi overall dari peta 
+ini secara global telah divalidasi mencapai lebih dari 74%, dengan akurasi yang lebih tinggi 
+untuk kelas-kelas utama seperti Tree Cover, Built-up, dan Water Bodies. 
+Dalam penelitian ini, ESA WorldCover 2021 dimanfaatkan sebagai sumber label 
+training utama (reference data) untuk melatih model machine learning. Pendekatan ini 
+termasuk dalam kategori weakly supervised learning atau label transfer yang telah banyak 
+diterapkan dalam penelitian klasifikasi tutupan lahan global. Meskipun ESA WorldCover 
+memiliki keterbatasan dalam hal akurasi untuk kelas-kelas tertentu di konteks lokal 
+Indonesia—khususnya untuk membedakan perkebunan dari hutan sekunder dan untuk 
+mengidentifikasi tambang—penggunaannya sebagai baseline yang diperkaya dengan 
+interpretasi 
+visual 
+lokal 
+merupakan 
+pendekatan 
+yang 
+pragmatis 
+dan 
+dapat 
+dipertanggungjawabkan secara metodologis. 
+2.5 Algoritma Machine Learning untuk Klasifikasi Tutupan Lahan 
+2.5.1 Random Forest 
+Random Forest (RF) merupakan metode ensemble yang mengombinasikan 
+sejumlah besar decision trees yang dilatih secara independen menggunakan subset acak 
+dari data training (bootstrap sampling) dan subset acak dari fitur pada setiap split (feature 
+bagging). Prediksi akhir RF merupakan majority vote dari prediksi seluruh pohon untuk 
+masalah klasifikasi. Breiman (2001), yang mengembangkan algoritma ini, menunjukkan 
+bahwa dengan meningkatkan keragaman antar pohon melalui randomisasi, varians 
+kesalahan prediksi secara agregat dapat dikurangi secara signifikan tanpa meningkatkan 
+bias. Random Forest dikenal sangat robust terhadap overfitting, efektif menangani fitur 
+yang saling berkorelasi tinggi—kondisi yang sangat umum dalam data citra 
+multispektral—serta menghasilkan feature importance yang informatif. 
+2.5.2 XGBoost dan LightGBM 
+XGBoost (eXtreme Gradient Boosting) yang dikembangkan oleh Chen dan 
+Guestrin (2016) merupakan implementasi gradient boosting yang dioptimalkan untuk 
+kecepatan dan akurasi. Berbeda dengan Random Forest yang melatih pohon secara paralel 
+dan independen, XGBoost melatih pohon secara sekuensial di mana setiap pohon baru 
+berfokus untuk mengoreksi kesalahan pohon sebelumnya. XGBoost menambahkan 
+regularisasi L1 dan L2 ke dalam fungsi objektif untuk mencegah overfitting, serta 
+menggunakan pendekatan tree pruning yang lebih agresif. LightGBM (Light Gradient 
+Boosting Machine) yang dikembangkan oleh Microsoft merupakan evolusi dari gradient 
+boosting yang menggunakan dua teknik utama: Gradient-based One-Side Sampling 
+(GOSS) untuk mereduksi jumlah sampel data tanpa kehilangan informasi penting, dan 
+Exclusive Feature Bundling (EFB) untuk mereduksi dimensi fitur yang mutually exclusive. 
+Hasilnya, LightGBM umumnya jauh lebih cepat daripada XGBoost dengan akurasi yang 
+sebanding. 
+2.5.3 Logistic Regression, SVM, dan MLP 
+Logistic Regression (LR) merupakan model linier yang memodelkan probabilitas 
+keanggotaan kelas menggunakan fungsi sigmoid (logistic). Meskipun asumsi linearitasnya 
+membatasi kemampuannya dalam menangkap pola non-linier yang kompleks, LR 
+berfungsi sebagai baseline yang kuat dan interpretatif. Support Vector Machine (SVM) 
+bekerja dengan mencari hyperplane yang memaksimalkan margin antara kelas-kelas 
+berbeda di ruang fitur. Kernel trick—menggunakan kernel function seperti RBF—
+memungkinkan SVM untuk mempelajari batas keputusan non-linier yang kompleks di 
+ruang dimensi tinggi. SVM telah terbukti efektif untuk klasifikasi citra satelit terutama 
+ketika dimensi fitur relatif tinggi dibandingkan jumlah sampel. Multilayer Perceptron 
+(MLP) merupakan jaringan saraf tiruan yang terdiri dari beberapa lapisan fully-connected 
+neurons dengan fungsi aktivasi non-linier (seperti ReLU), mampu memodelkan fungsi 
+yang sangat kompleks melalui proses backpropagation. Dalam konteks penelitian ini, MLP 
+digunakan dengan arsitektur yang terbatas (bukan deep learning) agar komputasi tetap 
+feasible. 
+2.6 Spatial Block Cross Validation 
+Cross validation konvensional (k-fold random CV) mengasumsikan bahwa setiap 
+observasi bersifat independently and identically distributed (i.i.d.). Asumsi ini dilanggar 
+secara fundamental oleh data spasial karena hukum pertama geografi Tobler: 'segala 
+sesuatu berkaitan dengan yang lain, tetapi hal-hal yang berdekatan lebih berkaitan daripada 
+yang jauh.' Dalam klasifikasi tutupan lahan berbasis citra satelit, piksel atau sampel yang 
+berdekatan secara geografis cenderung memiliki kemiripan spektral yang tinggi, baik 
+karena berasal dari objek fisik yang sama maupun karena efek point spread function dan 
+resampling. Akibatnya, jika sampel training dan testing dibagi secara acak, banyak sampel 
+test akan sangat mirip dengan sampel training terdekatnya, menghasilkan estimasi akurasi 
+yang inflated. 
+Spatial Block Cross Validation (Roberts et al., 2017; Valavi et al., 2019) mengatasi 
+masalah ini dengan membagi data ke dalam blok spasial yang saling tidak tumpang tindih, 
+di mana seluruh blok digunakan secara bergantian sebagai validation set. Ukuran blok 
+dipilih berdasarkan jangkauan autokorelasi spasial dari data, yang dapat diestimasi 
+menggunakan analisis variogram atau Moran's I. Pendekatan ini memastikan bahwa sampel 
+training dan testing secara geografis terpisah, sehingga evaluasi akurasi yang dihasilkan 
+lebih mencerminkan kemampuan generalisasi model ke area baru yang belum pernah 
+dilihat selama training. 
+2.7 SHAP Interpretability 
+SHAP (SHapley Additive exPlanations) adalah metode interpretabilitas model 
+machine learning yang dikembangkan oleh Lundberg dan Lee (2017) berdasarkan konsep 
+Shapley values dari teori permainan kooperatif. Untuk setiap prediksi individual, SHAP 
+menghitung kontribusi masing-masing fitur terhadap penyimpangan prediksi tersebut dari 
+baseline (rata-rata prediksi). Secara formal, SHAP value untuk fitur i pada prediksi untuk 
+sampel x adalah rata-rata tertimbang dari kontribusi marginal fitur i di semua permutasi 
+kemungkinan koalisi fitur lainnya. Properti unik SHAP adalah konsistensi dan lokalitas: 
+secara global konsisten (fitur yang lebih 'penting' selalu mendapat nilai lebih tinggi) dan 
+secara lokal akurat (jumlah SHAP values sama dengan deviasi prediksi dari baseline). 
+Dalam konteks klasifikasi tutupan lahan, SHAP memberikan wawasan tentang fitur 
+spektral mana yang paling berkontribusi terhadap klasifikasi kelas tertentu. Misalnya, 
+apakah NDVI merupakan fitur paling dominan untuk kelas hutan dibandingkan indeks 
+lainnya? Apakah NDBI memiliki kontribusi positif yang signifikan untuk kelas lahan 
+terbangun? Informasi ini memvalidasi bahwa model belajar dari hubungan yang masuk 
+akal secara spektral dan ekologis, bukan dari artefak data atau kebetulan statistik. 
+2.8 Change Detection Multitemporal 
+Deteksi perubahan (change detection) dalam konteks pengindraan jauh merujuk 
+pada proses identifikasi perbedaan kondisi tutupan lahan antara dua atau lebih titik waktu 
+berbeda. Berbagai metode change detection telah dikembangkan dalam literatur remote 
+sensing, yang dapat dikategorikan ke dalam image differencing, post-classification 
+comparison, dan object-based approaches. Metode post-classification comparison (PCC) 
+yang digunakan dalam penelitian ini bekerja dengan mengklasifikasikan citra pada setiap 
+titik waktu secara independen, kemudian membandingkan peta klasifikasi yang dihasilkan 
+piksel per piksel untuk mengidentifikasi perubahan. Keunggulan PCC adalah 
+kemampuannya menghasilkan informasi arah perubahan ('dari kelas A menjadi kelas B') 
+yang tersaji dalam transition matrix. 
+Matriks transisi (transition matrix) merupakan representasi matematis dari 
+perubahan tutupan lahan yang menunjukkan luas area yang berpindah dari setiap kelas 
+tutupan lahan pada waktu t1 ke setiap kelas pada waktu t2. Matriks ini memungkinkan 
+kuantifikasi dari perubahan spesifik, misalnya berapa luas hutan yang berubah menjadi 
+lahan terbangun, atau berapa luas lahan terbuka yang berubah menjadi vegetasi tumbuh 
+kembali. Visualisasi Sankey diagram merupakan salah satu pendekatan yang efektif untuk 
+menyajikan informasi transition matrix kepada audiens non-teknis. 
+2.9 Pembangunan IKN dan Deforestasi Kalimantan 
+Proyek Ibu Kota Nusantara (IKN) merupakan salah satu proyek infrastruktur 
+terbesar dalam sejarah Indonesia. Berdasarkan Undang-Undang No. 3 Tahun 2022 dan 
+perubahannya UU No. 21 Tahun 2023, IKN berlokasi di Kalimantan Timur dengan total 
+luas wilayah Ibu Kota Nusantara mencapai 256.142 hektar, yang terbagi menjadi Kawasan 
+Inti Pusat Pemerintahan (KIPP) seluas 5.619 hektar dan kawasan pengembangan IKN. 
+Pembangunan fisik dimulai pada 2022 dan mencakup infrastruktur dasar seperti jalan tol 
+IKN, Istana Garuda, gedung-gedung pemerintahan, dan kawasan permukiman Nusantara. 
+Meskipun terdapat diskursus publik mengenai kemungkinan pusat pemerintahan tetap 
+dipertahankan di Jakarta, fakta lapangan menunjukkan bahwa konversi tutupan lahan di 
+kawasan IKN telah terjadi secara masif dan terus berlangsung. 
+Kalimantan secara historis mengalami deforestasi yang intens. Studi Hansen et al. 
+(2013) dan update-nya melalui Global Forest Watch mencatat bahwa Indonesia adalah 
+salah satu negara dengan laju deforestasi tropika tertinggi di dunia. Kalimantan khususnya 
+mengalami kehilangan tutupan pohon yang signifikan akibat konversi ke perkebunan 
+kelapa sawit, pembangunan infrastruktur, dan eksploitasi tambang. Hutan gambut 
+Kalimantan yang memiliki cadangan karbon tinggi sangat rentan terhadap degradasi dan 
+kebakaran, sebagaimana dibuktikan oleh bencana kebakaran hutan dan lahan berulang yang 
+dikaitkan dengan El Niño dan praktik pembukaan lahan. 
+2.10 Ekspansi Pertambangan di Kalimantan 
+Kalimantan merupakan episentrum industri pertambangan batubara Indonesia. 
+Provinsi Kalimantan Timur, Kalimantan Selatan, dan Kalimantan Tengah memiliki 
+cadangan batubara terbesar di negeri ini, dengan puluhan perusahaan pertambangan 
+beroperasi di wilayah tersebut. Selain batubara, ekspansi pertambangan nikel di 
+Kalimantan Timur dan Kalimantan Tengah semakin meningkat dalam beberapa tahun 
+terakhir, didorong oleh permintaan global untuk bahan baku baterai kendaraan listrik. 
+Aktivitas pertambangan menciptakan signature spektral yang khas pada citra satelit: tanah 
+terbuka, kolam sedimentasi (settling pond), stockpile batubara, dan infrastruktur 
+transportasi yang dapat diidentifikasi dari nilai NDVI rendah, BSI tinggi, dan perubahan 
+temporal yang abrupt. 
+Penting untuk dicatat bahwa penelitian ini mengidentifikasi ekspansi pertambangan 
+secara tidak langsung melalui deteksi bare land disturbance—yaitu peningkatan luas lahan 
+terbuka yang tidak tervegetasi pada lokasi yang berkorelasi spasial dengan kawasan konsesi 
+pertambangan. Pendekatan ini merupakan proxy yang valid namun harus diinterpretasikan 
+dengan hati-hati karena lahan terbuka juga dapat berasal dari aktivitas lain seperti 
+pembukaan lahan pertanian, pembangunan infrastruktur non-tambang, atau kebakaran 
+hutan. Klaim tentang aktivitas pertambangan dalam penelitian ini bersifat indikatif dan 
+berbasis analisis spasial, bukan konfirmasi lapangan. 
+ 
+2.11 Penelitian Terdahulu 
+Berikut disajikan ringkasan penelitian-penelitian terdahulu yang relevan dengan 
+topik penelitian ini: 
+ 
+Peneliti 
+(Tahun) 
+Tujuan 
+Penelitian 
+Metode 
+Dataset & 
+Lokasi 
+Algoritma Terbaik 
+Relevansi 
+dengan 
+Penelitian 
+Ini 
+Phiri et al. 
+(2021) 
+Remote 
+Sensing 
+Evaluasi 
+komparatif 
+Sentinel-2 untuk 
+land cover 
+classification di 
+Afrika Selatan 
+menggunakan 
+berbagai ML 
+classifier 
+Random 
+Forest, SVM, 
+Logistic 
+Regression; 
+10-fold CV; 
+fitur spektral + 
+indeks 
+Sentinel-2 
+SR; Afrika 
+Selatan; 8 
+kelas 
+tutupan 
+lahan 
+Random Forest (OA 
+91.3%) 
+Acuan 
+metodologi 
+komparasi 
+multi-
+algoritma dan 
+pemilihan fitur 
+spektral 
+Sentinel-2 
+untuk 
+klasifikasi 
+tutupan lahan 
+Pelletier et 
+al. (2019) 
+ISPRS JPRS 
+Membandingkan 
+RF, SVM, dan 
+1D-CNN untuk 
+klasifikasi time-
+series land cover 
+menggunakan 
+fitur temporal 
+Sentinel-2 
+RF, SVM, 1D-
+CNN; SITS 
+(satellite 
+image time 
+series); fitur 
+temporal 
+agregat per 
+musim 
+Sentinel-2 
+multi-
+temporal; 
+Perancis 
+Selatan; 9 
+kelas 
+RF dan CNN setara, 
+SVM sedikit lebih 
+rendah 
+Justifikasi 
+penggunaan 
+fitur spektral 
+temporal 
+agregat dan 
+perbandingan 
+performa 
+algoritma 
+ensemble vs 
+linier 
+Valavi et al. 
+(2019) 
+Methods in 
+Ecology & 
+Evolution 
+Mengusulkan 
+dan 
+mengevaluasi 
+Spatial Block 
+CV untuk 
+mengurangi 
+spatial 
+autocorrelation 
+leakage dalam 
+Spatial Block 
+CV, Buffered 
+LOO CV; 
+dibandingkan 
+dengan 
+random CV; 
+metrics: AUC, 
+RMSE 
+Data 
+simulasi dan 
+empiris; 
+berbagai 
+lokasi; 
+habitat 
+modeling 
+Spatial Block CV 
+mengurangi optimisme 
+estimasi akurasi secara 
+signifikan 
+Landasan 
+metodologis 
+utama untuk 
+penerapan 
+SBCV dalam 
+penelitian ini 
+sebagai 
+Peneliti 
+(Tahun) 
+Tujuan 
+Penelitian 
+Metode 
+Dataset & 
+Lokasi 
+Algoritma Terbaik 
+Relevansi 
+dengan 
+Penelitian 
+Ini 
+SDM dan land 
+mapping 
+dan land 
+classification 
+alternatif 
+random CV 
+Lundberg et 
+al. (2020) 
+Nature 
+Machine 
+Intelligence 
+Mengembangkan 
+TreeSHAP untuk 
+komputasi 
+SHAP values 
+yang efisien 
+pada tree-based 
+models 
+SHAP 
+(Shapley 
+Additive 
+exPlanations); 
+TreeSHAP 
+algorithm; 
+interpretasi 
+global dan 
+lokal 
+Berbagai 
+dataset ML; 
+kasus 
+klasifikasi 
+dan regresi 
+TreeSHAP exact untuk 
+RF/XGBoost/LightGBM 
+Dasar teoretis 
+dan 
+implementasi 
+SHAP untuk 
+interpretasi 
+model 
+klasifikasi 
+tutupan lahan 
+dalam 
+penelitian ini 
+Descals et 
+al. (2021) 
+Global 
+Change 
+Biology 
+Pemetaan 
+deforestasi dan 
+konversi hutan 
+ke perkebunan 
+sawit di 
+Kalimantan dan 
+Sumatra 
+menggunakan 
+Landsat time-
+series 
+Annual change 
+detection; 
+CCDC 
+(Continuous 
+Change 
+Detection and 
+Classification); 
+annual land 
+cover maps 
+2001-2019 
+Landsat 
+5/7/8; 
+Kalimantan 
+dan 
+Sumatra; 
+kelas hutan, 
+sawit, non-
+hutan 
+CCDC-based approach, 
+akurasi > 85% 
+Referensi 
+konteks 
+deforestasi 
+Kalimantan 
+dan 
+metodologi 
+change 
+detection 
+multitemporal; 
+penelitian ini 
+memperluas 
+ke Sentinel-2 
+dan dual-
+driver 
+Dong et al. 
+(2023) 
+Remote 
+Sensing of 
+Environment 
+Pemetaan global 
+annual land 
+cover 2000-2022 
+menggunakan 
+Landsat dan 
+Sentinel-2 time-
+series 
+Multi-sensor 
+compositing; 
+RF classifier; 
+transition-
+based annual 
+update; 10m 
+resolution 
+(2017+) 
+Landsat + 
+Sentinel-2 
+SR; Global; 
+10 kelas 
+(LCSM 
+v1.0) 
+RF, OA ~82% global 
+Referensi 
+metodologi 
+pembuatan 
+peta tutupan 
+lahan multi-
+temporal 
+dengan update 
+tahunan; 
+validasi silang 
+untuk produk 
+di Kalimantan 
+Witjes et al. 
+(2022) PeerJ 
+Klasifikasi land 
+cover temporal 
+di Eropa 
+menggunakan 
+RF, XGBoost; 
+Spatial Block 
+CV (spacv 
+package); fitur 
+Sentinel-2 
+annual 
+composite; 
+Eropa 
+XGBoost sedikit lebih 
+baik dari RF dalam 
+SBCV 
+Metodologi 
+komparatif RF 
+vs XGBoost 
+dengan SBCV 
+Peneliti 
+(Tahun) 
+Tujuan 
+Penelitian 
+Metode 
+Dataset & 
+Lokasi 
+Algoritma Terbaik 
+Relevansi 
+dengan 
+Penelitian 
+Ini 
+Sentinel-2 time 
+series dengan 
+pendekatan 
+Spatial Block 
+CV dan ML 
+ensemble 
+temporal 
+statistik 
+(median, IQR) 
+per band 
+Tengah; 8 
+kelas 
+tutupan 
+lahan 
+yang sangat 
+relevan; 
+penelitian ini 
+mengadaptasi 
+untuk konteks 
+Kalimantan 
+tropika 
+Stanimirova 
+et al. (2023) 
+Remote 
+Sensing 
+Validasi ESA 
+WorldCover 
+2020 dan 2021 
+di berbagai 
+bioma dengan 
+fokus akurasi 
+kelas-kelas 
+spesifik 
+Accuracy 
+assessment; 
+stratified 
+random 
+sampling; 
+confusion 
+matrix; OA, 
+User's & 
+Producer's 
+Accuracy 
+ESA 
+WorldCover 
+2020/2021; 
+Global, 
+termasuk 
+kawasan 
+tropis Asia 
+Tenggara 
+OA global ~76% (2020), 
+~74% (2021) 
+Dasar 
+pemahaman 
+tentang 
+kualitas dan 
+keterbatasan 
+ESA 
+WorldCover 
+sebagai label 
+training dalam 
+penelitian ini 
+ 
+2.12 Gap Penelitian dan Kontribusi 
+Berdasarkan tinjauan penelitian terdahulu yang telah dipaparkan, dapat 
+diidentifikasi beberapa gap penelitian yang signifikan. Pertama, belum ada penelitian yang 
+secara eksplisit mengintegrasikan analisis dual-driver dalam satu kerangka penelitian 
+tutupan lahan Kalimantan: selama ini, penelitian tentang deforestasi Kalimantan cenderung 
+fokus pada satu driver (sawit, atau pertambangan, atau urbanisasi), sementara dampak IKN 
+terhadap tutupan lahan baru mulai diteliti secara terbatas. Kedua, penelitian-penelitian 
+komparatif ML untuk land cover classification di wilayah tropis Kalimantan yang 
+menggunakan Spatial Block CV—bukan random CV—masih sangat terbatas, sehingga 
+estimasi akurasi yang dilaporkan dalam literatur sebelumnya mungkin bersifat optimistis. 
+Ketiga, penerapan SHAP interpretability untuk memahami kontribusi fitur spektral dan 
+lingkungan dalam klasifikasi tutupan lahan Kalimantan belum didokumentasikan secara 
+sistematis. 
+Kontribusi penelitian ini terhadap literatur dan kebijakan dapat dirangkum sebagai 
+berikut: 
+1. Integrasi analisis dual-driver IKN dan ekspansi pertambangan dalam satu 
+framework klasifikasi tutupan lahan multitemporal Kalimantan yang belum 
+dilakukan dalam penelitian sebelumnya. 
+2. Penerapan Spatial Block Cross Validation untuk evaluasi model klasifikasi 
+tutupan lahan Kalimantan, menghasilkan estimasi akurasi yang lebih realistis 
+dibandingkan pendekatan random CV. 
+3. Analisis interpretabilitas model berbasis SHAP untuk memahami kontribusi fitur 
+spektral Sentinel-2 dalam klasifikasi tutupan lahan hutan tropis Kalimantan. 
+4. Komparasi komprehensif enam algoritma supervised machine learning (RF, 
+XGBoost, LightGBM, LR, SVM, MLP) dalam konteks klasifikasi tutupan lahan 
+Kalimantan berbasis Sentinel-2. 
+5. Pengembangan dashboard/web GIS interaktif yang menyajikan hasil analisis 
+multitemporal, change detection, dan hotspot secara terpadu dan dapat diakses 
+publik. 
+6. Peta dasar transformasi tutupan lahan Kalimantan 2018–2024 pada resolusi 10 
+meter yang dapat dimanfaatkan sebagai referensi untuk perencanaan tata ruang 
+dan pemantauan lingkungan. 
+ 
+2.13 Kerangka Penelitian 
+Kerangka penelitian ini dibangun atas dasar hubungan logis antara permasalahan, 
+data, metode, dan output yang dihasilkan. Secara konseptual, penelitian ini berangkat dari 
+identifikasi dua driver utama perubahan tutupan lahan di Kalimantan—pembangunan IKN 
+dan ekspansi pertambangan/bare land—yang menimbulkan kebutuhan akan pemantauan 
+spasial multitemporal yang sistematis dan akurat. 
+Data utama yang digunakan adalah citra Sentinel-2 SR Harmonized periode 2018–
+2024 yang diakses melalui GEE, dilengkapi dengan data pendukung berupa ESA 
+WorldCover 2021 (label training), SRTM (topografi), CHIRPS (curah hujan), dan jarak 
+terhadap kawasan IKN (distance raster). Preprocessing dilakukan seluruhnya di GEE 
+mencakup cloud masking, perhitungan indeks spektral, dan pembuatan median composite 
+tahunan. Selanjutnya, fitur-fitur tersebut digunakan untuk melatih dan mengevaluasi enam 
+algoritma machine learning dengan evaluasi berbasis Spatial Block CV. Model terbaik 
+digunakan untuk menghasilkan peta tutupan lahan tahunan (2018–2024), yang kemudian 
+dianalisis menggunakan post-classification comparison untuk mendeteksi perubahan dan 
+transisi. Analisis SHAP dilakukan untuk menginterpretasikan model terbaik, dan seluruh 
+hasil divisualisasikan dalam dashboard interaktif. 
+ 
+ 
+III. METODOLOGI PENELITIAN 
+Penelitian ini menggunakan framework Cross-Industry Standard Process for Data 
+Mining (CRISP-DM) sebagai kerangka metodologi utama. CRISP-DM merupakan standar 
+de facto dalam proses data mining dan machine learning yang terdiri dari enam fase yang 
+bersifat iteratif: Business Understanding, Data Understanding, Data Preparation, Modeling, 
+Evaluation, dan Deployment. Pemilihan CRISP-DM sebagai framework metodologi 
+didasarkan pada sifatnya yang sistematis, iteratif, dan berorientasi pada output yang dapat 
+digunakan (deployable results), yang sangat sesuai dengan tujuan penelitian ini yang 
+menghasilkan model klasifikasi yang diimplementasikan dalam dashboard web. 
+ 
+3.1 Business Understanding 
+Fase Business Understanding bertujuan untuk mendefinisikan permasalahan 
+penelitian secara operasional dalam konteks kebutuhan informasi yang nyata. 
+Permasalahan inti yang dihadapi adalah ketidaktersediaan peta tutupan lahan multitemporal 
+Kalimantan yang akurat dan mudah diakses untuk periode 2018–2024, padahal informasi 
+tersebut sangat dibutuhkan untuk memantau dampak pembangunan IKN dan ekspansi 
+pertambangan terhadap ekosistem hutan tropis. Ketiadaan informasi ini menciptakan gap 
+yang serius dalam pengambilan keputusan berbasis bukti terkait perencanaan tata ruang, 
+pengelolaan lingkungan, dan kebijakan kehutanan. 
+Tujuan data mining (data mining goal) yang ditetapkan adalah: (1) membangun 
+model klasifikasi tutupan lahan dengan akurasi Overall Accuracy minimal 85% dan Cohen 
+Kappa minimal 0.80 menggunakan evaluasi Spatial Block CV; (2) menghasilkan peta 
+tutupan lahan tahunan untuk tahun 2018, 2020, 2022, dan 2024; (3) mendeteksi dan 
+mengkuantifikasi perubahan tutupan lahan menggunakan post-classification comparison; 
+dan (4) mengidentifikasi hotspot perubahan yang berkaitan dengan driver IKN dan 
+pertambangan. Kriteria keberhasilan proyek ditetapkan berdasarkan threshold akurasi 
+tersebut serta kualitas visualisasi dashboard yang dihasilkan. 
+Dalam fase ini juga dilakukan inventarisasi sumber daya yang tersedia: akses ke 
+Google Earth Engine melalui akun penelitian, kapabilitas komputasi Python (scikit-learn, 
+XGBoost, LightGBM, SHAP) di lingkungan lokal atau cloud (Google Colab), serta 
+kemampuan pengembangan web menggunakan Streamlit atau React. Risiko yang 
+diidentifikasi mencakup potensi tutupan awan yang tinggi di beberapa periode (khususnya 
+musim basah), ketidakakuratan label ESA WorldCover untuk kelas-kelas tertentu di 
+konteks lokal, dan keterbatasan data ground truth untuk validasi independen. 
+ 
+3.2 Data Understanding 
+3.2.1 Sumber dan Karakteristik Data 
+Data yang digunakan dalam penelitian ini dapat dikelompokkan menjadi data utama 
+dan data pendukung. Berikut disajikan ringkasan sumber data: 
+ 
+Nama Data 
+Sumber / Platform 
+Periode / 
+Versi 
+Resolusi 
+Spasial 
+Pemanfaatan 
+dalam 
+Penelitian 
+Sentinel-2 SR 
+Harmonized 
+Google Earth Engine 
+(COPERNICUS/S2_SR_HARMONIZED) 
+2018–2024 
+(annual 
+composites) 
+10–20 
+meter 
+Fitur utama 
+klasifikasi tutupan 
+lahan dan change 
+detection 
+ESA 
+WorldCover 
+2021 
+Google Earth Engine 
+(ESA/WorldCover/v200) 
+Versi 2021 
+(data tahun 
+2021) 
+10 meter 
+Label kelas 
+tutupan lahan 
+untuk training dan 
+validasi awal 
+SRTM Digital 
+Elevation 
+Google Earth Engine 
+(USGS/SRTMGL1_003) 
+Akuisisi 
+2000 (statis) 
+30 meter 
+Fitur topografi: 
+elevasi, slope, 
+aspect 
+CHIRPS 
+Rainfall 
+Google Earth Engine (UCSB-
+CHG/CHIRPS/DAILY) 
+2018–2024 
+(annual 
+mean) 
+5.566 km 
+Fitur iklim: curah 
+hujan rata-rata 
+tahunan sebagai 
+kovariat 
+Distance to 
+IKN Centroid 
+Dihitung dari titik pusat KIPP IKN (GEE 
+computation) 
+Statis 
+10 meter 
+Fitur spatial 
+proximity: jarak 
+piksel ke kawasan 
+inti IKN 
+Mining 
+Concession 
+Proxy (Bare 
+Turunan BSI/NDVI komposit + data 
+perizinan ESDM (opsional/untuk validasi) 
+2018–2024 
+10–20 
+meter 
+Proxy bare land 
+untuk identifikasi 
+area potensi 
+pertambangan 
+Nama Data 
+Sumber / Platform 
+Periode / 
+Versi 
+Resolusi 
+Spasial 
+Pemanfaatan 
+dalam 
+Penelitian 
+Land 
+Indicator) 
+ 
+3.2.2 Eksplorasi Awal Data 
+Eksplorasi awal data dilakukan untuk memahami karakteristik koleksi citra 
+Sentinel-2 di Kalimantan. Aspek yang dieksplorasi meliputi distribusi cloud cover per 
+bulan untuk mengidentifikasi periode paling optimal untuk pembuatan komposit, jumlah 
+scene yang tersedia per tahun per path/row, distribusi nilai reflektansi per band untuk kelas 
+tutupan lahan utama (berdasarkan ESA WorldCover sebagai referensi awal), dan tingkat 
+keseimbangan kelas (class imbalance) dalam dataset. Eksplorasi ini penting untuk 
+menginformasikan keputusan metodologis selanjutnya, seperti strategi pembuatan 
+komposit dan strategi oversampling/undersampling jika class imbalance terdeteksi parah. 
+Dari eksplorasi awal, diidentifikasi bahwa bulan-bulan dengan tutupan awan rendah 
+di Kalimantan umumnya terjadi pada periode Agustus–Oktober (musim kemarau), 
+sementara Desember–Februari memiliki tutupan awan sangat tinggi. Untuk analisis 
+multitemporal, pendekatan median composite berbasis data sepanjang tahun digunakan 
+untuk meminimalkan pengaruh tutupan awan, dengan pembobotan lebih ke periode musim 
+kemarau jika diperlukan. Distribusi kelas ESA WorldCover di Kalimantan didominasi oleh 
+Tree Cover (~60%), diikuti Cropland (~15%), Bare/Sparse Vegetation (~8%), Built-up 
+(~5%), dan kelas-kelas lainnya. Ketidakseimbangan kelas ini perlu ditangani dalam strategi 
+sampling dan pemilihan metrik evaluasi. 
+ 
+3.3 Data Preparation 
+3.3.1 Cloud Masking dan Penyaringan Citra 
+Preprocessing citra Sentinel-2 dilakukan sepenuhnya di Google Earth Engine. 
+Langkah pertama adalah penyaringan koleksi Sentinel-2 SR Harmonized berdasarkan: (1) 
+bounding box Pulau Kalimantan; (2) rentang waktu sesuai tahun yang dianalisis; dan (3) 
+cloud 
+cover 
+percentage 
+≤ 
+30% 
+berdasarkan 
+metadata 
+property 
+'CLOUDY_PIXEL_PERCENTAGE'. Cloud masking selanjutnya dilakukan menggunakan 
+band QA60 yang menyediakan bit flag untuk piksel awan opak (bit 10) dan awan 
+tipis/cirrus (bit 11). Piksel yang ditandai sebagai awan di salah satu atau kedua bit tersebut 
+dimasking (nilai diset menjadi NoData). Selain cloud mask dari QA60, dilakukan juga 
+masking menggunakan band SCL (Scene Classification Layer) yang tersedia dalam produk 
+Sentinel-2 Level-2A, dengan mengeksklusi piksel yang diklasifikasikan sebagai: 0 (No 
+data), 1 (Saturated/Defective), 3 (Cloud Shadows), 8 (Cloud Medium Probability), 9 
+(Cloud High Probability), dan 10 (Thin Cirrus). 
+3.3.2 Pembuatan Median Composite Tahunan 
+Setelah cloud masking, dibuat median composite tahunan untuk setiap tahun dalam 
+periode penelitian (2018, 2019, 2020, 2021, 2022, 2023, 2024). Namun, untuk analisis 
+perubahan (change detection), peta tutupan lahan dibuat untuk periode representatif 2018, 
+2020, 2022, dan 2024 agar analisis temporal lebih terarah dan mengurangi beban 
+komputasi. Median composite dipilih dibandingkan mean composite karena lebih robust 
+terhadap nilai ekstrem yang mungkin masih tersisa setelah cloud masking (seperti bayangan 
+awan yang lolos dari deteksi atau nilai saturasi). Median composite dihitung per piksel di 
+seluruh koleksi scene yang tersedia untuk setiap tahun. Untuk Kalimantan yang merupakan 
+wilayah tropis dengan tutupan awan tinggi, pendekatan komposit ini menghasilkan gambar 
+'pseudo clear-sky' yang merepresentasikan kondisi vegetasi tipikal sepanjang tahun. 
+3.3.3 Perhitungan Indeks Spektral 
+Setelah pembuatan median composite, dihitung empat indeks spektral turunan 
+untuk setiap tahun: 
+NDVI (Normalized Difference Vegetation Index): dihitung dari band B8 (NIR) dan 
+B4 (Red) dengan formula (B8 - B4) / (B8 + B4). NDVI merupakan indeks paling umum 
+untuk mengukur kerapatan vegetasi dan kesehatan tanaman. Nilai NDVI berkisar dari -1 
+hingga +1, di mana nilai > 0.3 umumnya mengindikasikan tutupan vegetasi. 
+NDBI (Normalized Difference Built-up Index): dihitung dari band B11 (SWIR1) 
+dan B8 (NIR) dengan formula (B11 - B8) / (B11 + B8). NDBI positif mengindikasikan area 
+terbangun karena SWIR tinggi pada material bangunan dan aspal, sementara NIR tinggi 
+pada vegetasi. 
+NDMI (Normalized Difference Moisture Index): dihitung dari band B8 (NIR) dan 
+B11 (SWIR1) dengan formula (B8 - B11) / (B8 + B11). NDMI sensitif terhadap kandungan 
+air vegetasi dan kondisi kelembaban permukaan, berguna untuk membedakan hutan primer, 
+hutan sekunder, dan perkebunan. 
+BSI (Bare Soil Index): dihitung dari kombinasi band B11 (SWIR1), B4 (Red), B8 
+(NIR), dan B2 (Blue) dengan formula ((B11 + B4) - (B8 + B2)) / ((B11 + B4) + (B8 + B2)). 
+BSI tinggi mengindikasikan lahan terbuka tanpa vegetasi, sangat relevan untuk mendeteksi 
+area pertambangan aktif, bekas tambang, dan lahan konstruksi. 
+3.3.4 Integrasi Fitur Pendukung 
+Selain fitur spektral dari Sentinel-2, fitur pendukung berikut diintegrasikan ke 
+dalam stack fitur: 
+Topografi (SRTM): Elevasi, slope (kemiringan lereng dalam derajat), dan aspect 
+(arah hadap lereng) dihitung dari Digital Elevation Model SRTM resolusi 30 meter. Fitur 
+topografi penting untuk membedakan vegetasi dataran rendah dan pegunungan, serta untuk 
+membedakan sawah (cenderung di dataran rendah) dari hutan pegunungan. 
+Curah Hujan (CHIRPS): Mean curah hujan tahunan dihitung dari data CHIRPS 
+daily untuk setiap tahun analisis. Curah hujan mempengaruhi komposisi vegetasi dan 
+aktivitas pertanian, sehingga dapat meningkatkan diskriminasi antar kelas tutupan lahan. 
+Distance to IKN: Jarak Euclidean dari setiap piksel ke centroid Kawasan Inti Pusat 
+Pemerintahan (KIPP) IKN dihitung sebagai fitur spasial eksplisit. Fitur ini digunakan 
+dalam analisis SHAP untuk memahami sejauh mana kedekatan dengan IKN berkontribusi 
+terhadap probabilitas prediksi kelas tertentu (seperti Built-up atau Bare). 
+3.3.5 Sampling Titik Training dan Testing 
+Titik sampel untuk training dan testing diambil melalui stratified random sampling 
+berbasis peta ESA WorldCover 2021, dengan jumlah sampel yang proporsional terhadap 
+luas kelas (namun dengan minimum sampel per kelas sebesar 500 titik untuk kelas-kelas 
+minor). Kelas tutupan lahan yang digunakan dalam penelitian ini diadaptasi dari skema 
+ESA WorldCover dan dikondensasi menjadi tujuh kelas utama yang relevan untuk konteks 
+Kalimantan: (1) Hutan/Tree Cover, (2) Semak/Shrubland, (3) Lahan Pertanian/Cropland, 
+(4) Lahan Terbangun/Built-up, (5) Lahan Terbuka/Bare Land, (6) Badan Air/Water, dan 
+(7) Lahan Basah/Wetland (termasuk mangrove). Untuk setiap titik sampel, nilai fitur dari 
+semua band Sentinel-2 dan indeks turunannya diekstraksi dari median composite yang 
+sesuai. Total dataset sampel diestimasi sekitar 20.000–30.000 titik untuk memastikan 
+keterwakilan spasial yang memadai di seluruh Kalimantan. 
+ 
+3.4 Modeling 
+3.4.1 Konfigurasi dan Alasan Pemilihan Algoritma 
+Enam algoritma supervised machine learning dipilih untuk dibandingkan dalam 
+penelitian ini, dengan pertimbangan yang mencakup aspek performa, interpretabilitas, 
+kompleksitas komputasi, dan representasi kategori algoritma: 
+Random Forest (RF): Dipilih sebagai baseline ensemble yang telah terbukti sangat 
+efektif untuk klasifikasi tutupan lahan dalam banyak studi. RF diimplementasikan 
+menggunakan 
+scikit-learn 
+dengan 
+hiperparameter 
+awal: 
+n_estimators=200, 
+max_features='sqrt', dan class_weight='balanced' untuk menangani class imbalance. RF 
+juga menghasilkan feature importance berbasis impurity yang dapat dikomparasi dengan 
+SHAP values. 
+XGBoost: Dipilih sebagai representasi gradient boosting dengan regularisasi yang 
+kuat. XGBoost diimplementasikan dengan hiperparameter awal: n_estimators=300, 
+max_depth=6, learning_rate=0.1, dan scale_pos_weight untuk menangani class imbalance. 
+XGBoost mendukung SHAP values secara native melalui TreeSHAP. 
+LightGBM: Dipilih karena kecepatan komputasinya yang superior dibandingkan 
+XGBoost, sangat relevan mengingat ukuran dataset yang besar. LightGBM 
+diimplementasikan dengan hiperparameter awal: n_estimators=500, learning_rate=0.05, 
+num_leaves=63, min_child_samples=20, dan class_weight='balanced'. LightGBM juga 
+mendukung TreeSHAP untuk interpretabilitas. 
+Logistic Regression (LR): Dipilih sebagai baseline linier yang interpretatif dan 
+komputasional efisien. LR diimplementasikan sebagai One-vs-Rest (OvR) multi-class 
+dengan regularisasi L2 (Ridge) dan solver 'lbfgs'. Performa LR yang lebih rendah 
+dibandingkan ensemble methods diharapkan dapat memperjelas nilai tambah dari 
+algoritma yang lebih kompleks. 
+Support Vector Machine (SVM): Dipilih untuk representasi margin-based classifier 
+yang efektif di ruang dimensi tinggi. Mengingat kompleksitas komputasi SVM yang O(n³) 
+untuk training, SVM diimplementasikan menggunakan kernel RBF dengan subset 
+sampling (maksimum 10.000 sampel training) jika dataset terlalu besar. Hiperparameter C 
+dan gamma dioptimalkan menggunakan cross-validation terbatas. 
+Multilayer Perceptron (MLP): Dipilih sebagai representasi neural network 
+sederhana untuk memahami apakah arsitektur network memberikan keunggulan atas 
+ensemble methods. MLP diimplementasikan dengan arsitektur (256, 128, 64) neurons, 
+fungsi aktivasi ReLU, regularisasi L2 (alpha=0.001), early stopping berbasis validation 
+loss, dan maksimum 200 epoch. 
+3.4.2 Optimasi Hiperparameter 
+Optimasi hiperparameter dilakukan menggunakan Randomized Search Cross 
+Validation (RandomizedSearchCV dari scikit-learn) dengan 3-fold spatial block CV 
+sebagai inner CV loop. Pendekatan nested cross-validation ini memastikan bahwa estimasi 
+akurasi yang dilaporkan tidak terpengaruh oleh optimisme yang berasal dari pemilihan 
+hiperparameter. Ruang pencarian hiperparameter dibatasi pada parameter-parameter yang 
+paling berpengaruh berdasarkan literatur, dengan jumlah iterasi randomized search sebesar 
+50 per algoritma untuk menyeimbangkan kelengkapan pencarian dengan efisiensi 
+komputasi. 
+3.4.3 Penanganan Ketidakseimbangan Kelas 
+Ketidakseimbangan kelas (class imbalance) merupakan tantangan nyata dalam 
+dataset tutupan lahan Kalimantan mengingat dominasi kelas Hutan/Tree Cover. Strategi 
+penanganan yang diterapkan meliputi: (1) penggunaan parameter class_weight='balanced' 
+untuk algoritma yang mendukungnya (RF, LR, MLP, SVM); (2) penggunaan skala bobot 
+invers frekuensi untuk XGBoost dan LightGBM; dan (3) evaluasi berbasis F1 Macro yang 
+memberikan bobot setara pada semua kelas terlepas dari frekuensinya. Strategi SMOTE 
+(Synthetic Minority Oversampling Technique) dipertimbangkan sebagai alternatif jika 
+class imbalance terlalu parah, namun tidak diterapkan pada data spasial karena potensi 
+menciptakan sampel sintetis yang tidak realistis secara geografis. 
+ 
+3.5 Evaluation 
+3.5.1 Spatial Block Cross Validation 
+Spatial Block Cross Validation (SBCV) diimplementasikan menggunakan library 
+'spatial-blocks' atau implementasi kustom berbasis clustering spasial. Langkah pertama 
+adalah menentukan ukuran blok spasial yang sesuai berdasarkan estimasi spatial 
+autocorrelation range dari data, menggunakan analisis semivariogram pada sampel 
+training. Ukuran blok yang terlalu kecil akan menyebabkan spatial leakage, sementara 
+ukuran yang terlalu besar akan mengurangi jumlah fold yang tersedia dan meningkatkan 
+varians estimasi. Berdasarkan literatur untuk data tutupan lahan resolusi menengah di 
+wilayah tropis, ukuran blok 50–100 km² diestimasi sebagai range yang wajar, namun akan 
+disesuaikan berdasarkan analisis semivariogram aktual. 
+Dataset sampel dibagi menjadi 5 blok spasial menggunakan k-means clustering 
+pada koordinat geografis. Setiap iterasi CV menggunakan 4 blok untuk training dan 1 blok 
+untuk validation, menghasilkan 5 fold dengan blok geografis yang berbeda sebagai 
+validation set. Penting dicatat bahwa blok-blok ini diterapkan secara konsisten di seluruh 
+algoritma untuk memastikan perbandingan yang adil. 
+3.5.2 Metrik Evaluasi 
+Evaluasi performa model menggunakan serangkaian metrik yang komprehensif 
+untuk memastikan penilaian yang menyeluruh: 
+Overall Accuracy (OA): Proporsi total piksel yang diklasifikasikan dengan benar 
+dari seluruh sampel validasi. OA memberikan gambaran umum tentang akurasi model 
+namun sensitif terhadap class imbalance. 
+F1 Macro: Rata-rata tidak terbobot dari F1-score per kelas. F1-score per kelas 
+adalah harmonic mean dari Precision dan Recall untuk kelas tersebut. F1 Macro 
+memberikan representasi yang lebih adil terhadap performa pada semua kelas terlepas dari 
+ukurannya. 
+Cohen Kappa: Metrik yang mengukur kesepakatan antara prediksi dan label 
+sebenarnya, setelah dikoreksi untuk probabilitas kesepakatan secara kebetulan. Kappa > 
+0.8 umumnya dianggap sebagai 'almost perfect agreement' dalam literatur pemetaan 
+tutupan lahan. 
+IoU per Kelas (Intersection over Union): Metrik yang mengukur overlap antara 
+piksel yang diprediksi sebagai kelas k dan piksel aktual kelas k, dihitung sebagai TP / (TP 
++ FP + FN). IoU per kelas memberikan informasi tentang performa model pada setiap kelas 
+secara individual. 
+Producer's Accuracy (PA) dan User's Accuracy (UA): PA mengukur proporsi piksel 
+aktual kelas k yang berhasil diklasifikasikan dengan benar (= Recall), sedangkan UA 
+mengukur proporsi piksel yang diklasifikasikan sebagai kelas k yang memang benar kelas 
+k (= Precision). Keduanya disajikan dalam confusion matrix lengkap. 
+Confusion Matrix: Matriks n×n (n = jumlah kelas) yang menyajikan detail distribusi 
+prediksi untuk setiap kelas aktual, memungkinkan identifikasi pasangan kelas yang sering 
+tertukar (class confusion). 
+3.5.3 Target Akurasi 
+Berdasarkan review literatur untuk klasifikasi tutupan lahan berbasis Sentinel-2 di 
+wilayah tropis dengan evaluasi SBCV yang lebih ketat, target akurasi yang ditetapkan 
+adalah: OA ≥ 80%, Cohen Kappa ≥ 0.75, dan F1 Macro ≥ 0.75. Target ini lebih konservatif 
+dibandingkan nilai-nilai yang sering dilaporkan dalam penelitian yang menggunakan 
+random CV, yang mencerminkan ekspektasi realistis untuk evaluasi berbasis SBCV. 
+ 
+3.6 Change Detection 
+3.6.1 Post-Classification Comparison 
+Change detection dilakukan menggunakan metode Post-Classification Comparison 
+(PCC) yang membandingkan peta tutupan lahan dari empat titik waktu: 2018, 2020, 2022, 
+dan 2024. Untuk setiap pasangan titik waktu, dibuat binary change/no-change map dan 
+categorical transition map. Categorical transition map menunjukkan untuk setiap piksel: 
+kelas asal pada t1 dan kelas tujuan pada t2, menghasilkan n² kemungkinan transisi untuk n 
+kelas. Transisi yang secara ekologis tidak mungkin atau tidak realistis (misalnya perubahan 
+dari Water menjadi Hutan dalam 2 tahun) diidentifikasi dan diperiksa secara manual 
+sebagai quality check untuk kesalahan klasifikasi. 
+3.6.2 Transition Matrix dan Analisis Perubahan 
+Transition matrix dihitung untuk setiap pasangan periode (2018→2020, 
+2020→2022, 2022→2024) dan untuk keseluruhan periode (2018→2024). Setiap elemen 
+Mij dalam matrix merepresentasikan luas area (dalam hektar atau km²) yang bertransisi dari 
+kelas i ke kelas j. Dari matrix ini dapat dihitung: total luas yang tidak berubah (diagonal 
+matrix), luas netto perubahan per kelas (jumlah baris dikurangi jumlah kolom, atau 
+sebaliknya), luas total yang mengalami perubahan, dan persentase perubahan relatif 
+terhadap luas awal setiap kelas. 
+Analisis spesifik yang dilakukan meliputi: (1) Kuantifikasi deforestasi—luas Hutan 
+yang bertransisi ke kelas non-hutan (Cropland, Built-up, Bare Land) per periode; (2) Urban 
+expansion—luas penambahan kelas Built-up dari kelas lain, dengan fokus di kawasan IKN; 
+(3) Bare land expansion—luas penambahan kelas Bare/Sparse yang berkorelasi dengan 
+lokasi konsesi pertambangan; dan (4) Revegetation—luas Bare Land atau Cropland yang 
+bertransisi ke Shrubland atau Tree Cover (regenerasi alami atau reboisasi). 
+3.6.3 Hotspot Analysis 
+Untuk mengidentifikasi lokasi perubahan yang paling intensif, dilakukan hotspot 
+analysis menggunakan Kernel Density Estimation (KDE) pada titik-titik pusat piksel yang 
+mengalami perubahan. Hotspot IKN diidentifikasi dengan mengoverlay change map 
+dengan buffer zones di sekitar kawasan inti IKN pada radius 5 km, 10 km, 20 km, dan 50 
+km. Hotspot pertambangan diidentifikasi dengan mengoverlay perubahan ke Bare Land 
+dengan data batas konsesi pertambangan (jika tersedia) atau dengan analisis kepadatan 
+perubahan di luar kawasan terbangun. 
+ 
+3.7 Interpretabilitas Model (SHAP Analysis) 
+Setelah model terbaik diidentifikasi berdasarkan hasil evaluasi SBCV, analisis 
+SHAP dilakukan untuk memahami hubungan antara fitur input dan prediksi model. SHAP 
+diimplementasikan menggunakan library shap (versi terbaru) dalam Python. Untuk model 
+berbasis tree (RF, XGBoost, LightGBM), digunakan TreeExplainer yang menghitung exact 
+SHAP values secara efisien. Untuk model non-tree (LR, SVM, MLP), digunakan 
+KernelExplainer atau LinearExplainer sebagai pendekatan model-agnostic. 
+Analisis SHAP yang dilakukan mencakup: (1) Global feature importance—mean 
+absolute SHAP value per fitur untuk menentukan fitur yang secara rata-rata paling 
+berpengaruh terhadap prediksi; (2) SHAP summary plot—scatter plot yang menampilkan 
+distribusi SHAP values untuk setiap fitur, diwarnai berdasarkan nilai fitur, memungkinkan 
+identifikasi hubungan positif/negatif; (3) SHAP dependence plot—menampilkan hubungan 
+antara nilai satu fitur dan SHAP value-nya, dengan kemungkinan interaksi dengan fitur 
+kedua; dan (4) Class-specific SHAP analysis—analisis SHAP untuk setiap kelas tutupan 
+lahan secara terpisah, mengidentifikasi fitur-fitur yang paling membedakan kelas tersebut 
+dari kelas lainnya. 
+Hasil analisis SHAP diinterpretasikan secara ekologis dan spektral: apakah NDVI 
+memiliki SHAP value positif tinggi untuk kelas Hutan? Apakah BSI memiliki SHAP value 
+positif untuk kelas Bare Land? Apakah NDBI berkorelasi positif dengan prediksi kelas 
+Built-up? Interpretasi ini memvalidasi model secara kualitatif dan memberikan wawasan 
+tentang separabilitas spektral kelas-kelas tutupan lahan di konteks hutan tropis Kalimantan. 
+ 
+3.8 Deployment: Dashboard Web GIS Interaktif 
+Tahap deployment bertujuan untuk mengemas hasil penelitian dalam bentuk yang 
+dapat diakses dan digunakan oleh pemangku kepentingan yang lebih luas, tidak hanya 
+kalangan akademis. Dashboard/web GIS interaktif dikembangkan menggunakan Streamlit 
+(Python) atau React-based application sebagai frontend, dengan peta interaktif 
+menggunakan Leaflet.js atau Folium. 
+Fitur-fitur utama yang diimplementasikan dalam dashboard meliputi: 
+• 
+Land Cover Map Viewer: Visualisasi peta tutupan lahan untuk tahun yang dipilih 
+pengguna (2018/2020/2022/2024) dengan legenda kelas yang jelas dan opsi untuk 
+menampilkan/menyembunyikan layer tertentu. 
+• 
+Temporal Slider: Kontrol interaktif untuk membandingkan peta tutupan lahan 
+antara dua tahun berbeda secara side-by-side atau melalui swipe interface, 
+memungkinkan visualisasi perubahan yang intuitif. 
+• 
+Change Detection Map: Layer perubahan tutupan lahan yang dapat difilter 
+berdasarkan tipe transisi (misalnya hanya menampilkan konversi hutan ke lahan 
+terbangun, atau perluasan lahan terbuka). 
+• 
+Hotspot Analysis Panel: Visualisasi konsentrasi spasial perubahan tutupan lahan 
+menggunakan heatmap, dengan konteks layer tambahan berupa batas IKN dan 
+kawasan konsesi pertambangan (jika data tersedia). 
+• 
+Model Comparison Dashboard: Tabel dan grafik yang menyajikan perbandingan 
+metrik akurasi (OA, F1 Macro, Kappa) dari keenam algoritma, serta radar chart 
+untuk visualisasi kekuatan relatif masing-masing model. 
+• 
+SHAP Visualization Panel: Tampilan interaktif dari SHAP summary plot dan 
+dependence plot yang memungkinkan eksplorasi kontribusi fitur terhadap prediksi 
+untuk masing-masing kelas tutupan lahan. 
+• 
+Statistics Panel: Ringkasan statistik luas tutupan lahan per kelas per tahun, grafik 
+tren perubahan luas (line chart), dan Sankey diagram untuk transition matrix yang 
+menampilkan alur perpindahan antar kelas. 
+Dashboard ini akan di-deploy menggunakan layanan hosting gratis (Streamlit 
+Cloud atau GitHub Pages) sehingga dapat diakses melalui browser tanpa instalasi software. 
+Peta tutupan lahan yang telah diklasifikasikan akan diekspor dari GEE sebagai Cloud 
+Optimized GeoTIFF (COG) yang dapat di-stream langsung ke browser menggunakan 
+TiTiler atau layanan tile hosting, memastikan performa yang memadai untuk visualisasi 
+peta skala Kalimantan. 
+ 
+ 
+DAFTAR PUSTAKA 
+Breiman, 
+L. 
+(2001). 
+Random 
+forests. 
+Machine 
+Learning, 
+45(1), 
+5–32. 
+https://doi.org/10.1023/A:1010933404324 
+Chen, T., & Guestrin, C. (2016). XGBoost: A scalable tree boosting system. Proceedings of the 
+22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, 
+785–794. https://doi.org/10.1145/2939672.2939785 
+Descals, A., Wich, S., Meijaard, E., Gaveau, D. L. A., Peedell, S., & Szantoi, Z. (2021). High-
+resolution global map of smallholder and industrial closed-canopy oil palm plantations. 
+Earth System Science Data, 13(3), 1211–1231. https://doi.org/10.5194/essd-13-1211-2021 
+Dong, J., Kuang, W., Liu, J., & Xiao, X. (2023). Annual maps of global artificial impervious area 
+(GAIA) between 1985 and 2018. Remote Sensing of Environment, 236, 111510. 
+ESA. 
+(2021). 
+ESA 
+WorldCover 
+10m 
+v200. 
+European 
+Space 
+Agency. 
+https://doi.org/10.5281/zenodo.7254221 
+Fick, S. E., & Hijmans, R. J. (2017). WorldClim 2: New 1-km spatial resolution climate surfaces 
+for global land areas. International Journal of Climatology, 37(12), 4302–4315. 
+Funk, C., Peterson, P., Landsfeld, M., Pedreros, D., Verdin, J., Shukla, S., Husak, G., Rowland, J., 
+Harrison, L., Hoell, A., & Michaelsen, J. (2015). The climate hazards infrared precipitation 
+with stations—A new environmental record for monitoring extremes. Scientific Data, 2(1), 
+150066. https://doi.org/10.1038/sdata.2015.66 
+Gorelick, N., Hancher, M., Dixon, M., Ilyushchenko, S., Thau, D., & Moore, R. (2017). Google 
+Earth Engine: Planetary-scale geospatial analysis for everyone. Remote Sensing of 
+Environment, 202, 18–27. https://doi.org/10.1016/j.rse.2017.06.031 
+Hansen, M. C., Potapov, P. V., Moore, R., Hancher, M., Turubanova, S. A., Tyukavina, A., Thau, 
+D., Stehman, S. V., Goetz, S. J., Loveland, T. R., Kommareddy, A., Egorov, A., Chini, L., 
+Justice, C. O., & Townshend, J. R. G. (2013). High-resolution global maps of 21st-century 
+forest 
+cover 
+change. 
+Science, 
+342(6160), 
+850–853. 
+https://doi.org/10.1126/science.1244693 
+Ke, G., Meng, Q., Finley, T., Wang, T., Chen, W., Ma, W., Ye, Q., & Liu, T.-Y. (2017). LightGBM: 
+A highly efficient gradient boosting decision tree. Proceedings of the 31st International 
+Conference on Neural Information Processing Systems (NIPS 2017), 3149–3157. 
+Kuhn, S., & Cracknell, M. J. (2021). Geospatial machine learning: A review. Remote Sensing, 
+13(13), 2489. 
+Lundberg, S. M., Erion, G., Chen, H., DeGrave, A., Prutkin, J. M., Nair, B., Katz, R., Himmelfarb, 
+J., Bansal, N., & Lee, S.-I. (2020). From local explanations to global understanding with 
+explainable 
+AI 
+for 
+trees. 
+Nature 
+Machine 
+Intelligence, 
+2(1), 
+56–67. 
+https://doi.org/10.1038/s42256-019-0138-9 
+Lundberg, S. M., & Lee, S.-I. (2017). A unified approach to interpreting model predictions. 
+Advances in Neural Information Processing Systems, 30, 4765–4774. 
+Main-Knorn, M., Pflug, B., Louis, J., Debaecker, V., Müller-Wilm, U., & Gascon, F. (2017). 
+Sen2Cor 
+for 
+Sentinel-2. 
+Proceedings 
+of 
+SPIE, 
+10427, 
+1042704. 
+https://doi.org/10.1117/12.2278218 
+Pelletier, C., Webb, G. I., & Petitjean, F. (2019). Temporal convolutional neural network for the 
+classification of satellite image time series. Remote Sensing, 11(5), 523. 
+Phiri, D., Simwanda, M., Salekin, S., Nyirenda, V. R., Murayama, Y., & Ranagalage, M. (2021). 
+Sentinel-2 data for land use and land cover mapping: A review. Remote Sensing, 12(14), 
+2291. 
+Rouse, J. W., Haas, R. H., Schell, J. A., & Deering, D. W. (1974). Monitoring vegetation systems 
+in the Great Plains with ERTS. Proceedings of the Third ERTS Symposium, 1, 309–317. 
+Roberts, D. R., Bahn, V., Ciuti, S., Boyce, M. S., Elith, J., Guillera-Arroita, G., Hauenstein, S., 
+Lahoz-Monfort, J. J., Schröder, B., Thuiller, W., Warton, D. I., Wintle, B. A., Hartig, F., & 
+Dormann, C. F. (2017). Cross-validation strategies for data with temporal, spatial, 
+hierarchical, 
+or 
+phylogenetic 
+structure. 
+Ecography, 
+40(8), 
+913–929. 
+https://doi.org/10.1111/ecog.02881 
+Stanimirova, R., Tarrio, K., Turlej, K., McAvoy, K., Stonebrook, S., Hu, K.-T., Arévalo, P., 
+Bullock, E. L., Zhang, Y., Woodcock, C. E., Olofsson, P., Zhu, Z., Barber, C. P., Souza, 
+C., Chen, S., Wang, J. A., Mensah, F., Calderón-Loor, M., Hadjikakou, M., … Friedl, M. 
+A. (2023). A global land cover training dataset from 1984 to 2020. Scientific Data, 10(1), 
+879. 
+Tobler, W. R. (1970). A computer movie simulating urban growth in the Detroit region. Economic 
+Geography, 46(sup1), 234–240. 
+Undang-Undang Republik Indonesia Nomor 3 Tahun 2022 tentang Ibu Kota Negara. Lembaran 
+Negara Republik Indonesia Tahun 2022 Nomor 41. 
+Valavi, R., Elith, J., Lahoz-Monfort, J. J., & Guillera-Arroita, G. (2019). blockCV: An r package 
+for generating spatially or environmentally separated folds for k-fold cross-validation of 
+species distribution models. Methods in Ecology and Evolution, 10(2), 225–232. 
+https://doi.org/10.1111/2041-210X.13107 
+Vermote, E., Roger, J. C., Franch, B., & Masek, J. G. (2018). A long term approach for land surface 
+reflectance retrieval from Landsat and Sentinel-2 (Invited). Remote Sensing of 
+Environment, 220, 444–457. 
+Witjes, M., Parente, L., van Diemen, C. J., Hengl, T., Ideesink, P., Lopes, M., Boogaard, H., de 
+Wit, A., Walvoort, D., & Appelhans, T. (2022). A spatiotemporal ensemble machine 
+learning framework for generating land use/land cover time-series maps for Europe (2000–
+2019) based on LUCAS, CORINE and GLAD Landsat. PeerJ, 10, e13573. 
+Zha, Y., Gao, J., & Ni, S. (2003). Use of normalized difference built-up index in automatically 
+mapping urban areas from TM imagery. International Journal of Remote Sensing, 24(3), 
+583–594. 
+Zhao, H., & Chen, X. (2005). Use of normalized difference bareness index in quickly mapping bare 
+areas from TM/ETM+. International Geoscience and Remote Sensing Symposium, 3, 
+1666–1668. 

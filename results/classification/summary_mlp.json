@@ -1,0 +1,43 @@
+{
+  "model": "mlp",
+  "best_params": {
+    "hidden_layer_sizes": [
+      128,
+      64
+    ],
+    "learning_rate_init": 0.001
+  },
+  "time_s": 340.6,
+  "n_samples": 10000,
+  "accuracy": 0.8285,
+  "f1_macro": 0.8328,
+  "f1_weighted": 0.8286,
+  "kappa": 0.7742,
+  "per_class": {
+    "Forest": {
+      "producers_accuracy": 0.8364657215962834,
+      "users_accuracy": 0.8474495111282877,
+      "iou": 0.726579285440674
+    },
+    "Shrubland/Agriculture": {
+      "producers_accuracy": 0.7760120608164195,
+      "users_accuracy": 0.7725816413162837,
+      "iou": 0.6305958326294139
+    },
+    "Built-up": {
+      "producers_accuracy": 0.8372303961881886,
+      "users_accuracy": 0.8241148629329814,
+      "iou": 0.7093736731581204
+    },
+    "Bare/Mining-like": {
+      "producers_accuracy": 0.7780847638023,
+      "users_accuracy": 0.7679151623493154,
+      "iou": 0.630212373953
+    },
+    "Water": {
+      "producers_accuracy": 0.9433499210817337,
+      "users_accuracy": 0.951750971466857,
+      "iou": 0.9006442900186526
+    }
+  }
+}
