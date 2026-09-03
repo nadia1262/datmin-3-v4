@@ -1,0 +1,5 @@
+category,mean_max_prob,mean_min_prob,mean_prob_std,n
+Stable,0.9081,0.7913,0.0719,80876
+Persistent transition,0.7653,0.5721,0.1317,11435
+Temporary transition,0.7541,0.558,0.1338,16239
+Oscillating,0.6986,0.5273,0.13,10393

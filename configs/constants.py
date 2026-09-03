@@ -172,10 +172,20 @@ MODELS_SHAP_TREE = {'rf', 'xgboost', 'lgbm'}
 # ============================================================
 # TEMPORAL CONFIGURATION
 # ============================================================
-YEARS = [2018, 2019, 2020, 2021, 2022, 2023, 2024]
+# Primary temporal window: 2019–2024 (Option B — 2018 excluded)
+# 2018 has only 13,632 points (7.8% of 2019's 175,384) with
+# shorter latitude range, making it non-comparable.
+PRIMARY_YEARS = [2019, 2020, 2021, 2022, 2023, 2024]
+EXCLUDED_YEARS = [2018]  # Kept as supplementary/descriptive only
+YEARS = PRIMARY_YEARS  # Default to primary years for all scripts
 LABEL_YEAR = 2021  # Year with ground truth labels (ESA WorldCover v200)
-BASELINE_YEAR = 2018
+BASELINE_YEAR = 2019
 ENDLINE_YEAR = 2024
+
+# Common spatial domain file (118,943 matched points across 2019-2024)
+COMMON_DOMAIN_FILE = os.path.join(PREDICTIONS_DIR, 'common_domain_2019_2024.csv')
+CHANGE_DIR_V2 = os.path.join(RESULTS_DIR, 'change_maps_v2')
+DRIVER_DIR_V2 = os.path.join(RESULTS_DIR, 'driver_analysis_v2')
 
 # ============================================================
 # EVALUATION METRICS

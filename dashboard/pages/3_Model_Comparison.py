@@ -10,9 +10,13 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '../
 from configs.constants import *
 from configs.color_palette import *
 
-st.set_page_config(page_title="Model Comparison", page_icon="🤖", layout="wide")
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+from theme import apply_theme
 
-st.title("🤖 Algorithmic Comparison")
+st.set_page_config(page_title="Model Comparison", page_icon="◈", layout="wide")
+apply_theme()
+
+st.title("Algorithmic Comparison")
 st.markdown("Evaluasi 6 model Supervised Machine Learning dengan Spatial Block GroupKFold.")
 
 @st.cache_data
@@ -20,18 +24,17 @@ def load_metrics():
     path = os.path.join(CLASSIFICATION_DIR, 'model_comparison.csv')
     if os.path.exists(path):
         return pd.read_csv(path)
-    else:
-        # Dummy metrics
-        return pd.DataFrame({
-            'model': ['xgboost', 'lgbm', 'rf', 'mlp', 'svm', 'logreg'],
-            'accuracy': [0.87, 0.86, 0.85, 0.82, 0.80, 0.72],
-            'f1_macro': [0.82, 0.81, 0.80, 0.76, 0.74, 0.65],
-            'kappa': [0.83, 0.82, 0.81, 0.77, 0.75, 0.63]
-        })
+    return None
 
 df_metrics = load_metrics()
 
+if df_metrics is None:
+    st.error("File model_comparison.csv tidak ditemukan.")
+    st.stop()
+
+# Show subset warning for SVM/MLP
 st.subheader("Performance Metrics Table")
+st.caption("SVM dan MLP dievaluasi pada subset 10.000 sampel (bukan 30.000 seperti model lain) karena keterbatasan komputasi.")
 st.dataframe(df_metrics.style.highlight_max(subset=['accuracy', 'f1_macro', 'kappa'], color='darkgreen'))
 
 col1, col2 = st.columns(2)
@@ -41,7 +44,10 @@ with col1:
                  color='model', color_discrete_map=MODEL_COLORS,
                  title='Overall Accuracy by Model',
                  template=PLOTLY_TEMPLATE)
-    fig.update_layout(yaxis_range=[0.5, 1.0])
+    fig.update_layout(yaxis_range=[0.5, 1.0],
+                      paper_bgcolor=PLOTLY_PAPER_COLOR,
+                      plot_bgcolor=PLOTLY_PLOT_COLOR,
+                      font_color=PLOTLY_FONT_COLOR)
     st.plotly_chart(fig, use_container_width=True)
 
 with col2:
@@ -49,7 +55,10 @@ with col2:
                  color='model', color_discrete_map=MODEL_COLORS,
                  title='Macro F1-Score by Model',
                  template=PLOTLY_TEMPLATE)
-    fig.update_layout(yaxis_range=[0.5, 1.0])
+    fig.update_layout(yaxis_range=[0.5, 1.0],
+                      paper_bgcolor=PLOTLY_PAPER_COLOR,
+                      plot_bgcolor=PLOTLY_PLOT_COLOR,
+                      font_color=PLOTLY_FONT_COLOR)
     st.plotly_chart(fig, use_container_width=True)
     
-st.info("🏆 **XGBoost** dan **LightGBM** secara konsisten memberikan performa terbaik dalam menangani interaksi non-linear fitur spektral.")
+st.info("**LightGBM** mencapai Overall Accuracy tertinggi (83.32%) dengan waktu training paling efisien (116 detik). SVM memiliki F1-macro sedikit lebih tinggi (0.837) tetapi membutuhkan waktu ~4 jam dan dievaluasi pada subset 10K sampel.")

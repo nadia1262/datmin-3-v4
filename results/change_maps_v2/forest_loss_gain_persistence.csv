@@ -1,0 +1,7 @@
+transition_type,consistency,count,percentage
+Forest Loss,Persistent transition,4024,59.18
+Forest Loss,Temporary transition,295,4.34
+Forest Loss,Oscillating,2481,36.49
+Forest Gain,Persistent transition,6360,62.43
+Forest Gain,Temporary transition,225,2.21
+Forest Gain,Oscillating,3602,35.36
