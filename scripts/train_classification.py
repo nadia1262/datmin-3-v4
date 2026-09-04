@@ -111,17 +111,10 @@ def train_model(model_name):
         scaler = StandardScaler()
         X = scaler.fit_transform(X)
 
-    # SVM subsampling (too slow on 30k)
-    if model_name == 'svm' and len(X) > 10000:
-        idx = np.random.RandomState(RANDOM_STATE).choice(len(X), 10000, replace=False)
-        X_train = X[idx]
-        y_train = y[idx]
-        groups_train = groups[idx]
-        print(f"  [SVM] Subsampled to {len(X_train)} for tractability")
-    else:
-        X_train = X
-        y_train = y
-        groups_train = groups
+    # Use full dataset for all models (SVM subsampling removed for fair comparison)
+    X_train = X
+    y_train = y
+    groups_train = groups
 
     # Step 1: Quick hyperparameter search
     base_model, param_grid = get_model_and_params(model_name)

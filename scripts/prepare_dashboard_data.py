@@ -62,7 +62,7 @@ def prepare_temporal_data(model_name):
 
 def prepare_change_summary():
     """Prepare change detection summary."""
-    change_file = os.path.join(CHANGE_DIR, f'change_points_{BASELINE_YEAR}_{ENDLINE_YEAR}.csv')
+    change_file = os.path.join(CHANGE_DIR_V2, f'change_points_{BASELINE_YEAR}_{ENDLINE_YEAR}.csv')
     if os.path.exists(change_file):
         df = pd.read_csv(change_file)
         summary = {
@@ -85,8 +85,13 @@ def prepare_change_summary():
 
 def prepare_driver_summary():
     """Prepare driver analysis results."""
-    for analysis_type in ['deforestation', 'urbanization', 'mining']:
-        logit_file = os.path.join(DRIVER_DIR, f'logistic_{analysis_type}_{BASELINE_YEAR}_{ENDLINE_YEAR}.csv')
+    file_map = {
+        'deforestation': 'forest_loss',
+        'urbanization': 'urbanization',
+        'mining': 'mining_expansion'
+    }
+    for analysis_type, file_suffix in file_map.items():
+        logit_file = os.path.join(DRIVER_DIR_V2, f'logistic_{file_suffix}_{BASELINE_YEAR}_{ENDLINE_YEAR}.csv')
         if os.path.exists(logit_file):
             df = pd.read_csv(logit_file)
             out_file = os.path.join(DASHBOARD_DIR, 'data', f'driver_{analysis_type}.csv')
@@ -97,7 +102,7 @@ def prepare_driver_summary():
 
 def main():
     parser = argparse.ArgumentParser(description='Prepare Dashboard Data')
-    parser.add_argument('--model', type=str, default='rf', choices=MODEL_NAMES)
+    parser.add_argument('--model', type=str, default='lgbm', choices=MODEL_NAMES)
     args = parser.parse_args()
 
     print(f"\n{'='*60}")

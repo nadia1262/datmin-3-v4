@@ -78,19 +78,19 @@ UNCERTAINTY_CMAP = 'RdYlGn_r'  # Red=high uncertainty, Green=low
 RESIDUAL_CMAP = 'RdBu'         # Red=overestimation, Blue=underestimation
 
 # ============================================================
-# DASHBOARD THEME
+# DASHBOARD THEME (Custom 3-Color Palette)
 # ============================================================
 DASHBOARD_THEME = {
-    'bg_primary':    '#0E1117',  # Dark background
-    'bg_secondary':  '#1A1D23',  # Card background
-    'bg_tertiary':   '#262730',  # Hover/active background
-    'text_primary':  '#FAFAFA',  # Main text
-    'text_secondary':'#B0B0B0',  # Muted text
-    'accent':        '#00D4FF',  # Accent blue (interactive elements)
-    'accent_green':  '#00E676',  # Success / positive
-    'accent_red':    '#FF5252',  # Error / negative
-    'accent_orange': '#FFAB40',  # Warning
-    'border':        '#2B2D35',  # Borders and dividers
+    'bg_primary':    '#FEFDE2',  # Cream background
+    'bg_secondary':  '#F5F4D9',  # Slightly darker cream for cards
+    'bg_tertiary':   '#EAE8C9',  # Hover/active background
+    'text_primary':  '#2E332F',  # Dark text for readability on cream
+    'text_secondary':'#606A62',  # Muted text
+    'accent':        '#799368',  # Sage Green (primary interactive elements)
+    'accent_green':  '#799368',  # Sage Green
+    'accent_red':    '#EB8B4A',  # Orange (used for contrast/highlights)
+    'accent_orange': '#EB8B4A',  # Orange
+    'border':        '#D9D7BF',  # Borders
 }
 
 # ============================================================
@@ -114,8 +114,8 @@ FIGURE_DEFAULTS = {
 # ============================================================
 # PLOTLY TEMPLATE
 # ============================================================
-PLOTLY_TEMPLATE = 'plotly_dark'
-PLOTLY_PAPER_COLOR = '#0E1117'
-PLOTLY_PLOT_COLOR = '#1A1D23'
-PLOTLY_FONT_COLOR = '#FAFAFA'
-PLOTLY_GRID_COLOR = '#2B2D35'
+PLOTLY_TEMPLATE = 'plotly_white'
+PLOTLY_PAPER_COLOR = '#FEFDE2'
+PLOTLY_PLOT_COLOR = '#F5F4D9'
+PLOTLY_FONT_COLOR = '#2E332F'
+PLOTLY_GRID_COLOR = '#D9D7BF'

@@ -49,11 +49,11 @@ if df is None:
 
 # Convert class to RGBA colors for pydeck
 CLASS_COLORS_RGB = {
-    0: [27, 120, 55],    # Forest — dark green
-    1: [166, 217, 106],  # Shrubland/Agriculture — light green
-    2: [227, 26, 28],    # Built-up — red
-    3: [196, 163, 90],   # Bare/Mining-like — tan
-    4: [33, 102, 172],   # Water — blue
+    0: [34, 139, 34],    # Forest — vibrant green
+    1: [204, 255, 102],  # Shrubland/Agriculture — bright lime green
+    2: [255, 51, 51],    # Built-up — bright red
+    3: [255, 204, 102],  # Bare/Mining-like — bright tan/gold
+    4: [51, 153, 255],   # Water — bright blue
 }
 
 df['color'] = df['predicted_class'].map(CLASS_COLORS_RGB)
@@ -61,37 +61,61 @@ df['color'] = df['predicted_class'].map(CLASS_COLORS_RGB)
 col1, col2 = st.columns([3, 1])
 
 with col1:
-    layer = pdk.Layer(
+    geojson_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../data/external/kalimantan_boundary.geojson')
+    
+    layers = []
+    
+    # Border layer
+    if os.path.exists(geojson_path):
+        border_layer = pdk.Layer(
+            "GeoJsonLayer",
+            data=geojson_path,
+            opacity=0.8,
+            stroked=True,
+            filled=False,
+            extruded=False,
+            get_line_color=[255, 255, 255, 150], # White outline
+            get_line_width=3000,
+        )
+        layers.append(border_layer)
+
+    # Scatter layer
+    scatter_layer = pdk.Layer(
         "ScatterplotLayer",
         data=df,
         get_position='[lon, lat]',
         get_color='color',
-        get_radius=800,
+        get_radius=2200,  # Lebar agar solid
         pickable=True,
-        opacity=0.7,
+        opacity=0.9,      # Sedikit transparan agar tumpukan terlihat
+        stroked=False,
+        filled=True,
     )
+    layers.append(scatter_layer)
 
+    # IKN marker
     ikn_layer = pdk.Layer(
         "ScatterplotLayer",
         data=pd.DataFrame([{'lon': IKN_CENTER['lon'], 'lat': IKN_CENTER['lat']}]),
         get_position='[lon, lat]',
-        get_color='[255, 60, 60, 220]',
-        get_radius=5000,
+        get_color='[255, 0, 0, 255]', # Solid red
+        get_radius=8000,
         pickable=True,
     )
+    layers.append(ikn_layer)
 
     view_state = pdk.ViewState(
         latitude=IKN_CENTER['lat'],
-        longitude=IKN_CENTER['lon'],
-        zoom=5.5,
+        longitude=IKN_CENTER['lon'] - 1.5,
+        zoom=5.2,
         pitch=0,
     )
 
     deck = pdk.Deck(
-        layers=[layer, ikn_layer],
+        layers=layers,
         initial_view_state=view_state,
-        map_style='mapbox://styles/mapbox/dark-v11',
-        tooltip={"text": "Class: {predicted_class}"},
+        map_style='mapbox://styles/mapbox/dark-v11',  # Dark mode map agar warna titik pop-up dan tegas
+        tooltip={"text": "Koordinat: {lon}, {lat}\nKelas: {predicted_label}"},
     )
 
     st.pydeck_chart(deck)

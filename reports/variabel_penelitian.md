@@ -17,7 +17,7 @@ Variabel yang diprediksi oleh algoritma adalah kelas tutupan lahan. Label aktual
 5. **Water (Badan Air):** Laut, danau, dan sungai besar.
 
 ### 3.1.2. Variabel Prediktor (Independent Variables)
-Alih-alih menggunakan koordinat spasial murni, model diberikan **10 fitur spektral** (Sifat Fisika Optik Bumi) sebagai prediktor. Pendekatan ini memastikan model tidak "menghafal lokasi", melainkan mempelajari karakteristik pantulan material di permukaan, sehingga model dapat memprediksi secara akurat untuk tahun-tahun yang berbeda (2018–2024).
+Alih-alih menggunakan koordinat spasial murni, model diberikan **10 fitur spektral** (Sifat Fisika Optik Bumi) sebagai prediktor. Pendekatan ini memastikan model tidak "menghafal lokasi", melainkan mempelajari karakteristik pantulan material di permukaan, sehingga model dapat memprediksi secara akurat untuk tahun-tahun yang berbeda (2019–2024).
 
 #### A. Raw Sentinel-2 Bands (Spektrum Mentah)
 Satelit Sentinel-2 merekam gelombang elektromagnetik dari spektrum *visible* hingga *infrared*.
@@ -36,13 +36,13 @@ Untuk menstimulasi akurasi model, band mentah dikombinasikan menjadi indeks spek
 
 ## 3.2. Tahap 2: Model Analisis Penggerak (Dual-Driver Analysis)
 
-Setelah peta tutupan lahan 2018–2024 terbentuk dari model di atas, penelitian berlanjut ke pengujian hipotesis spasial menggunakan Regresi Logistik untuk menjawab: *"Apakah IKN dan Tambang adalah pendorong utama konversi lahan tersebut?"*
+Setelah peta tutupan lahan 2019–2024 terbentuk dari model di atas, penelitian berlanjut ke pengujian hipotesis spasial menggunakan Regresi Logistik untuk menjawab: *"Apakah IKN dan Tambang adalah pendorong utama konversi lahan tersebut?"*
 
 ### 3.2.1. Variabel Target (Binary Response)
-Variabel target di sini adalah probabilitas terjadinya perubahan ekstrem (transisi lahan) dari tahun 2018 ke 2024:
-1. **Forest Loss (Deforestasi):** 1 jika Hutan (2018) berubah menjadi non-Hutan (2024), 0 jika tetap Hutan.
-2. **Urban Expansion:** 1 jika lahan non-Bangunan (2018) berubah menjadi Bangunan (2024), 0 jika sebaliknya.
-3. **Mining Expansion:** 1 jika lahan non-Tanah Terbuka (2018) berubah menjadi Tanah Terbuka (2024), 0 jika sebaliknya.
+Variabel target di sini adalah probabilitas terjadinya perubahan ekstrem (transisi lahan) dari tahun 2019 ke 2024:
+1. **Forest Loss (Deforestasi):** 1 jika Hutan (2019) berubah menjadi non-Hutan (2024), 0 jika tetap Hutan.
+2. **Urban Expansion:** 1 jika lahan non-Bangunan (2019) berubah menjadi Bangunan (2024), 0 jika sebaliknya.
+3. **Mining Expansion:** 1 jika lahan non-Tanah Terbuka (2019) berubah menjadi Tanah Terbuka (2024), 0 jika sebaliknya.
 
 ### 3.2.2. Variabel Prediktor Spasial (Drivers)
 1. **Distance to IKN (km):** Jarak Euclidean dari setiap piksel observasi menuju titik pusat Ibu Kota Nusantara. Menjadi proksi untuk pengaruh tarikan urbanisasi sentripetal.

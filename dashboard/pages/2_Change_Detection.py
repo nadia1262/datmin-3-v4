@@ -18,13 +18,13 @@ from theme import apply_theme
 st.set_page_config(page_title="Change Detection", page_icon="◈", layout="wide")
 apply_theme()
 
-st.title("Change Detection (2018 → 2024)")
-st.markdown("Analisis transisi tutupan lahan dan deteksi perubahan temporal.")
+st.title("Change Detection (2019 → 2024)")
+st.markdown("Analisis transisi tutupan lahan dan deteksi perubahan temporal menggunakan Common Spatial Domain.")
 
 # Load Transition Matrix
 @st.cache_data
 def load_transition_matrix():
-    path = os.path.join(CHANGE_DIR, 'transition_matrix_2018_2024.csv')
+    path = os.path.join(CHANGE_DIR_V2, 'transition_matrix_2019_2024.csv')
     if os.path.exists(path):
         cm = pd.read_csv(path, index_col=0)
         # Remove margins if present
@@ -47,10 +47,10 @@ summary = load_change_summary()
 col1, col2 = st.columns([1, 1])
 
 with col1:
-    st.subheader("Transition Matrix (2018 → 2024)")
+    st.subheader("Transition Matrix (2019 → 2024)")
     if cm is not None:
         fig = px.imshow(cm,
-                        labels=dict(x="Kelas 2024", y="Kelas 2018", color="Titik"),
+                        labels=dict(x="Kelas 2024", y="Kelas 2019", color="Titik"),
                         color_continuous_scale="YlOrRd",
                         template=PLOTLY_TEMPLATE)
         fig.update_layout(
@@ -60,7 +60,7 @@ with col1:
         )
         st.plotly_chart(fig, use_container_width=True)
     else:
-        st.warning("File transition matrix tidak ditemukan. Jalankan `python scripts/change_detection.py --model lgbm --full-temporal` terlebih dahulu.")
+        st.warning("File transition matrix tidak ditemukan. Jalankan `python scripts/change_detection_v2.py` terlebih dahulu.")
 
 with col2:
     st.subheader("Ringkasan Perubahan")
@@ -88,13 +88,13 @@ with col2:
         st.warning("File change_summary.json tidak ditemukan.")
 
     st.markdown("### Interpretasi")
-    st.markdown("- **Forest → Shrubland** (791 titik) adalah transisi terbesar — menunjukkan degradasi bertahap.")
-    st.markdown("- **Shrubland → Built-up** (93 titik) lebih banyak dari Forest → Built-up (56) — pola urbanisasi bertahap.")
-    st.markdown("- Forest gain (889) sedikit lebih banyak dari forest loss (858) — perlu analisis lebih lanjut apakah ini revegetasi nyata atau artefak resolusi.")
+    st.markdown("- **Forest Loss** dan **Forest Gain** dapat dilihat perbandingannya untuk menilai tren deforestasi atau revegetasi.")
+    st.markdown("- Urbanisasi seringkali terjadi secara bertahap (Forest → Shrubland → Built-up).")
+    st.markdown("- Transisi antar kelas divisualisasikan hanya untuk titik-titik yang konsisten ada dari tahun 2019 hingga 2024 (Common Domain).")
 
 # Temporal Trends
 st.markdown("---")
-st.subheader("Tren Komposisi Tutupan Lahan (2018–2024)")
+st.subheader("Tren Komposisi Tutupan Lahan (2019–2024)")
 
 @st.cache_data
 def load_temporal():
@@ -115,4 +115,4 @@ if tc is not None:
         font_color=PLOTLY_FONT_COLOR
     )
     st.plotly_chart(fig, use_container_width=True)
-    st.caption("Data 2018 memiliki grid yang jauh lebih kecil (13K vs 155K+ titik), sehingga proporsinya tidak directly comparable.")
+    st.caption("Tren komposisi divisualisasikan menggunakan seluruh prediksi ML per tahun.")

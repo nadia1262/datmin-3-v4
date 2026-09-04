@@ -68,38 +68,36 @@ with tab1:
     df_def = load_driver_data('deforestation')
     plot_coefficients(df_def, "Pendorong Deforestasi (Forest Loss)")
     st.markdown("""
-    **Interpretasi:**
-    - `distance_to_ikn` negatif & signifikan (p=0.0015): Semakin **dekat** ke IKN → risiko deforestasi **lebih tinggi**.
-    - `mining_density_10km` positif & signifikan (p=0.0006): Area padat tambang → risiko deforestasi **lebih tinggi**.
-    - Pseudo R² = 0.0056 → variabel ini menjelaskan asosiasi spasial, bukan kausalitas penuh.
+    **Interpretasi (Contoh Asosiasi):**
+    - Variabel dengan koefisien **positif & signifikan** berasosiasi dengan **peningkatan risiko** deforestasi.
+    - Variabel dengan koefisien **negatif & signifikan** berasosiasi dengan **penurunan risiko** deforestasi.
+    - *Pseudo R²* menunjukkan seberapa kuat variabel ini menjelaskan variasi spasial, bukan kausalitas penuh.
     """)
 
 with tab2:
     df_urb = load_driver_data('urbanization')
     plot_coefficients(df_urb, "Pendorong Urbanisasi (Non-Built → Built)")
     st.markdown("""
-    **Interpretasi:**
-    - `distance_to_ikn` **TIDAK signifikan** (p=0.272): Efek urbanisasi IKN belum terukur dalam periode 2018–2024.
-    - `mining_density_10km` signifikan (p=0.033): Urbanisasi lebih terkait aktivitas tambang.
-    - Temuan ini menunjukkan konstruksi IKN masih terlokalisir, belum terjadi *sprawl effect*.
+    **Interpretasi (Contoh Asosiasi):**
+    - Variabel yang **tidak signifikan** (p > 0.05) berarti efeknya belum terukur dalam periode 2019–2024.
+    - Cek koefisien `distance_to_ikn` dan `mining_density_10km` untuk melihat apakah urbanisasi dipicu oleh IKN atau tambang.
     """)
 
 with tab3:
     df_min = load_driver_data('mining')
     plot_coefficients(df_min, "Pendorong Ekspansi Tambang (Non-Bare → Bare)")
     st.markdown("""
-    **Interpretasi:**
-    - `distance_to_ikn` **positif** & signifikan (p=0.038): Ekspansi tambang terjadi **jauh dari** IKN.
-    - `mining_density_10km` signifikan (p<0.001): Tambang cenderung berkluster (spatial clustering).
+    **Interpretasi (Contoh Asosiasi):**
+    - Perhatikan p-value. Ekspansi tambang seringkali menunjukkan spatial clustering yang kuat.
     """)
-    st.warning("**Catatan:** Hanya 26 kasus positif dari 9.624 observasi. Temuan ini bersifat eksploratif dan tidak memenuhi minimum sample untuk regresi logistik yang robust (rule of thumb: 10 events per predictor × 4 variabel = 40).")
+    st.warning("**Catatan:** Analisis logistik mungkin kurang robust jika jumlah kasus positif (*rare events*) terlalu sedikit.")
 
 st.markdown("---")
 st.info("**Catatan Metodologis:** Analisis ini menggunakan regresi logistik dengan variabel yang di-standardize. Odds Ratio <1 berarti penurunan peluang, >1 berarti peningkatan peluang, per 1 standar deviasi perubahan variabel.")
 
 # Driver effects plot
 st.subheader("Visualisasi: Deforestation Rate vs Drivers")
-driver_img = os.path.join(DRIVER_DIR, 'driver_effects.png')
+driver_img = os.path.join(DRIVER_DIR_V2, 'driver_effects.png')
 if os.path.exists(driver_img):
     st.image(driver_img, use_container_width=True)
 else:
