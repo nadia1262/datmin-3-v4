@@ -95,10 +95,16 @@ with tab3:
 st.markdown("---")
 st.info("**Catatan Metodologis:** Analisis ini menggunakan regresi logistik dengan variabel yang di-standardize. Odds Ratio <1 berarti penurunan peluang, >1 berarti peningkatan peluang, per 1 standar deviasi perubahan variabel.")
 
-# Driver effects plot
-st.subheader("Visualisasi: Deforestation Rate vs Drivers")
+# Driver effects plot (always deforestation-scoped — see note below)
+st.markdown("---")
+st.subheader("Visualisasi Tambahan: Forest Loss Rate vs Drivers (Deforestasi)")
+st.caption("Plot ini selalu menampilkan analisis deforestasi, terlepas dari tab yang aktif di atas — belum tersedia visualisasi setara untuk urbanisasi/ekspansi tambang.")
 driver_img = os.path.join(DRIVER_DIR_V2, 'driver_effects.png')
 if os.path.exists(driver_img):
-    st.image(driver_img, use_container_width=True)
+    st.image(
+        driver_img,
+        use_container_width=True,
+        caption="Deforestation rate binned by distance to IKN and by mining density — see scripts/dual_driver_analysis.py",
+    )
 else:
-    st.caption("Plot driver effects belum tersedia.")
+    st.caption("Plot driver effects belum tersedia. Jalankan `python scripts/dual_driver_analysis.py` untuk membuatnya.")
