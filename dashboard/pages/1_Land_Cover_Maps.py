@@ -48,14 +48,10 @@ if df is None:
     st.error("Data prediksi tidak ditemukan untuk tahun ini.")
     st.stop()
 
-# Convert class to RGBA colors for pydeck
-CLASS_COLORS_RGB = {
-    0: [34, 139, 34],    # Forest — vibrant green
-    1: [204, 255, 102],  # Shrubland/Agriculture — bright lime green
-    2: [255, 51, 51],    # Built-up — bright red
-    3: [255, 204, 102],  # Bare/Mining-like — bright tan/gold
-    4: [51, 153, 255],   # Water — bright blue
-}
+# Derive pydeck's RGB colors from the shared design-system palette
+# (configs/color_palette.py) instead of a hand-duplicated dict, so the
+# map and this page's own legend never drift apart.
+CLASS_COLORS_RGB = {cls: list(rgba[:3]) for cls, rgba in CLASS_COLORS_RGBA.items()}
 
 df['color'] = df['predicted_class'].map(CLASS_COLORS_RGB)
 
