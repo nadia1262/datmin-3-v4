@@ -64,7 +64,7 @@ with col1:
 
     # Border layer
     if os.path.exists(geojson_path):
-        with open(geojson_path) as f:
+        with open(geojson_path, encoding='utf-8') as f:
             boundary_geojson = json.load(f)
         border_layer = pdk.Layer(
             "GeoJsonLayer",
