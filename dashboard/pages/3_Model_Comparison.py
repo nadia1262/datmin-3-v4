@@ -78,7 +78,7 @@ with col1:
                  title='Overall Accuracy (Spatial Block CV)',
                  template=PLOTLY_TEMPLATE,
                  text='accuracy')
-    fig.update_traces(texttemplate='%{text:.4f}', textposition='outside')
+    fig.update_traces(texttemplate='%{text:.4f}', textposition='outside', cliponaxis=False)
     fig.update_layout(xaxis_range=[0.6, 0.9], showlegend=False,
                       paper_bgcolor=PLOTLY_PAPER_COLOR,
                       plot_bgcolor=PLOTLY_PLOT_COLOR,
@@ -93,7 +93,7 @@ with col2:
                  title='Macro F1-Score (Spatial Block CV)',
                  template=PLOTLY_TEMPLATE,
                  text='f1_macro')
-    fig.update_traces(texttemplate='%{text:.4f}', textposition='outside')
+    fig.update_traces(texttemplate='%{text:.4f}', textposition='outside', cliponaxis=False)
     fig.update_layout(xaxis_range=[0.6, 0.9], showlegend=False,
                       paper_bgcolor=PLOTLY_PAPER_COLOR,
                       plot_bgcolor=PLOTLY_PLOT_COLOR,

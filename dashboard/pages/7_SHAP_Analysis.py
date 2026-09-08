@@ -57,7 +57,7 @@ with col1:
                      color_continuous_scale=['#EAE8C9', '#799368', '#4a6b3a'],
                      template=PLOTLY_TEMPLATE,
                      text='Mean |SHAP|')
-        fig.update_traces(texttemplate='%{text:.3f}', textposition='outside')
+        fig.update_traces(texttemplate='%{text:.3f}', textposition='outside', cliponaxis=False)
         fig.update_layout(
             paper_bgcolor=PLOTLY_PAPER_COLOR,
             plot_bgcolor=PLOTLY_PLOT_COLOR,
