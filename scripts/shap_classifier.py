@@ -18,6 +18,9 @@ import shap
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 from configs.constants import *
+from configs.color_palette import FIGURE_DEFAULTS
+
+plt.rcParams.update(FIGURE_DEFAULTS)
 
 
 def run_shap_analysis(model_name, n_samples=5000):

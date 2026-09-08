@@ -94,24 +94,6 @@ DASHBOARD_THEME = {
 }
 
 # ============================================================
-# MATPLOTLIB DEFAULTS
-# ============================================================
-FIGURE_DEFAULTS = {
-    'figure.figsize': (12, 8),
-    'figure.dpi': 150,
-    'figure.facecolor': '#FFFFFF',
-    'axes.facecolor': '#FFFFFF',
-    'axes.edgecolor': '#333333',
-    'axes.labelsize': 12,
-    'axes.titlesize': 14,
-    'xtick.labelsize': 10,
-    'ytick.labelsize': 10,
-    'legend.fontsize': 10,
-    'font.family': 'sans-serif',
-    'font.sans-serif': ['Inter', 'Arial', 'DejaVu Sans'],
-}
-
-# ============================================================
 # PLOTLY TEMPLATE
 # ============================================================
 PLOTLY_TEMPLATE = 'plotly_white'
@@ -119,3 +101,25 @@ PLOTLY_PAPER_COLOR = '#FEFDE2'
 PLOTLY_PLOT_COLOR = '#F5F4D9'
 PLOTLY_FONT_COLOR = '#2E332F'
 PLOTLY_GRID_COLOR = '#D9D7BF'
+
+# ============================================================
+# MATPLOTLIB DEFAULTS
+# ============================================================
+FIGURE_DEFAULTS = {
+    'figure.figsize': (12, 8),
+    'figure.dpi': 150,
+    'figure.facecolor': PLOTLY_PAPER_COLOR,
+    'axes.facecolor': PLOTLY_PLOT_COLOR,
+    'axes.edgecolor': DASHBOARD_THEME['border'],
+    'axes.labelsize': 12,
+    'axes.labelcolor': DASHBOARD_THEME['text_primary'],
+    'axes.titlesize': 14,
+    'text.color': DASHBOARD_THEME['text_primary'],
+    'xtick.labelsize': 10,
+    'xtick.color': DASHBOARD_THEME['text_primary'],
+    'ytick.labelsize': 10,
+    'ytick.color': DASHBOARD_THEME['text_primary'],
+    'legend.fontsize': 10,
+    'font.family': 'sans-serif',
+    'font.sans-serif': ['Inter', 'Arial', 'DejaVu Sans'],
+}
