@@ -4,6 +4,9 @@ import pandas as pd
 import plotly.express as px
 import os
 import sys
+import base64
+import html
+from io import BytesIO
 from PIL import Image
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '../..'))
@@ -29,6 +32,12 @@ def load_image(filename):
     if os.path.exists(path):
         return Image.open(path)
     return None
+
+def image_to_base64(pil_img):
+    """Convert PIL Image to base64 data URI string."""
+    buf = BytesIO()
+    pil_img.save(buf, format='PNG')
+    return base64.b64encode(buf.getvalue()).decode()
 
 # ── Load SHAP Importance Data ──
 importance_path = os.path.join(SHAP_DIR, 'shap_importance.csv')
@@ -80,10 +89,15 @@ with col2:
 # ── SHAP Summary Beeswarm Plot ──
 st.markdown("---")
 st.subheader("SHAP Summary Plot (Beeswarm)")
-st.caption("Setiap titik mewakili satu sampel. Warna merah = nilai fitur tinggi, biru = rendah. Posisi horizontal menunjukkan pengaruhnya terhadap keputusan model.")
 img_bees = load_image('shap_summary.png')
 if img_bees:
-    st.image(img_bees, use_container_width=True)
+    bees_alt = "SHAP beeswarm plot: setiap titik mewakili satu sampel. Warna merah = nilai fitur tinggi, biru = rendah. Posisi horizontal menunjukkan pengaruhnya terhadap keputusan model."
+    b64_bees = image_to_base64(img_bees)
+    st.markdown(
+        f'<img src="data:image/png;base64,{b64_bees}" alt="{html.escape(bees_alt)}" style="width:100%; max-width:100%">',
+        unsafe_allow_html=True
+    )
+    st.caption(bees_alt)
 else:
     st.warning("Grafik SHAP summary belum tersedia.")
 
@@ -92,7 +106,13 @@ img_heat = load_image('shap_per_class_heatmap.png')
 if img_heat:
     st.markdown("---")
     st.subheader("SHAP Importance per Kelas")
-    st.image(img_heat, use_container_width=True)
+    heat_alt = "Heatmap SHAP importance per kelas tutupan lahan (Forest, Shrubland/Agriculture, Built-up, Bare/Mining-like, Water) per fitur spektral."
+    b64_heat = image_to_base64(img_heat)
+    st.markdown(
+        f'<img src="data:image/png;base64,{b64_heat}" alt="{html.escape(heat_alt)}" style="width:100%; max-width:100%">',
+        unsafe_allow_html=True
+    )
+    st.caption(heat_alt)
 
 st.markdown("""
 ---
