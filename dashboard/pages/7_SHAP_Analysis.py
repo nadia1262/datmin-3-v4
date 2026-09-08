@@ -120,9 +120,9 @@ st.markdown("""
 
 | Peringkat | Fitur | Mean \|SHAP\| | Interpretasi |
 |---|---|---|---|
-| 🥇 1 | **NDVI** | 0.938 | Variabel mutlak terpenting. Model mengandalkannya untuk memisahkan vegetasi lebat (Hutan) dari area terbuka. |
-| 🥈 2 | **B12 (SWIR-2)** | 0.470 | Sangat sensitif terhadap kelembaban tanah dan mineral, kunci mengenali tambang dan tanah terbuka. |
-| 🥉 3 | **B11 (SWIR-1)** | 0.443 | Komplemen dari B12. Bersama-sama, pasangan SWIR mendominasi deteksi area non-vegetasi. |
+| 1 | **NDVI** | 0.938 | Variabel mutlak terpenting. Model mengandalkannya untuk memisahkan vegetasi lebat (Hutan) dari area terbuka. |
+| 2 | **B12 (SWIR-2)** | 0.470 | Sangat sensitif terhadap kelembaban tanah dan mineral, kunci mengenali tambang dan tanah terbuka. |
+| 3 | **B11 (SWIR-1)** | 0.443 | Komplemen dari B12. Bersama-sama, pasangan SWIR mendominasi deteksi area non-vegetasi. |
 | 4 | **B3 (Green)** | 0.217 | Membantu membedakan jenis vegetasi (hijau vs kering). |
 | 5 | **NDBI** | 0.178 | Fitur kunci untuk mendeteksi infrastruktur beton dan aspal (*built-up*). |
 | ... | **NDMI** | 0.046 | Hampir tidak berkontribusi — secara matematis identik dengan negasi NDBI (NDMI ≈ −NDBI). |

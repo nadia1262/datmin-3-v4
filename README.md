@@ -57,7 +57,7 @@ python scripts/dual_driver_analysis.py --model rf
 ### 9. Prepare & Launch Dashboard
 ```bash
 python scripts/prepare_dashboard_data.py --model rf
-streamlit run dashboard/app.py
+streamlit run dashboard/Home.py
 ```
 
 ---
@@ -85,7 +85,7 @@ Kelompok_3_v4/
 │   ├── temporal_consistency_check.py  # Distributional drift detection
 │   └── prepare_dashboard_data.py  # Dashboard data pre-computation
 ├── dashboard/
-│   ├── app.py                     # Streamlit main app
+│   ├── Home.py                    # Streamlit main app
 │   └── pages/                     # Dashboard pages
 ├── data/
 │   ├── samples/                   # Training samples (from GEE)

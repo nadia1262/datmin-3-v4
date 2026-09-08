@@ -18,8 +18,7 @@ st.set_page_config(
 apply_theme()
 
 st.title("Dual-Driver Land Cover Transformation Dashboard")
-st.markdown("Klasifikasi Spatiotemporal Tutupan Lahan di Kalimantan (2019–2024)", 
-            help=None)
+st.markdown("Klasifikasi Spatiotemporal Tutupan Lahan di Kalimantan (2019–2024)")
 
 st.markdown("""
 ---

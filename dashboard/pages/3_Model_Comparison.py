@@ -48,7 +48,7 @@ best_acc = df_metrics.loc[best_idx, 'accuracy']
 best_f1 = df_metrics.loc[best_idx, 'f1_macro']
 best_kappa = df_metrics.loc[best_idx, 'kappa']
 
-st.success(f"🏆 **Model Terpilih: {MODEL_DISPLAY_NAMES.get(best_model, best_model)}** — OA={best_acc:.4f} | F1-Macro={best_f1:.4f} | Kappa={best_kappa:.4f}")
+st.success(f"**Model Terpilih: {MODEL_DISPLAY_NAMES.get(best_model, best_model)}** — OA={best_acc:.4f} | F1-Macro={best_f1:.4f} | Kappa={best_kappa:.4f}")
 
 # ── Summary Table ──
 st.subheader("Tabel Perbandingan Metrik")

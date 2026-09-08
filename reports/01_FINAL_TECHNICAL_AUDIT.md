@@ -28,7 +28,7 @@
      ↓
 [Dashboard]
   prepare_dashboard_data.py → JSON/CSV ringkasan
-  streamlit run dashboard/app.py → 5 halaman interaktif
+  streamlit run dashboard/Home.py → 5 halaman interaktif
 ```
 
 ---
