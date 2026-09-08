@@ -3,6 +3,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import pydeck as pdk
+import json
 import sys
 import os
 
@@ -64,12 +65,14 @@ with col1:
     geojson_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../data/external/kalimantan_boundary.geojson')
     
     layers = []
-    
+
     # Border layer
     if os.path.exists(geojson_path):
+        with open(geojson_path) as f:
+            boundary_geojson = json.load(f)
         border_layer = pdk.Layer(
             "GeoJsonLayer",
-            data=geojson_path,
+            data=boundary_geojson,
             opacity=0.8,
             stroked=True,
             filled=False,
@@ -114,7 +117,8 @@ with col1:
     deck = pdk.Deck(
         layers=layers,
         initial_view_state=view_state,
-        map_style='mapbox://styles/mapbox/dark-v11',  # Dark mode map agar warna titik pop-up dan tegas
+        map_provider="carto",
+        map_style="dark",  # Carto's tokenless dark basemap — no Mapbox account needed
         tooltip={"text": "Koordinat: {lon}, {lat}\nKelas: {predicted_label}"},
     )
 
