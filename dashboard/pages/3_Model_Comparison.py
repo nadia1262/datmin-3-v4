@@ -41,14 +41,19 @@ if df_metrics is None:
     st.error("File model_comparison.csv tidak ditemukan.")
     st.stop()
 
-# ── Highlight Best Model ──
-best_idx = df_metrics['accuracy'].idxmax()
-best_model = df_metrics.loc[best_idx, 'model']
+# ── Highlight Operational Model ──
+best_model = 'lgbm'
+best_idx = df_metrics.index[df_metrics['model'] == best_model][0]
 best_acc = df_metrics.loc[best_idx, 'accuracy']
 best_f1 = df_metrics.loc[best_idx, 'f1_macro']
 best_kappa = df_metrics.loc[best_idx, 'kappa']
 
-st.success(f"🏆 **Model Terpilih: {MODEL_DISPLAY_NAMES.get(best_model, best_model)}** — OA={best_acc:.4f} | F1-Macro={best_f1:.4f} | Kappa={best_kappa:.4f}")
+st.success(f"🏆 **Model Operasional Terpilih: {MODEL_DISPLAY_NAMES.get(best_model, best_model)}** — OA={best_acc:.4f} | F1-Macro={best_f1:.4f} | Kappa={best_kappa:.4f}")
+
+st.info("""
+**Justifikasi Pemilihan LightGBM:** 
+Meskipun SVM memiliki akurasi sedikit lebih tinggi secara marjinal (~0.6%), LightGBM dipilih sebagai model operasional karena **efisiensi komputasi yang ekstrem**. Waktu *training* LightGBM ~7x lebih cepat dibandingkan SVM (116 detik vs 760 detik). Untuk memprediksi jutaan titik grid seluruh Pulau Kalimantan (73 juta hektar) secara tahunan, algoritma *Gradient Boosting* seperti LightGBM adalah satu-satunya pilihan yang rasional dan skalabel.
+""")
 
 # ── Summary Table ──
 st.subheader("Tabel Perbandingan Metrik")

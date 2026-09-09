@@ -90,7 +90,11 @@ with col2:
     st.markdown("### Interpretasi")
     st.markdown("- **Forest Loss** dan **Forest Gain** dapat dilihat perbandingannya untuk menilai tren deforestasi atau revegetasi.")
     st.markdown("- Urbanisasi seringkali terjadi secara bertahap (Forest → Shrubland → Built-up).")
-    st.markdown("- Transisi antar kelas divisualisasikan hanya untuk titik-titik yang konsisten ada dari tahun 2019 hingga 2024 (Common Domain).")
+    
+    st.info("""
+    **💡 Catatan Metodologis: Common Spatial Domain**  
+    Transisi antar kelas di atas HANYA dihitung untuk **118.943 titik** yang secara historis *terbebas dari awan di kedua tahun* (2019 dan 2024). Metode interseksi ketat ini menghilangkan anomali luas lahan semu akibat tutupan awan musiman, memastikan bahwa perubahan yang terdeteksi adalah transisi tutupan lahan yang sesungguhnya.
+    """)
 
 # Temporal Trends
 st.markdown("---")

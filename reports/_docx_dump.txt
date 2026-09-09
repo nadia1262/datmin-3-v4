@@ -1,0 +1,72 @@
+115: Di mana  merepresentasikan nilai fitur observasi riil (seperti reflektansi Band 4 atau indeks NDVI),   menunjukkan nilai standar deviasi. Meskipun algoritma gradient boosting berba
+117: Pelatihan Model Machine Learning dan Optimasi Hyperparameter
+118: Tahap ini merupakan inti dari kerangka klasifikasi tutupan lahan  Enam algoritma supervised machine learning dilatih dan dievaluasi secara kompetitif di bawah protokol validasi spa
+119: 2.5.1. Arsitektur Model Klasifikasi
+120: 2.5.2. Strategi Validasi  Spasial: Spatial Block GroupKFold
+121: Berbeda dengan pemisahan data acak (random train-test split) yang lazim digunakan dalam klasifikasi tabular, data geospasial memiliki karakteristik unik berupa autokorelasi spasial
+122: Untuk mengatasi hal ini, penelitian ini mengimplementasikan protokol Spatial Block GroupKFold Cross-Validation dengan langkah-langkah sebagai berikut:
+123: Pembentukan Blok Spasial: Seluruh wilayah studi Kalimantan dibagi ke dalam blok-blok (tiles) spasial berukuran 0.5 derajat x 0.5 derajat (ekuivalen ~55 km x 55 km pada garis khatul
+124: Pengelompokan pada Fold: Prosedur GroupKFold dari Scikit-learn memastikan bahwa seluruh titik dalam satu blok spasial selalu berada di fold yang sama (tidak pernah terpecah antara 
+125: Konfigurasi: Digunakan K = 5 fold untuk evaluasi final dan K = 3 fold untuk tahap pencarian hyperparameter cepat (quick search).
+127: Pendekatan ini secara matematis menjamin bahwa matrik evaluasi mencerminkan kemampuan generalisasi model ke wilayah yang belum pernah dilihat (unseen regions), bukan sekadar interp
+129: 2.5.3. Optimasi Hyperparameter
+130: Optimasi hyperparameter dilaksanakan menggunakan metode  Exhaustive Grid Search yang dikombinasikan dengan validasi silang spasial 3-fold (GroupKFold,  K=3).  Untuk setiap kombinas
+132: Tabel 2.3 Ruang Pencarian Hyperparameter per Model)
+134: Setelah konfigurasi optimal ditemukan, model dilatih ulang dan dievaluasi secara final menggunakan 5-fold Spatial Block GroupKFold pada seluruh 30.000 sampel (kecuali MLP yang meng
+136: 2.5.4 Metrik  Evaluasi
+137: Performa klasifikasi  dievaluasi menggunakan empat metrik komplementer:
+138: Overall  Accuracy (OA): Proporsi total piksel yang diklasifikasikan dengan benar terhadap jumlah seluruh piksel
+140:  (elemen diagonal matriks konfusi), c (jumlah kelas), dan N (total  piksel)
+142: Macro F1-Score: Rata-rata aritmatika F1-Score seluruh kelas,  memberikan bobot yang setara kepada setiap kelas tanpa memandang proporsi populasinya (Sokolova & Lapalme, 2009). Metr
+145: Cohen’s Kappa (κ): Mengukur tingkat kesepakatan (agreement) klasifikasi setelah memperhitungkan kemungkinan kebenaran secara kebetulan (chance agreement) (Cohen, 1960). Interpretas
+147:  (proporsi kesepakatan observasi),  (proporsi kesepakatan acak yang diharapkan)
+148: Intersection over Union (IoU) per Kelas: Mengukur tumpang tindih (overlap) antara prediksi dan kebenaran dasar untuk setiap kelas individual, sangat sensitif terhadap kesalahan spa
+151: Deteksi Perubahan Temporal dan Analisis Penggerak
+152: Analisis SHAP
+153: Jadwal Penelitian
+155: Berdasarkan latar belakang yang telah diuraikan sebelumnya, peneliti merangkum bahwa terdapat beberapa permasalahan yang teridentifikasi. Identifikasi masalah adalah tahap awal pen
+156: hasil
+157: Distribusi Tutupan Lahan dan Korelasi Fitur
+158: Analisis Distribusi dan Potensi Outlier
+159: Perbandingan Kinerja Model
+160: Dashboard Optimasi
+161: Kinerja Model Machine Learning
+162: Kepentingan Fitur (Feature Importance)
+163: Analisis SHAP
+164: Deteksi Perubahan Spatiotemporal (2019-2024)
+165: Pemetaan Skala Mikro Kawasan Inti IKN
+166: Pendorong Spasial Deforestasi
+167: Keterbatasan 
+169: Berdasarkan latar belakang dan identifikasi masalah yang telah diuraikan, uraikan tujuan penelitian yang akan dilakukan secara ringkas namun jelas dan terukur, atau pertanyaan pene
+170: pembahasan
+171: Interpretasi Kinerja Model Machine Learning
+172: Dinamika Tutupan Lahan dan Efek Kelas Campuran
+173: Dampak Pembangunan IKN dan Penambangan (Telecoupling)
+174: Keterbatasan Penelitian
+175: Bagian ini berisi pembahasan mengenai teori, konsep, hasil penelitian terdahulu, dan referensi ilmiah lain yang relevan dengan topik penelitian. Tujuannya adalah untuk menunjukkan 
+177: KESIMPULAN
+178: Bagian ini menjelaskan secara sistematis desain dan pendekatan penelitian, sumber serta jenis data, teknik pengumpulan data (jika dilakukan), variabel dan definisi operasional, met
+179: Untuk penelitian yang berkaitan dengan sistem informasi atau perancangan software perlu dijelaskan model/algoritma atau arsitektur sistem yang digunakan, serta lingkungan komputasi
+180: Pada bagian ini dapat juga ditambahkan kerangka pikir penelitian yang menjelaskan secara visual dan ringkas keseluruhan komponen penelitian, yang mencakup:
+181: Identifikasi masalah
+182: Tujuan penelitian
+183: Metode yang digunakan
+184: Sumber data (opsional)
+185: Kriteria Evaluasi
+186: seperti contoh-contoh berikut:
+189: Gambar 2. Contoh Kerangka Penelitian
+191: 	Dapat juga ditambahkan rencana jadwal penelitian yang menjelaskan secara sistematis tentang perencanaan timeline penelitian dari awal hingga akhir.
+192: tkan sebelum tabel terkait, seperti yang ditunjukkan pada Tabel II.
+193: TABEL III
+194: CONTOH KETERANGAN TABEL
+195: aContoh catatan kaki pada tabel.
+196: C. Format Persamaan/Rumus
+197: Persamaan secara berurutan diikuti dengan penomoran angka dalam tanda kurung dengan margin rata kanan, seperti dalam (1). Untuk Microsoft Word, gunakan equation editor untuk membua
+198:   			(1)
+199: Daftar Pustaka
+200: A. E. Brouwer and W. H. Haemers, Spectra of Graphs.	New York:
+201: Springer, 2012.
+202: P. Shakarian, A. Bhatnagar, A. Aleali, E. Shaabani, and R. Guo, The Independent Cascade and Linear Threshold Models. Cham: Springer International Publishing, 2015, pp. 35–48.
+203: C. Chen, H. Tong, B. A. Prakash, C. E. Tsourakakis, T. Eliassi-Rad, C. Faloutsos, and D. H. Chau, “Node immunization on large graphs: Theory and algorithms,” IEEE Transaction on Kn
+204: A. W. Wijayanto and T. Murata, “Learning adaptive graph protection strategy on dynamic networks via reinforcement learning,” in 2018 IEEE/WIC/ACM International Conference on Web In
+205: Facebook. (2017, 3) How does news feed decide which stories to show? [Online]. Available: https://www.facebook.com/help/166738576721085

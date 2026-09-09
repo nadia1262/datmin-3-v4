@@ -19,13 +19,12 @@ apply_theme()
 st.title("Multi-temporal Land Cover Maps")
 st.markdown("Visualisasi klasifikasi tutupan lahan di Kalimantan untuk periode 2018–2024.")
 
-year = st.slider("Pilih Tahun:", min_value=2018, max_value=2024, value=2024)
+year = st.slider("Pilih Tahun:", min_value=2019, max_value=2024, value=2024)
+
+basemap_choice = st.radio("Pilih Basemap:", ("Dark Mode", "OpenStreetMap (Light)"), horizontal=True)
 
 # Grid size info
-GRID_SIZES = {2018: 13632, 2019: 175384, 2020: 176624, 2021: 162940, 2022: 160261, 2023: 159949, 2024: 154137}
-
-if year == 2018:
-    st.warning("**Catatan:** Grid 2018 hanya memiliki 13.632 titik (vs ~155.000+ tahun lain) karena keterbatasan citra Sentinel-2 cloud-free. Proporsi tidak directly comparable.")
+GRID_SIZES = {2019: 175384, 2020: 176624, 2021: 162940, 2022: 160261, 2023: 159949, 2024: 154137}
 
 @st.cache_data
 def load_map_data(y):
@@ -111,10 +110,12 @@ with col1:
         pitch=0,
     )
 
+    selected_style = 'mapbox://styles/mapbox/dark-v11' if basemap_choice == "Dark Mode" else 'mapbox://styles/mapbox/streets-v11'
+
     deck = pdk.Deck(
         layers=layers,
         initial_view_state=view_state,
-        map_style='mapbox://styles/mapbox/dark-v11',  # Dark mode map agar warna titik pop-up dan tegas
+        map_style=selected_style,
         tooltip={"text": "Koordinat: {lon}, {lat}\nKelas: {predicted_label}"},
     )
 
