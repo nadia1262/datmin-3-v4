@@ -54,7 +54,7 @@ with col1:
         df_plot = df_imp.sort_values('Mean |SHAP|', ascending=True)
         fig = px.bar(df_plot, x='Mean |SHAP|', y='Feature', orientation='h',
                      color='Mean |SHAP|',
-                     color_continuous_scale=['#EAE8C9', '#799368', '#4a6b3a'],
+                     color_continuous_scale=[DASHBOARD_THEME['bg_tertiary'], DASHBOARD_THEME['accent'], DASHBOARD_THEME['text_primary']],
                      template=PLOTLY_TEMPLATE,
                      text='Mean |SHAP|')
         fig.update_traces(texttemplate='%{text:.3f}', textposition='outside', cliponaxis=False)
@@ -79,7 +79,7 @@ with col2:
         df_table = df_table[['Rank', 'Feature', 'Mean |SHAP|', 'Deskripsi']]
         st.dataframe(
             df_table.style.format({'Mean |SHAP|': '{:.4f}'})
-                .bar(subset=['Mean |SHAP|'], color='#799368', vmin=0),
+                .bar(subset=['Mean |SHAP|'], color=DASHBOARD_THEME['accent'], vmin=0),
             use_container_width=True,
             hide_index=True
         )

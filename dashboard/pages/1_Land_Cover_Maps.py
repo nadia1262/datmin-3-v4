@@ -136,7 +136,7 @@ with col2:
     # Legend
     st.markdown("**Legenda**")
     for cls in range(N_CLASSES):
-        st.markdown(f"<span style='display:inline-block; width:12px; height:12px; background:{CLASS_COLORS[cls]}; border-radius:2px; margin-right:6px;'></span> {CLASS_NAMES[cls]}", unsafe_allow_html=True)
+        st.markdown(f"<span style='display:inline-block; width:12px; height:12px; background:{CLASS_COLORS[cls]}; border:1px solid {DASHBOARD_THEME['text_primary']}; border-radius:3px; margin-right:6px;'></span> {CLASS_NAMES[cls]}", unsafe_allow_html=True)
 
     st.markdown("---")
     st.caption("Titik merah besar menandakan lokasi IKN Nusantara.")

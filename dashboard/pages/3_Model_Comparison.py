@@ -63,7 +63,7 @@ df_display.index += 1
 
 st.dataframe(
     df_display.style
-        .highlight_max(subset=['Overall Accuracy', 'F1 Macro', 'Kappa'], color='#c8e6c9')
+        .highlight_max(subset=['Overall Accuracy', 'F1 Macro', 'Kappa'], color=DASHBOARD_THEME['bg_tertiary'])
         .format({'Overall Accuracy': '{:.4f}', 'F1 Macro': '{:.4f}', 'F1 Weighted': '{:.4f}', 'Kappa': '{:.4f}', 'Waktu (detik)': '{:.1f}'}),
     use_container_width=True
 )
@@ -133,7 +133,7 @@ if summary and 'per_class' in summary:
     df_pc = pd.DataFrame(pc_rows)
     st.dataframe(
         df_pc.style.format({"Producer's Accuracy": '{:.4f}', "User's Accuracy": '{:.4f}', 'IoU': '{:.4f}'})
-            .bar(subset=["Producer's Accuracy", "User's Accuracy", 'IoU'], color='#799368', vmin=0.5),
+            .bar(subset=["Producer's Accuracy", "User's Accuracy", 'IoU'], color=DASHBOARD_THEME['accent'], vmin=0.5),
         use_container_width=True, hide_index=True
     )
 

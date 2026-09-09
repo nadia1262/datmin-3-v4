@@ -1,3 +1,6 @@
+# Ignore entire skills folder (reference markdown, mjs scripts, nested scripts)
+skills/
+
 data/
 # *.csv
 # *.sql
@@ -17,6 +20,16 @@ _ARCHIVE/
 # Python cache
 __pycache__/
 
+# Agent/skill working files — process artifacts, not deliverables
+dashboard/design-demos/
+.impeccable/
+docs/superpowers/
+
 # User zips and copies
 *.zip
 * - Copy*
+
+skills_dok.md
+
+# Laporan
+*.docx

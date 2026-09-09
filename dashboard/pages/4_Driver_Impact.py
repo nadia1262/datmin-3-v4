@@ -41,7 +41,9 @@ def plot_coefficients(df, title):
 
     fig = px.bar(df_plot, x='coefficient', y='variable', orientation='h',
                  color='significance',
-                 color_discrete_map={'Signifikan (p<0.05)': '#00E676', 'Tidak Signifikan': '#6C757D'},
+                 color_discrete_map={'Signifikan (p<0.05)': DASHBOARD_THEME['accent'], 'Tidak Signifikan': DASHBOARD_THEME['text_secondary']},
+                 pattern_shape='significance',
+                 pattern_shape_map={'Signifikan (p<0.05)': '', 'Tidak Signifikan': '/'},
                  title=title,
                  template=PLOTLY_TEMPLATE,
                  hover_data=['p_value', 'odds_ratio'])

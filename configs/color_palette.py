@@ -5,70 +5,71 @@ Colors follow standard remote sensing conventions for land cover maps.
 """
 
 # ============================================================
-# LAND COVER CLASS COLORS (standard remote sensing palette)
+# LAND COVER CLASS COLORS (standard remote sensing convention,
+# executed at hazard-grade saturation — see DASHBOARD_THEME note)
 # ============================================================
 CLASS_COLORS = {
-    0: '#1B7837',  # Forest — dark green
-    1: '#A6D96A',  # Shrubland/Agriculture — light green
-    2: '#E31A1C',  # Built-up — red
-    3: '#C4A35A',  # Bare/Mining-like — tan/brown
-    4: '#2166AC',  # Water — blue
+    0: '#1F7A3D',  # Forest — green
+    1: '#6E9A2E',  # Shrubland/Agriculture — olive-green
+    2: '#C6371F',  # Built-up — red
+    3: '#B87A1E',  # Bare/Mining-like — ochre
+    4: '#1B5FA8',  # Water — blue
 }
 
-CLASS_COLORS_LIST = ['#1B7837', '#A6D96A', '#E31A1C', '#C4A35A', '#2166AC']
+CLASS_COLORS_LIST = ['#1F7A3D', '#6E9A2E', '#C6371F', '#B87A1E', '#1B5FA8']
 
 CLASS_COLORS_RGBA = {
-    0: (27, 120, 55, 200),
-    1: (166, 217, 106, 200),
-    2: (227, 26, 28, 200),
-    3: (196, 163, 90, 200),
-    4: (33, 102, 172, 200),
+    0: (31, 122, 61, 200),
+    1: (110, 154, 46, 200),
+    2: (198, 55, 31, 200),
+    3: (184, 122, 30, 200),
+    4: (27, 95, 168, 200),
 }
 
 # ============================================================
 # MODEL COMPARISON COLORS
 # ============================================================
 MODEL_COLORS = {
-    'logreg':  '#6C757D',  # Gray — baseline
-    'rf':      '#28A745',  # Green — ensemble
-    'xgboost': '#FD7E14',  # Orange — primary boosting
-    'lgbm':    '#20C997',  # Teal — fast boosting
-    'svm':     '#6610F2',  # Purple — kernel
-    'mlp':     '#E83E8C',  # Pink — neural network
+    'logreg':  '#5B6156',  # Ink-mute gray — baseline
+    'rf':      '#1F7A3D',  # Green — ensemble
+    'xgboost': '#C6371F',  # Red — primary boosting
+    'lgbm':    '#1B5FA8',  # Blue — fast boosting
+    'svm':     '#6E4F9E',  # Purple — kernel
+    'mlp':     '#B87A1E',  # Ochre — neural network
 }
 
 # ============================================================
 # CHANGE DETECTION COLORS
 # ============================================================
 CHANGE_COLORS = {
-    'forest_loss':      '#D73027',  # Red — deforestation
-    'forest_gain':      '#1A9850',  # Green — reforestation
-    'mining_expansion': '#FEE08B',  # Yellow — mining spread
-    'urban_expansion':  '#FC4E2A',  # Orange-red — urbanization
-    'no_change':        '#F0F0F0',  # Light gray — stable
-    'water_change':     '#4575B4',  # Blue — water body change
+    'forest_loss':      '#C6371F',  # Red — deforestation
+    'forest_gain':      '#1F7A3D',  # Green — reforestation
+    'mining_expansion': '#B87A1E',  # Ochre — mining spread
+    'urban_expansion':  '#6E4F9E',  # Purple — urbanization
+    'no_change':        '#D8DBD0',  # Light gray-green — stable
+    'water_change':     '#1B5FA8',  # Blue — water body change
 }
 
 # ============================================================
 # DRIVER IMPACT COLORS
 # ============================================================
 DRIVER_COLORS = {
-    'ikn_dominant':     '#FF6B6B',  # Coral red — IKN driven
-    'mining_dominant':  '#FFD93D',  # Gold — mining driven
-    'interaction':      '#C44DFF',  # Purple — both drivers active
-    'no_driver':        '#E8E8E8',  # Light gray — no significant driver
+    'ikn_dominant':     '#C6371F',  # Red — IKN driven
+    'mining_dominant':  '#B87A1E',  # Ochre — mining driven
+    'interaction':      '#6E4F9E',  # Purple — both drivers active
+    'no_driver':        '#D8DBD0',  # Light gray-green — no significant driver
 }
 
 # ============================================================
 # IKN BUFFER ZONE COLORS (gradient from center outward)
 # ============================================================
 IKN_BUFFER_COLORS = {
-    'core':  '#800026',   # Deep red — IKN core
-    10:      '#BD0026',   # Red — 10km buffer
-    25:      '#FC4E2A',   # Orange-red — 25km buffer
-    50:      '#FEB24C',   # Orange — 50km buffer
-    100:     '#FED976',   # Light orange — 100km buffer
-    'outside': '#FFFFCC', # Pale yellow — outside influence
+    'core':  '#7A1810',   # Deep red — IKN core
+    10:      '#C6371F',   # Red — 10km buffer
+    25:      '#D9612B',   # Orange-red — 25km buffer
+    50:      '#E2903A',   # Orange — 50km buffer
+    100:     '#EDBB6B',   # Light orange — 100km buffer
+    'outside': '#F0F2ED', # Fades into background — outside influence
 }
 
 # ============================================================
@@ -78,29 +79,34 @@ UNCERTAINTY_CMAP = 'RdYlGn_r'  # Red=high uncertainty, Green=low
 RESIDUAL_CMAP = 'RdBu'         # Red=overestimation, Blue=underestimation
 
 # ============================================================
-# DASHBOARD THEME (Custom 3-Color Palette)
+# DASHBOARD THEME — "Instrument Panel"
+# Light, hard-edged, hazard-grade saturation. Chosen over the
+# previous cream/sage palette because the subject (deforestation,
+# mining degradation) needs a register that reads as a monitoring
+# instrument, not a calm lifestyle app — see
+# dashboard/design-demos/direction-approved.md.
 # ============================================================
 DASHBOARD_THEME = {
-    'bg_primary':    '#FEFDE2',  # Cream background
-    'bg_secondary':  '#F5F4D9',  # Slightly darker cream for cards
-    'bg_tertiary':   '#EAE8C9',  # Hover/active background
-    'text_primary':  '#2E332F',  # Dark text for readability on cream
-    'text_secondary':'#606A62',  # Muted text
-    'accent':        '#799368',  # Sage Green (primary interactive elements)
-    'accent_green':  '#799368',  # Sage Green
-    'accent_red':    '#EB8B4A',  # Orange (used for contrast/highlights)
-    'accent_orange': '#EB8B4A',  # Orange
-    'border':        '#D9D7BF',  # Borders
+    'bg_primary':    '#F0F2ED',  # Light gray-green background
+    'bg_secondary':  '#FFFFFF',  # White panel/card surface
+    'bg_tertiary':   '#EAF0E3',  # Active/selected background (nav rail)
+    'text_primary':  '#171A15',  # Near-black text
+    'text_secondary':'#5B6156',  # Muted ink
+    'accent':        '#1F7A3D',  # Forest green (primary interactive elements)
+    'accent_green':  '#1F7A3D',
+    'accent_red':    '#C6371F',  # Built-up red (urgency/warning)
+    'accent_orange': '#B87A1E',  # Bare/mining ochre (secondary warning)
+    'border':        '#C7CDBD',  # Hard-edge borders (no shadows, no radius)
 }
 
 # ============================================================
 # PLOTLY TEMPLATE
 # ============================================================
 PLOTLY_TEMPLATE = 'plotly_white'
-PLOTLY_PAPER_COLOR = '#FEFDE2'
-PLOTLY_PLOT_COLOR = '#F5F4D9'
-PLOTLY_FONT_COLOR = '#2E332F'
-PLOTLY_GRID_COLOR = '#D9D7BF'
+PLOTLY_PAPER_COLOR = '#FFFFFF'
+PLOTLY_PLOT_COLOR = '#FFFFFF'
+PLOTLY_FONT_COLOR = '#171A15'
+PLOTLY_GRID_COLOR = '#C7CDBD'
 
 # ============================================================
 # MATPLOTLIB DEFAULTS
@@ -110,7 +116,8 @@ FIGURE_DEFAULTS = {
     'figure.dpi': 150,
     'figure.facecolor': PLOTLY_PAPER_COLOR,
     'axes.facecolor': PLOTLY_PLOT_COLOR,
-    'axes.edgecolor': DASHBOARD_THEME['border'],
+    'axes.edgecolor': DASHBOARD_THEME['text_primary'],
+    'axes.linewidth': 1.2,
     'axes.labelsize': 12,
     'axes.labelcolor': DASHBOARD_THEME['text_primary'],
     'axes.titlesize': 14,

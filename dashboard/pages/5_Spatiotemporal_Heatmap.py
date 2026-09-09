@@ -12,10 +12,10 @@ from configs.color_palette import *
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 from theme import apply_theme
 
-st.set_page_config(page_title="Spatiotemporal Heatmap", page_icon="🔥", layout="wide")
+st.set_page_config(page_title="Spatiotemporal Heatmap", page_icon="◈", layout="wide")
 apply_theme()
 
-st.title("🔥 3D Spatiotemporal Heatmap (2019-2024)")
+st.title("3D Spatiotemporal Heatmap (2019-2024)")
 st.markdown("Visualisasi 3D beresolusi tinggi dari area yang mengalami **Deforestasi**, **Urbanisasi**, dan **Ekspansi Tambang**.")
 
 @st.cache_data
@@ -81,7 +81,7 @@ if df is not None:
         df_plot = df_changed[df_changed[filter_col] == 1][['lon', 'lat']]
         
         st.metric("Total Titik Terdeteksi", f"{len(df_plot):,}")
-        st.caption("✨ **Navigasi 3D:**")
+        st.caption("**Navigasi 3D:**")
         st.caption("- Geser (Pan): Tahan Klik Kiri + Geser")
         st.caption("- Miringkan (Tilt): Tahan Klik Kanan + Geser (atau Ctrl/Cmd + Drag)")
         st.caption("- Perbesar (Zoom): Scroll Mouse")
