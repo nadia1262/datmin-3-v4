@@ -41,11 +41,22 @@ def load_change_data(model_name, start_year, end_year):
         df['lon'] = df['lon'].round(4)
         df['lat'] = df['lat'].round(4)
 
-        # Merge driver columns
-        driver_cols_available = [c for c in ['elevation', 'rainfall_annual', 'distance_to_ikn', 'mining_density_10km'] if c in pred_df.columns]
+        # Merge driver columns (except mining_density)
+        driver_cols_available = [c for c in ['elevation', 'rainfall_annual', 'distance_to_ikn'] if c in pred_df.columns]
         if driver_cols_available:
             df = df.merge(pred_df[['lon', 'lat'] + driver_cols_available], on=['lon', 'lat'], how='left')
             print(f"  Merged driver variables: {driver_cols_available}")
+
+    # Merge correct mining density from Maus dataset
+    maus_file = os.path.join(PREDICTIONS_DIR, "mining_density_maus.csv")
+    if os.path.exists(maus_file):
+        maus_df = pd.read_csv(maus_file)
+        maus_df['lon'] = maus_df['lon'].round(4)
+        maus_df['lat'] = maus_df['lat'].round(4)
+        if 'mining_density_10km' in df.columns:
+            df = df.drop(columns=['mining_density_10km'])
+        df = df.merge(maus_df[['lon', 'lat', 'mining_density_10km']], on=['lon', 'lat'], how='left')
+        print("  Merged correct mining density from Maus et al. (2022)")
 
     return df
 

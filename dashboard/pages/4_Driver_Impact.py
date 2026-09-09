@@ -68,32 +68,35 @@ with tab1:
     df_def = load_driver_data('deforestation')
     plot_coefficients(df_def, "Pendorong Deforestasi (Forest Loss)")
     st.markdown("""
-    **Interpretasi (Contoh Asosiasi):**
-    - Variabel dengan koefisien **positif & signifikan** berasosiasi dengan **peningkatan risiko** deforestasi.
-    - Variabel dengan koefisien **negatif & signifikan** berasosiasi dengan **penurunan risiko** deforestasi.
-    - *Pseudo R²* menunjukkan seberapa kuat variabel ini menjelaskan variasi spasial, bukan kausalitas penuh.
+    **Interpretasi:**
+    - Kepadatan Tambang (`mining_density_10km`) **positif dan signifikan** (p<0.001), menunjukkan bahwa area yang berdekatan dengan tambang *baseline* 2019 memiliki risiko deforestasi yang konsisten lebih tinggi.
+    - Jarak IKN (`distance_to_ikn`) memiliki koefisien positif, yang berarti semakin **jauh** dari IKN, probabilitas deforestasi justru sedikit lebih tinggi. Ini mengindikasikan deforestasi di Kalimantan lebih didominasi oleh aktivitas industri (tambang/kebun) di wilayah pedalaman ketimbang radius langsung IKN.
+    - Elevasi dan curah hujan berasosiasi negatif (area tinggi/curah hujan tinggi lebih sedikit mengalami deforestasi).
     """)
 
 with tab2:
     df_urb = load_driver_data('urbanization')
     plot_coefficients(df_urb, "Pendorong Urbanisasi (Non-Built → Built)")
     st.markdown("""
-    **Interpretasi (Contoh Asosiasi):**
-    - Variabel yang **tidak signifikan** (p > 0.05) berarti efeknya belum terukur dalam periode 2019–2024.
-    - Cek koefisien `distance_to_ikn` dan `mining_density_10km` untuk melihat apakah urbanisasi dipicu oleh IKN atau tambang.
+    **Interpretasi:**
+    - **`distance_to_ikn` ternyata TIDAK SIGNIFIKAN** (p > 0.05). Artinya, efek limpahan (*spillover effect*) dari pembangunan IKN terhadap urbanisasi wilayah sekitarnya belum terukur/belum terjadi secara masif dalam kerangka waktu 2019–2024.
+    - Sebaliknya, **`mining_density_10km` positif dan sangat signifikan**. Wilayah padat tambang secara konsisten menarik pertumbuhan area terbangun (kemungkinan untuk pemukiman pekerja dan infrastruktur logistik pendukung).
     """)
 
 with tab3:
     df_min = load_driver_data('mining')
     plot_coefficients(df_min, "Pendorong Ekspansi Tambang (Non-Bare → Bare)")
     st.markdown("""
-    **Interpretasi (Contoh Asosiasi):**
-    - Perhatikan p-value. Ekspansi tambang seringkali menunjukkan spatial clustering yang kuat.
+    **Interpretasi:**
+    - Ekspansi tambang baru berasosiasi kuat dengan: (1) Jarak yang semakin dekat dengan IKN (mungkin karena kemudahan logistik), dan (2) Kepadatan tambang historis yang tinggi (*clustering effect*).
     """)
-    st.warning("**Catatan:** Analisis logistik mungkin kurang robust jika jumlah kasus positif (*rare events*) terlalu sedikit.")
 
 st.markdown("---")
-st.info("**Catatan Metodologis:** Analisis ini menggunakan regresi logistik dengan variabel yang di-standardize. Odds Ratio <1 berarti penurunan peluang, >1 berarti peningkatan peluang, per 1 standar deviasi perubahan variabel.")
+st.info("""
+**Catatan Metodologis (PENTING):** 
+1. **Bukan Causal Inference:** Regresi logistik ini mengukur *asosiasi spasial*, bukan hubungan sebab-akibat absolut.
+2. **Data Kepadatan Tambang:** Untuk menghindari *circular reasoning* (memprediksi tambang menggunakan tebakan ML), variabel tambang (`mining_density_10km`) dihitung secara geospasial menggunakan observasi *ground-truth* independen dari **"Global polygons of surface mining area v2" (Maus et al., 2022)**.
+""")
 
 # Driver effects plot (always deforestation-scoped — see note below)
 st.markdown("---")

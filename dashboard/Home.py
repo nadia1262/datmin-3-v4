@@ -25,9 +25,9 @@ st.markdown("""
 Selamat datang di platform analitik spasial untuk **Dual-Driver Land Transformation** di Kalimantan. 
 Dashboard ini menyajikan hasil dari framework klasifikasi supervised machine learning menggunakan *Sentinel-2* dan label *ESA WorldCover*.
 
-Fokus utama penelitian ini adalah mengkuantifikasi perubahan tutupan lahan (Forest, Shrubland, Built-up, Bare, Water) dan menguji dua *driver* spasial utama:
-1. **IKN Development** — Infrastructure Expansion
-2. **Mining Activities** — Extractive Land Degradation
+Fokus utama penelitian ini adalah mengkuantifikasi perubahan tutupan lahan (Forest, Shrubland, Built-up, Bare, Water) dan menguji **Dual-Driver Spasial** utama:
+1. **Pembangunan IKN:** Efek limpahan (*spillover*) yang diukur dari **Jarak ke Pusat IKN** (`distance_to_ikn`).
+2. **Ekspansi Pertambangan:** Efek pendorong dari **Kepadatan Tambang Aktual** (`mining_density`) berdasarkan observasi *ground-truth* independen (Maus et al., 2022).
 """)
 
 st.info("""

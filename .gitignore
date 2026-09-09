@@ -13,3 +13,10 @@ data/
 
 # Legacy archive
 _ARCHIVE/
+
+# Python cache
+__pycache__/
+
+# User zips and copies
+*.zip
+* - Copy*
