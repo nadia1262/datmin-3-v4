@@ -1,48 +1,42 @@
-# Panduan Storyline untuk Tim (Satu Frekuensi)
+# Executive Summary & Alur Logika Penelitian
 
-*Gunakan draf ini saat rapat/kumpul dengan anggota kelompok agar semuanya paham alur cerita proyek kita dari awal sampai akhir, tanpa harus pusing dengan bahasa coding.*
+*Dokumen ini merupakan panduan naratif formal yang merangkum landasan konseptual, metodologi, dan temuan utama penelitian dari awal hingga akhir. Dokumen ini dirancang sebagai acuan diskusi bersama dosen pembimbing guna memastikan keselarasan pemahaman terhadap keseluruhan pipeline penelitian.*
+
+---
+
+## TAHAP 1: Latar Belakang dan Tujuan Utama
+Penelitian ini tidak sekadar bertujuan untuk memetakan tutupan lahan, melainkan dirancang untuk menjawab pertanyaan riset berskala makro: **"Sejak ditetapkannya Ibu Kota Nusantara (IKN) pada tahun 2019 hingga 2024, sejauh mana proyek tersebut berdampak terhadap dinamika tutupan lahan di Kalimantan secara keseluruhan?"**
+
+Untuk menguji hipotesis dampak lingkungan tersebut secara objektif, penelitian ini mengintegrasikan data penginderaan jauh (*Remote Sensing*) dari satelit Sentinel-2 dengan algoritma *Machine Learning* untuk menginvestigasi seluruh daratan Kalimantan.
+
+## TAHAP 2: Metodologi Pelatihan Model dan Pemilihan Algoritma
+Penelitian ini menggunakan pendekatan komparatif terhadap 6 algoritma klasifikasi (SVM, LightGBM, XGBoost, Random Forest, MLP, dan Regresi Logistik). 
+1. **Data Pelatihan:** Model dilatih menggunakan 30.000 titik sampel beresolusi 10 meter yang diekstrak dari referensi global ESA WorldCover 2021.
+2. **Validasi Spasial Ketat:** Untuk mencegah kebocoran spasial (*spatial autocorrelation leakage*) dan *overfitting*, evaluasi model menggunakan metode **Spatial Block GroupKFold**. Melalui metode ini, algoritma diuji untuk memprediksi blok wilayah yang belum pernah dilatihkan sebelumnya.
+3. **Keputusan Pemilihan Model:** Meskipun *Support Vector Machine* (SVM) menghasilkan akurasi tertinggi (83,99%), algoritma **LightGBM** (83,32%) ditetapkan sebagai model operasional utama. Keputusan ini didasari oleh efisiensi komputasi LightGBM yang 6,5 kali lebih cepat (116 detik vs 759 detik), sebuah faktor krusial untuk inferensi data geospasial berskala benua.
+
+## TAHAP 3: Pendekatan Multi-Skala (Makro vs Mikro)
+Untuk mengakomodasi tantangan komputasi pada area seluas 73 juta hektar, proses inferensi (prediksi) dibagi menjadi dua resolusi:
+1. **Skala Makro (Grid 500m):** Digunakan untuk menangkap tren ekspansi wilayah secara luas di seluruh daratan Kalimantan.
+2. **Skala Mikro (Grid 10m):** Digunakan spesifik pada radius Kawasan Inti Pusat Pemerintahan (KIPP) IKN untuk memvalidasi ketajaman klasifikasi model pada infrastruktur fisik dan bangunan.
+
+## TAHAP 4: Identifikasi dan Mitigasi Anomali Metodologis (*Mixed Pixels*)
+Dalam analisis deteksi perubahan skala makro (500m), ditemukan anomali statistik di mana angka *Forest Gain* melebihi *Forest Loss*. Anomali ini secara akademis diidentifikasi sebagai efek **Mixed Pixels** (Piksel Campuran). Pada grid berukuran 500x500 meter (25 hektar), model *Machine Learning* yang melakukan *hard classification* cenderung keliru menggeneralisasi area heterogen (campuran sawit, belukar, dan hutan) menjadi kelas dominan (Hutan).
+
+**Mitigasi dan Validasi:**
+Kapasitas algoritma divalidasi melalui hasil prediksi Skala Mikro (10m) di KIPP IKN. Pada resolusi aslinya, model terbukti mampu mendelineasi jalan, istana, dan sisa hutan dengan sangat tajam tanpa *over-estimation*. Hal ini membuktikan bahwa arsitektur model klasifikasi sangat cerdas, dan anomali pada skala makro murni merupakan batasan dimensionalitas spasial (eskalasi resolusi), bukan kegagalan algoritmik.
+
+## TAHAP 5: Analisis Asosiasi (Membantah *Spillover Effect* IKN)
+Temuan terpenting diperoleh melalui *Multivariate Logistic Regression* yang menguji korelasi spasial antara Jarak ke IKN dan Kepadatan Tambang terhadap perubahan tutupan lahan.
+
+1. **Efek IKN Tidak Signifikan Terhadap Urbanisasi Makro:** Jarak ke IKN terbukti **tidak signifikan** (*p-value* = 0.159) memicu probabilitas urbanisasi berskala pulau. Hal ini membantah kekhawatiran awal mengenai ledakan *spillover effect* secara langsung dari IKN ke wilayah lain di Kalimantan. IKN, secara fisik, terlokalisasi di wilayah administratifnya.
+2. **Dominasi *Telecoupling* Pertambangan:** Sebaliknya, **Kepadatan Tambang** memiliki efek yang sangat signifikan (*p-value* < 0.001). Keberadaan area tambang terbukti meningkatkan probabilitas urbanisasi baru (Odds Ratio 1.26), memicu deforestasi (Odds Ratio 1.09), dan menarik pembukaan tambang baru (Odds Ratio 1.30).
+3. **Kesimpulan Kausalitas:** Evolusi lanskap Kalimantan saat ini dikendalikan secara mutlak oleh industri ekstraktif (Pertambangan), yang menarik aglomerasi pemukiman pekerja sekaligus mendesak tutupan hutan. Fenomena ini sejalan dengan teori ekologi *Telecoupling*, di mana tambang-tambang di area terluar secara teoritis mensuplai rantai material untuk berbagai proyek mega-infrastruktur.
+
+## TAHAP 6: Interpretabilitas Model Spasial (*Explainable AI*)
+Untuk memastikan bahwa model klasifikasi beroperasi berdasarkan prinsip fisika *remote sensing* dan bukan tebakan acak, dilakukan analisis **SHAP (SHapley Additive exPlanations)**. Hasilnya membuktikan bahwa model bergantung pada gelombang spektral *Short-Wave Infrared* (SWIR/B11 dan B12) untuk mengidentifikasi kelas tambang/lahan terbuka. Bukti empiris ini mengonfirmasi bahwa algoritma belajar merespons pantulan material mineral dan tanah kering, sejalan dengan kaidah ilmu penginderaan jauh.
 
 ---
 
-## BABAK 1: Misi Kita (Tujuan Awal)
-"Gais, inti dari proyek kita ini adalah pengen jawab satu pertanyaan besar: **Sejak IKN diumumkan (2019) sampai sekarang (2024), apakah hutan di Kalimantan itu hancur gara-gara IKN?** 
-Nah, untuk jawab ini, kita nggak pakai data BPS biasa, tapi kita *download* citra satelit Sentinel-2 dan kita suruh *Machine Learning* (AI) buat nebak mana hutan, mana tambang, mana kota."
-
-## BABAK 2: Cara Kerja (Biar Kelihatan Keren)
-"Cara kerjanya gini:
-1. Kita ajarin AI kita pakai peta dari Eropa (ESA WorldCover 2021). Kita kasih dia 30.000 titik sampel dengan resolusi sangat tajam (**10 meter**).
-2. Kita nggak cuma nyoba satu algoritma, tapi 6 algoritma sekaligus biar dosen lihat kita niat! Biar dosen nggak bilang model kita 'cuma menghafal', kita ujinya pakai metode *Spatial Block CV* (diuji di daerah yang belum pernah dia lihat). 
-   Ini hasil perbandingan akurasi piksel 10 meter kita:
-
-   | Peringkat | Algoritma *Machine Learning* | Akurasi | Waktu Pelatihan |
-   | :---: | :--- | :---: | :---: |
-   | 1 | **SVM (Support Vector Machine)** | 83,99% | 759,9 detik (Sangat Lambat) |
-   | 2 | **LightGBM (Terpilih)** | 83,32% | 116,6 detik (Sangat Cepat) |
-   | 3 | **XGBoost** | 83,20% | 189,3 detik |
-   | 4 | **MLP (Neural Network)** | 82,85% | 340,6 detik |
-   | 5 | **Random Forest** | 82,53% | 449,5 detik |
-   | 6 | **Regresi Logistik** | 79,36% | 14,6 detik |
-
-   *(Catatan buat tim: Walaupun SVM juara 1 beda tipis 0,6%, kita pilih **LightGBM** sebagai model operasional utama karena dia **6,5x lebih cepat**. Untuk ngerjain data spasial raksasa skala pulau, kecepatan itu segalanya!)*
-
-3. Setelah pinter, kita suruh model LightGBM ini nebak **seluruh pulau Kalimantan** untuk tahun 2019 dan 2024. Tapi masalahnya, Kalimantan itu gedenya 73 juta hektar! Kalau kita nebak per 10 meter, laptop kita bisa meledak (butuh miliaran titik). Jadi, kita kompromi: kita tebaknya per **500 meter** (jadi cuma 155 ribu titik).
-
-## BABAK 3: Plot Twist (Masalah yang Muncul)
-"Nah, pas hasil tebakannya keluar, ada hasil yang aneh banget. Angka **Forest Gain (Hutan Nambah) kita malah lebih tinggi dari Forest Loss (Hutan Hilang)**. 
-Dosen pasti bakal nanya: *'Kok bisa? Masa dalam 5 tahun Kalimantan tiba-tiba jadi rimbun lagi?'*
-Ini jawabannya: **Efek Mixed Pixels**. Karena kita tadi nebaknya per kotak 500 meter (25 hektar), satu kotak itu isinya campur aduk (ada kebun sawit, belukar, dan dikit hutan). Karena AI kita dipaksa milih 1 tebakan mutlak, dia milih 'Hutan' karena spektral hijaunya dominan. Jadi, hutan yang nambah itu sebenarnya halusinasi algoritma gara-gara resolusi 500m."
-
-## BABAK 4: Senjata Rahasia (Cara Kita Bertahan)
-"Terus kalau ditanya dosen, *'Berarti model kalian gagal dong?'* 
-Kita jawab: **TIDAK!** Kita punya buktinya. 
-Kita bikin **Peta Mikro 10 meter khusus di KIPP (Kawasan Istana Negara IKN)**. Di skala 10 meter aslinya ini, tebakan model kita **sempurna**. Bangunan, jalan tanah, dan sisa hutan terpetakan dengan sangat tajam tanpa *error*. Jadi, model kita itu aslinya sangat cerdas, 'error' tadi murni cuma efek nge-*zoom-out* ke 500 meter aja buat ngakalin keterbatasan laptop."
-
-## BABAK 5: Kesimpulan Pamungkas (Korelasi vs Kausalitas)
-"Terus gimana kesimpulan akhir paper kita? Kesimpulannya sangat objektif berdasarkan data regresi logistik:
-- Hutan di radius dekat IKN itu nggak banyak yang hancur. Pemerintah sukses menjaga *buffer zone*.
-- TAPI, hutan yang hancur karena **Tambang** meledak di mana-mana!
-- **Kesimpulannya:** Secara spasial, ancaman terbesar bagi hutan Kalimantan bukanlah pembangunan fisik IKN itu sendiri, melainkan industri ekstraktif (pertambangan). Walaupun secara teori mungkin ada efek *Telecoupling* (tambang-tambang tersebut menyuplai material untuk IKN), kita harus jujur ke dosen bahwa data satelit kita hanya mengukur **korelasi spasial**, bukan melacak rantai pasok material. Jadi kesimpulan utamanya adalah: IKN aman secara lokal, tapi Kalimantan secara keseluruhan masih terus digerogoti oleh perluasan tambang."
-
----
-**Pesan Penutup untuk Tim:** 
-*"Jadi gais, kalau nanti ditanya pas presentasi, ingat ya: Kita ini jujur kalau ada kelemahan di 500m (mixed pixels), tapi kita buktikan kecerdasan model kita di 10m (Peta KIPP IKN). Dan temuan kita harus disampaikan secara objektif: IKN secara fisik aman, tapi ancaman sesungguhnya di Kalimantan adalah industri ekstraktif (tambang) yang tersebar luas, di mana secara teori mungkin menyuplai material pembangunan mega-proyek."*
+### Kesimpulan Akhir
+Penelitian ini melampaui standar pemetaan LULC (*Land Use/Land Cover*) konvensional dengan memadukan algoritma komputasi tinggi, teknik pengujian spasial ketat, dan analisis ekonometrika regional. Hasil akhir secara kuantitatif membuktikan bahwa kerusakan hutan dan urbanisasi di Kalimantan pada rentang 2019-2024 secara spasial dikendalikan oleh masifnya jaringan industri pertambangan, bukan didorong secara linier oleh keberadaan titik Ibu Kota Nusantara.

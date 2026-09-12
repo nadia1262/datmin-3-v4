@@ -35,16 +35,24 @@ def load_map_data(y):
         if os.path.exists(file_path):
             break
     if os.path.exists(file_path):
-        df = pd.read_csv(file_path)
-        if len(df) > 8000:
-            df = df.sample(8000, random_state=42)
-        return df
+        df_full = pd.read_csv(file_path)
+        
+        # Smart Sampling for Map Rendering (Max ~60k points)
+        # We want to preserve minority classes (mining, water, urban) which might disappear in random sampling
+        if len(df_full) > 60000:
+            df_map = df_full.groupby('predicted_class', group_keys=False).apply(
+                lambda x: x.sample(min(len(x), 12000), random_state=42)
+            )
+        else:
+            df_map = df_full.copy()
+            
+        return df_full, df_map
     else:
-        return None
+        return None, None
 
-df = load_map_data(year)
+df_full, df_map = load_map_data(year)
 
-if df is None:
+if df_full is None:
     st.error("Data prediksi tidak ditemukan untuk tahun ini.")
     st.stop()
 
@@ -53,7 +61,7 @@ if df is None:
 # map and this page's own legend never drift apart.
 CLASS_COLORS_RGB = {cls: list(rgba[:3]) for cls, rgba in CLASS_COLORS_RGBA.items()}
 
-df['color'] = df['predicted_class'].map(CLASS_COLORS_RGB)
+df_map['color'] = df_map['predicted_class'].map(CLASS_COLORS_RGB)
 
 col1, col2 = st.columns([3, 1])
 
@@ -81,10 +89,10 @@ with col1:
     # Scatter layer
     scatter_layer = pdk.Layer(
         "ScatterplotLayer",
-        data=df,
+        data=df_map[['lon', 'lat', 'color', 'predicted_label']], # Only load required columns to frontend
         get_position='[lon, lat]',
         get_color='color',
-        get_radius=2200,  # Lebar agar solid
+        get_radius=2500,  # Lebar disesuaikan agar menutupi grid lebih padat (radius 2.5km)
         pickable=True,
         opacity=0.9,      # Sedikit transparan agar tumpukan terlihat
         stroked=False,
@@ -122,13 +130,13 @@ with col1:
 
 with col2:
     st.subheader(f"Statistik {year}")
-    st.caption(f"Total grid: {GRID_SIZES.get(year, 'N/A'):,} titik")
+    st.caption(f"Total grid: {len(df_full):,} titik") # Gunakan panjang df_full asli
     
-    counts = df['predicted_class'].value_counts().sort_index()
+    counts = df_full['predicted_class'].value_counts().sort_index()
     
     for cls in range(N_CLASSES):
         count = counts.get(cls, 0)
-        pct = (count / len(df)) * 100
+        pct = (count / len(df_full)) * 100
         st.markdown(f"<span style='color:{CLASS_COLORS[cls]}; font-size:1.2rem;'>■</span>&ensp;**{CLASS_NAMES[cls]}**: {pct:.1f}%", unsafe_allow_html=True)
 
     st.markdown("---")
@@ -140,4 +148,4 @@ with col2:
 
     st.markdown("---")
     st.caption("Titik merah besar menandakan lokasi IKN Nusantara.")
-    st.caption("Peta dirender dari systematic sample grid. Data resolusi penuh dikomputasi di GEE.")
+    st.caption("Peta divisualisasikan menggunakan **Stratified Smart Sampling** (hingga 60.000 titik) untuk menjaga porsi visibilitas kelas minoritas tanpa merusak performa *browser*. Statistik persentase dihitung akurat dari 100% populasi piksel grid.")

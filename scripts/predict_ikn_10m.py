@@ -45,8 +45,8 @@ def main():
     colors = ['darkgreen', 'yellowgreen', 'red', 'gray', 'blue']
     cmap = mcolors.ListedColormap(colors)
     
-    # Process 2019 and 2024
-    for year in [2019, 2024]:
+    # Process 2019 to 2024
+    for year in range(2019, 2025):
         t0 = time.time()
         input_csv = os.path.join(PREDICTIONS_DIR, f'ikn_10m_grid_{year}.csv')
         output_csv = os.path.join(PREDICTIONS_DIR, f'ikn_10m_predicted_{year}.csv')

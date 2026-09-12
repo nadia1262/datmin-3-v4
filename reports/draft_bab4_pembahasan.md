@@ -29,24 +29,23 @@ Karena efek *mixed pixel* terjadi secara seragam (*uniformly distributed*) akiba
 
 ## 4.3 Dampak Pembangunan IKN dan Penambangan (*Telecoupling*)
 
-### A. Konsep *Telecoupling* dalam Mega-Proyek Infrastruktur
-Pembangunan Ibu Kota Nusantara (IKN) sejak tahun 2022 seringkali hanya dievaluasi dampak lingkungannya di dalam batas yurisdiksi administratifnya saja (Kawasan Inti 6.671 Ha atau Kawasan Pengembangan 256.142 Ha). Namun, dalam ekologi spasial modern, mega-proyek selalu memicu efek **Telecoupling**—yaitu interaksi sosioekonomi dan lingkungan yang melintasi batas-batas geografis yang jauh (Liu et al., 2013). 
+### A. Evaluasi Empiris Hipotesis *Spillover Effect* IKN
+Pembangunan Ibu Kota Nusantara (IKN) sejak tahun 2022 memicu kekhawatiran ekologis akan terjadinya *spillover effect* (efek limpahan)—yaitu ledakan urbanisasi dan deforestasi yang menyebar secara radial dari pusat IKN ke seluruh pelosok daratan Kalimantan. Untuk menguji kebenaran hipotesis spasial ini, penelitian ini memodelkan probabilitas kejadian urbanisasi, deforestasi, dan ekspansi tambang menggunakan Regresi Logistik Multivariat. 
 
-Artinya, pembangunan IKN tidak hanya membuka lahan di Penajam Paser Utara, tetapi secara tidak langsung menciptakan lonjakan permintaan material konstruksi (semen, pasir, batu bara untuk peleburan baja) yang memicu deforestasi di provinsi lain di Kalimantan (seperti Kalimantan Tengah atau Selatan) melalui ekspansi pertambangan.
+Hasil uji signifikansi (Tabel 4.x) menunjukkan temuan empiris yang sangat krusial dan meruntuhkan hipotesis *spillover* klasik: **Jarak ke IKN terbukti tidak signifikan memicu urbanisasi berskala benua (*p-value* = 0.159)**. Artinya, kedekatan maupun kejauhan geografis dari pusat pemerintahan IKN tidak berkorelasi dengan fenomena pertumbuhan lahan terbangun baru (*Built-up*) di Kalimantan dalam periode 2019–2024. Pembangunan IKN sejauh ini masih sangat terlokalisasi secara mikro di dalam Kawasan Inti (sebagaimana dibuktikan oleh peta resolusi 10m di subbab sebelumnya) dan belum menarik aglomerasi pemukiman makro di luarnya.
 
-### B. Interpretasi Regresi Logistik Dual-Driver
-Untuk membuktikan hipotesis *telecoupling* ini, penelitian ini menggunakan model Regresi Logistik Spasial untuk mengevaluasi probalilitas *Forest Loss* terhadap Jarak ke IKN dan Kepadatan Tambang. 
+### B. Dominasi Efek *Telecoupling* Pertambangan
+Sebaliknya, analisis regresi secara absolut menempatkan **Kepadatan Tambang Eksisting (*Mining Density*)** sebagai motor penggerak spasial utama (Driver) bagi perubahan tutupan lahan di Kalimantan:
 
-1.  **Pengaruh Jarak ke IKN (*Distance to IKN*):** 
-    Hasil regresi menunjukkan bahwa probabilitas deforestasi tidak secara eksklusif berkerumun (terklaster) di radius terdekat dari IKN. Deforestasi besar-besaran justru tersebar secara sporadis di radius menengah hingga jauh (100 - 300 km dari pusat IKN). Fakta ini mengonfirmasi bahwa pemerintah cukup berhasil menjaga zona penyangga (*buffer zone*) IKN agar tidak mengalami perambahan liar. Namun, efek *spillover* (limpahan pembangunan) justru lari ke daerah lain yang perizinan lahannya lebih longgar.
-    
-2.  **Pengaruh Kepadatan Tambang (*Mining Density*):**
-    Sebaliknya, variabel kepadatan area pertambangan menunjukkan nilai Koefisien Positif yang sangat kuat dan signifikan secara statistik ($P-Value < 0.05$, *Odds Ratio* > 1). Ini membuktikan bahwa di mana pun ada peningkatan aktivitas ekstraktif, probabilitas hutan berubah menjadi lahan terbuka (*Bare/Mining-like*) meningkat drastis. Pertambangan merupakan motor penggerak utama hilangnya tutupan tajuk di Kalimantan (Abood et al., 2015).
+1. **Pemicu Utama Urbanisasi:** Kepadatan tambang memiliki efek prediktif yang sangat kuat dan signifikan (*p-value* < 0.001) terhadap pertumbuhan urbanisasi baru, dengan *Odds Ratio* (OR) 1.26. Setiap peningkatan 1 standar deviasi kepadatan tambang, kemungkinan munculnya urbanisasi baru naik 1.26 kali lipat. Ini membuktikan fenomena **Telecoupling** murni: permukiman baru tidak tumbuh mengikuti pusat administrasi (IKN), melainkan beraglomerasi di sekitar pusat ekstraksi modal dan sumber daya alam untuk menampung para pekerja tambang beserta fasilitas pendukungnya.
+2. **Katalis Deforestasi Ekstrim:** Densitas tambang juga terbukti signifikan mendorong hilangnya hutan primer/sekunder (*Forest Loss*) dengan OR sebesar 1.09. Menariknya, variabel jarak ke IKN menunjukkan korelasi positif terhadap deforestasi (*OR* = 1.11, *p-value* < 0.001), yang mengartikan bahwa deforestasi justru semakin probabel terjadi di area yang **jauh** dari pengawasan zona penyangga IKN.
+3. **Aglomerasi Ekstraktif (Tambang Melahirkan Tambang Baru):** Dalam model *Mining Expansion*, keberadaan tambang terdahulu adalah pendorong terkuat untuk pembukaan tambang baru (*OR* = 1.30). Lanskap Kalimantan dikuasai oleh perluasan lubang tambang secara sistematis yang memperlebar defisit ekologis.
 
-### C. Sintesis Kausalitas dan Batasan Analisis Spasial
-Jika kedua temuan tersebut digabungkan, kesimpulan analisis spasialnya adalah: **Ancaman utama deforestasi di Kalimantan saat ini bukan dipicu secara langsung oleh pembangunan fisik IKN, melainkan oleh masifnya industri ekstraktif (pertambangan)**.
+### C. Pengaruh Variabel Lingkungan Pendukung
+Selain *driver* artifisial, model juga mengonfirmasi hukum geografi deterministik. Deforestasi, urbanisasi, maupun ekspansi tambang menunjukkan korelasi negatif yang sangat kuat (*p-value* < 0.001) terhadap **Elevasi** dan **Curah Hujan Tahunan**. Transformasi tutupan lahan manusia secara selektif menghindari wilayah pegunungan yang terjal atau wilayah dengan curah hujan sangat tinggi, dan mengeksploitasi dataran rendah yang secara topografis lebih murah untuk dibangun infrastruktur logistik.
 
-Meskipun secara mikro resolusi tinggi (10m) terbukti ada pembukaan lahan khusus untuk Kawasan Inti IKN, penyumbang angka *Forest Loss* berskala makro se-Kalimantan didominasi oleh tapak ekologis pertambangan. Walaupun literatur ekologi mendukung hipotesis *telecoupling*—di mana tambang-tambang ini kemungkinan besar beroperasi untuk menyuplai rantai pasok material (batu bara, nikel, material galian C) bagi infrastruktur IKN—penting untuk dicatat bahwa **penelitian ini hanya mengukur korelasi spasial, bukan melacak rantai pasok logistik secara empiris**. Oleh karena itu, *telecoupling* di sini berstatus sebagai penjelasan teoritis yang sangat kuat, namun membutuhkan penelitian lanjutan berbasis data rantai pasok material untuk membuktikan hubungan sebab-akibat (kausalitas) secara definitif.
+### D. Sintesis Kausalitas 
+Jika keseluruhan temuan regresi disintesiskan, terbukti bahwa lanskap spasial Kalimantan saat ini belum merespons IKN sebagai pusat gravitasi baru. Evolusi tutupan lahan sejatinya masih dikendalikan secara mutlak oleh fenomena **Telecoupling Ekstraktif**. Walaupun ada kemungkinan bahwa ekspansi pertambangan masif di radius menengah/jauh beroperasi untuk menyuplai rantai pasok material (batu bara, batu, semen) bagi pembangunan infrastruktur IKN, penelitian ini baru sebatas mengonfirmasi *asosiasi spasial*, sedangkan rantai pasok logistik kausalnya membutuhkan studi ekonometrika lintas wilayah di masa depan (Liu et al., 2013).
 
 ---
 

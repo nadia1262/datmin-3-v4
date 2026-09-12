@@ -42,13 +42,20 @@ if df_metrics is None:
     st.stop()
 
 # ── Highlight Best Model ──
-best_idx = df_metrics['accuracy'].idxmax()
-best_model = df_metrics.loc[best_idx, 'model']
-best_acc = df_metrics.loc[best_idx, 'accuracy']
-best_f1 = df_metrics.loc[best_idx, 'f1_macro']
-best_kappa = df_metrics.loc[best_idx, 'kappa']
+# SVM may have slightly higher accuracy, but LightGBM is the operational choice due to speed
+chosen_model = 'lgbm'
+chosen_row = df_metrics[df_metrics['model'] == chosen_model].iloc[0]
 
-st.success(f"**Model Terpilih: {MODEL_DISPLAY_NAMES.get(best_model, best_model)}** — OA={best_acc:.4f} | F1-Macro={best_f1:.4f} | Kappa={best_kappa:.4f}")
+st.success(
+    f"**Model Operasional Terpilih: {MODEL_DISPLAY_NAMES.get(chosen_model, chosen_model)}** — "
+    f"OA={chosen_row['accuracy']:.4f} | F1-Macro={chosen_row['f1_macro']:.4f} | Waktu={chosen_row['time_s']}s"
+)
+st.info(
+    "💡 **Catatan:** Meskipun Support Vector Machine (SVM) memiliki metrik evaluasi yang sedikit lebih tinggi, "
+    "**LightGBM** dipilih sebagai model operasional final. SVM membutuhkan waktu komputasi yang sangat lama "
+    "(>700 detik untuk latih), sementara LightGBM sangat cepat (~116 detik) dengan akurasi yang ekuivalen (selisih < 1%). "
+    "Efisiensi ini krusial untuk memprediksi jutaan piksel pada skala makro 500m dan mikro 10m."
+)
 
 # ── Summary Table ──
 st.subheader("Tabel Perbandingan Metrik")
@@ -118,8 +125,8 @@ fig_scatter.update_layout(
 st.plotly_chart(fig_scatter, use_container_width=True)
 
 # ── Per-class accuracy for best model ──
-st.subheader(f"Akurasi Per Kelas — {MODEL_DISPLAY_NAMES.get(best_model, best_model)}")
-summary = load_summary(best_model)
+st.subheader(f"Akurasi Per Kelas — {MODEL_DISPLAY_NAMES.get(chosen_model, chosen_model)}")
+summary = load_summary(chosen_model)
 if summary and 'per_class' in summary:
     per_class = summary['per_class']
     pc_rows = []

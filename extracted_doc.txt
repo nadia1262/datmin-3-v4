@@ -1,0 +1,878 @@
+Analisis Transformasi Tutupan Lahan Spatiotemporal di Kalimantan (2019-2024) untuk Mengukur Dampak Pembangunan IKN (Ibu Kota Nusantara) dan Ekspansi Pertambangan Menggunakan Machine Learning
+Nama Lengkap Mahasiswa (NIM, Kelas)
+Dosen Pengampu Mata Kuliah: Robert Kurniawan
+Ringkasan— Tuliskan ringkasan dalam Bahasa Indonesia maksimum 160 kata. Dokumen ini adalah template proposal penelitian Program Studi DIV Komputasi Statistik Politeknik Statistika STIS. Dokumen ini disadur dari IEEE template. Mahasiswa wajib mengikuti petunjuk yang diberikan dalam panduan ini. Anda dapat menggunakan dokumen ini baik sebagai petunjuk penulisan dan sebagai template di mana Anda dapat mengetik teks Anda sendiri.
+Kata Kunci— Letakkan maksimal 5 kata kunci Anda di sini, kata kunci dipisahkan dengan koma.
+Pendahuluan
+Latar Belakang Lingkungan
+Kalimantan merupakan salah satu pulau terbesar di Indonesia yang menyimpan kawasan hutan tropis, lahan gambut, jaringan sungai, serta sumber daya mineral dalam jumlah besar. Sebagian besar wilayahnya masih berupa hutan lahan kering primer dan sekunder, selain itu terdapat kawasan pertanian, perkebunan, dan permukiman yang tersebar mengikuti aliran sungai dan jaringan jalan. Kementerian Lingkungan Hidup dan Kehutanan mencatat bahwa tutupan hutan Pulau Kalimantan pada 2019 mencapai sekitar 36,5 juta hektare, angka ini mencakup 77,4% dari total daratan Kalimantan dan menjadikannya pulau dengan tutupan hutan terluas kedua setelah Papua (KLHK, 2020). Karakteristik ini menempatkan Kalimantan pada posisi strategis sekaligus rentan, karena setiap perubahan pemanfaatan lahan berskala besar berpotensi memengaruhi keseimbangan ekosistem hutan tropis.
+Salah satu perubahan signifikan terjadi setelah pemerintah menetapkan lokasi Ibu Kota Nusantara (IKN) pada 2019 di Kalimantan Timur (Sekretariat Kabinet Republik Indonesia, 2019). Penetapan tersebut diperkuat melalui Undang-Undang Nomor 3 Tahun 2022 tentang Ibu Kota Negara yang kemudian diubah melalui Undang-Undang Nomor 21 Tahun 2023. Berdasarkan payung hukum tersebut, kawasan IKN memiliki luas wilayah darat kurang lebih 256.142 hektare dan wilayah perairan kurang lebih 68.189 hektare, yang dikelola oleh Otorita Ibu Kota Nusantara setingkat pemerintahan daerah khusus (Republik Indonesia, 2022). Namun, sebelum ditetapkan sebagai kawasan ibu kota baru, wilayah ini bukan merupakan lahan kosong, melainkan terdapat 162 konsesi tambang, kehutanan, perkebunan sawit, dan pembangkit listrik tenaga batu bara yang tumpang tindih dengan area IKN seluas kurang lebih 180.000 hektare, dan 148 di antaranya berupa konsesi pertambangan batubara (WALHI, 2022).
+Kondisi tersebut menunjukkan bahwa wilayah IKN memiliki dinamika pemanfaatan lahan yang kompleks dan telah mengalami berbagai aktivitas sebelum maupun setelah penetapannya sebagai ibu kota negara. Perubahan tutupan lahan di wilayah ini juga dapat dipengaruhi oleh berbagai faktor, seperti aktivitas pertambangan, perkebunan, pertanian, permukiman, serta kebakaran hutan dan lahan. Oleh karena itu, perubahan yang terjadi tidak dapat secara langsung dikaitkan hanya dengan pembangunan IKN. Pemantauan perubahan tutupan lahan secara sistematis diperlukan untuk mendokumentasikan dinamika spasial dan temporal wilayah IKN serta memberikan gambaran empiris mengenai perubahan kondisi tutupan lahannya. 
+Konteks Pembangunan IKN
+Penetapan IKN di Kalimantan Timur menempatkan wilayah tersebut pada babak pembangunan berskala besar yang berlangsung dalam kurun waktu relatif singkat. Pembangunan kawasan pemerintahan baru pada dasarnya merupakan proyek infrastruktur skala besar yang memerlukan pembukaan lahan untuk jalan, perkantoran, permukiman, dan fasilitas pendukung lainnya. Dalam kerangka land-use change drivers, pembangunan infrastruktur termasuk kategori proximate driver yang secara langsung mengubah tutupan lahan, sekaligus meningkatkan aksesibilitas wilayah yang berpotensi mendorong perkembangan permukiman dan aktivitas ekonomi di sekitarnya.
+Namun demikian, sejauh mana pengaruh pembangunan IKN menyebar secara spasial belum dapat dipastikan tanpa kajian yang eksplisit membandingkan kondisi lahan pada berbagai jarak dari pusat kegiatan. Pengaruh pembangunan berskala besar terhadap wilayah di sekitarnya cenderung melemah seiring bertambahnya jarak dari pusat aktivitas, sebuah pola yang lazim diamati pada kajian mengenai transisi penggunaan lahan akibat pembangunan infrastruktur dan urbanisasi. Oleh karena itu, analisis pada penelitian ini tidak hanya membandingkan kondisi tutupan lahan sebelum dan setelah penetapan IKN, tetapi juga mempertimbangkan variasi jarak terhadap pusat kawasan sebagai salah satu karakteristik spasial yang relevan untuk memahami pola perubahan yang teramati.
+Konteks Ekspansi Pertambangan
+Selain pembangunan IKN, aktivitas pertambangan turut menjadi bagian penting dari dinamika pemanfaatan lahan di Kalimantan Timur. Sebagaimana pembangunan infrastruktur, kegiatan pertambangan tergolong proximate driver yang dapat menyebabkan hilangnya tutupan vegetasi secara langsung melalui pembukaan area operasi, serta memicu perubahan lanjutan melalui pembangunan jalan tambang dan fasilitas pendukung. Kajian mengenai pola perizinan pertambangan batubara di Indonesia menunjukkan bahwa keberadaan konsesi tambang berkaitan dengan perubahan tutupan hutan dan gangguan lanskap di wilayah sekitarnya, termasuk di Kalimantan Timur.
+Karakteristik tekanan yang ditimbulkan aktivitas pertambangan berbeda dengan tekanan akibat pembangunan IKN, baik dari segi pola spasial maupun mekanisme perubahan lahan yang ditimbulkan. Pembangunan IKN cenderung terkonsentrasi di sekitar kawasan inti pemerintahan, sedangkan aktivitas pertambangan tersebar mengikuti lokasi sumber daya sehingga polanya dapat meluas ke wilayah yang tidak berdekatan dengan IKN. Perbedaan ini menjadi alasan pentingnya memperlakukan kepadatan aktivitas pertambangan sebagai variabel spasial tersendiri, terpisah dari jarak terhadap IKN, agar kontribusi masing-masing faktor terhadap perubahan tutupan lahan dapat diidentifikasi secara lebih spesifik, bukan digabungkan begitu saja sebagai satu sumber tekanan pembangunan.
+Peran Remote Sensing dan Machine Learning
+Luasnya wilayah Kalimantan serta keberadaan lokasi pembangunan dan pertambangan yang tersebar dan sebagian sulit dijangkau menjadikan survei lapangan konvensional kurang memadai untuk memantau perubahan tutupan lahan secara menyeluruh dan berkelanjutan. Survei semacam ini umumnya hanya mampu menjangkau sampel lokasi terbatas, sementara kebutuhan penelitian ini mencakup pengamatan pada skala pulau sekaligus pada skala rinci di sekitar kawasan IKN.
+Penginderaan jauh menyediakan alternatif pemantauan yang mampu merekam kondisi permukaan bumi secara berulang pada cakupan wilayah yang luas, sehingga memungkinkan dinamika tutupan lahan diamati dari waktu ke waktu tanpa bergantung sepenuhnya pada pengamatan langsung di lapangan. Kemampuan ini relevan untuk memantau wilayah Kalimantan yang mencakup kawasan hutan luas sekaligus kawasan yang mengalami tekanan pembangunan dan pertambangan.
+Citra Sentinel-2 dipilih sebagai sumber data utama karena memiliki resolusi spasial tinggi, kanal red-edge yang sensitif terhadap kerapatan vegetasi tropis, serta waktu kunjungan ulang yang singkat. Karakteristik tersebut mendukung pemetaan tutupan lahan pada wilayah tropis yang sering tertutup awan seperti Kalimantan. Untuk mempertajam pembedaan antarkelas tutupan lahan, digunakan indeks spektral turunan, yaitu NDVI untuk merepresentasikan kerapatan vegetas, NDBI untuk menonjolkan permukaan terbangun, indeks berbasis inframerah dekat dan gelombang pendek untuk merepresentasikan kandungan air vegetasi, serta BSI untuk mendeteksi tanah terbuka dan area yang mengalami gangguan permukaan.
+Informasi spektral tersebut selanjutnya diolah menggunakan algoritma Machine Learning untuk menghasilkan peta tutupan lahan. Pendekatan supervised learning dipilih karena mampu mempelajari hubungan nonlinear antara karakteristik spektral dan kelas tutupan lahan (Talukdar et al., 2020), dengan beberapa algoritma yang telah banyak digunakan dalam studi serupa, seperti Random Forest (Breiman, 2001), Support Vector Machine (Cortes & Vapnik, 1995), serta metode gradient boosting seperti XGBoost (Chen & Guestrin, 2016) dan LightGBM (Ke et al., 2017). Mengingat data yang digunakan bersifat spasial, validasi model turut memperhitungkan autokorelasi spasial melalui skema validasi berbasis blok geografis, guna menghindari estimasi kinerja yang terlalu optimistis akibat kemiripan piksel yang berdekatan (Roberts et al., 2017; Ploton et al., 2020).
+Peta tutupan lahan yang dihasilkan pada setiap tahun pengamatan selanjutnya dibandingkan melalui pendekatan post-classification comparison untuk mengidentifikasi lokasi dan arah perubahan yang terjadi (Zhu et al., 2019). Untuk melampaui sekadar identifikasi lokasi perubahan, penelitian ini turut menganalisis keterkaitan antara karakteristik spasial suatu lokasi, seperti jarak terhadap IKN dan kepadatan aktivitas pertambangan, dengan probabilitas terjadinya perubahan melalui regresi logistik, serta menginterpretasikan kontribusi masing-masing fitur menggunakan pendekatan SHAP agar dasar pengambilan keputusan model dapat dipahami secara lebih transparan (Lundberg & Lee, 2017).
+Rangkaian pendekatan tersebut, mulai dari penginderaan jauh, klasifikasi berbasis Machine Learning, deteksi perubahan, hingga analisis faktor penggerak, menunjukkan bahwa perubahan tutupan lahan di Kalimantan dapat dianalisis secara lebih sistematis dibandingkan hanya mengandalkan perbandingan luas antarwaktu. Meskipun demikian, kajian yang secara khusus mengintegrasikan analisis skala makro (seluruh Kalimantan) dan skala mikro (sekitar KIPP IKN) sekaligus menyandingkan pengaruh pembangunan IKN dengan ekspansi pertambangan melalui model asosiatif masih terbatas ditemukan, sehingga menjadi dasar bagi penelitian ini untuk dilakukan.
+Identifikasi Masalah
+1. Belum diketahui secara komprehensif bagaimana pola transformasi tutupan lahan di Pulau Kalimantan, maupun skala mikro di sekitar kawasan IKN, selama periode 2019 - 2024.
+2. Pembangunan IKN yang berlangsung sejak 2020 berpotensi meningkatkan tekanan terhadap kebutuhan lahan di Kalimantan Timur, namun pola perubahan tutupan lahan di kawasan inti maupun zona penyangganya belum banyak dipetakan secara spasial-temporal menggunakan data citra satelit multitemporal.
+3. Ekspansi dan keberlanjutan aktivitas pertambangan batubara di Kalimantan Timur berpotensi berkaitan dengan perubahan tutupan lahan, tetapi kontribusinya relatif terhadap faktor pembangunan lain, termasuk pembangunan IKN, belum terukur secara spesifik.
+4. Belum terukur sejauh mana jarak terhadap pusat IKN dan kepadatan aktivitas pertambangan secara bersama-sama berkontribusi terhadap probabilitas terjadinya perubahan tutupan lahan, setelah memperhitungkan faktor topografi dan iklim.
+5. Survei lapangan konvensional tidak memadai untuk memantau perubahan tutupan lahan pada wilayah Kalimantan yang luas dan sebagian sulit dijangkau secara berkelanjutan.
+6. Diperlukan metode berbasis data spasial dan Machine Learning yang mampu mengidentifikasi serta mengukur pola perubahan tutupan lahan secara efisien dan konsisten, baik pada skala makro maupun mikro, sepanjang periode pengamatan. 
+Rumusan Masalah
+1. Bagaimana pola perubahan luas dan distribusi kelas tutupan lahan di Pulau Kalimantan selama periode 2019-2024 berdasarkan hasil klasifikasi citra Sentinel-2?
+2. Bagaimana pola spasial perubahan tutupan lahan tersebut bervariasi antara skala makro (seluruh Kalimantan) dan skala mikro (Kawasan Inti Pusat Pemerintahan IKN)?
+3. Bagaimana pola perubahan tutupan lahan berubah seiring bertambahnya jarak dari pusat IKN pada zona penyangga radius 10 km, 25 km, dan 100 km?
+4. Sejauh mana jarak terhadap pusat IKN dan kepadatan aktivitas pertambangan berkontribusi terhadap probabilitas terjadinya perubahan tutupan lahan, setelah memperhitungkan variabel elevasi dan curah hujan?
+5. Bagaimana kinerja algoritma Machine Learning (Regresi Logistik, Random Forest, Support Vector Machine, XGBoost, LightGBM, dan Multi-Layer Perceptron) dalam mengklasifikasikan tutupan lahan pada wilayah kajian?
+Tujuan Penelitian
+1. Mengidentifikasi dan mengklasifikasikan tutupan lahan Pulau Kalimantan menggunakan citra Sentinel-2 dan algoritma Machine Learning.
+2. Menganalisis perubahan tutupan lahan secara temporal selama periode 2019–2024 pada skala makro (seluruh Kalimantan) dan skala mikro (Kawasan Inti Pusat Pemerintahan IKN).
+3. Menganalisis pola spasial perubahan tutupan lahan berdasarkan jarak dari pusat IKN pada zona penyangga radius 10 km, 25 km, dan 100 km.
+4. Mengukur pengaruh jarak terhadap pusat IKN dan kepadatan aktivitas pertambangan terhadap probabilitas perubahan tutupan lahan melalui model regresi logistik multivariat.
+5. Mengevaluasi kinerja enam algoritma Machine Learning dalam klasifikasi tutupan lahan pada wilayah kajian.
+6. Menginterpretasikan kontribusi masing-masing fitur prediktor terhadap hasil klasifikasi dan model penggerak menggunakan pendekatan SHAP.
+Ruang Lingkup dan Batasan Masalah
+1. Wilayah penelitian mencakup seluruh daratan Pulau Kalimantan (Kalimantan Timur, Kalimantan Selatan, Kalimantan Tengah, Kalimantan Barat, dan Kalimantan Utara) untuk analisis skala makro, dengan fokus mikro pada Kawasan Inti Pusat Pemerintahan (KIPP) IKN beserta zona penyangga (buffer) radius 10 km, 25 km, dan 100 km dari titik pusatnya.
+2. Periode penelitian dibatasi pada rentang tahun 2019–2024; data tahun 2018 hanya digunakan sebagai referensi awal karena keterbatasan cakupan citra pada masa awal operasi satelit Sentinel-2B.
+3. Citra satelit yang digunakan dibatasi pada data Sentinel-2 Surface Reflectance Harmonized beresolusi 10 meter, dengan kanal spektral B2, B3, B4, B8, B11, dan B12, serta empat indeks turunan (NDVI, NDBI, NDMI, dan BSI).
+4. Kelas tutupan lahan dibatasi pada lima kelas hasil reklasifikasi peta referensi ESA WorldCover 2021 (Zanaga et al., 2022), yaitu Forest, Shrubland/Agriculture, Built-up, Bare/Mining-like, dan Water.
+5. Algoritma Machine Learning dibatasi pada enam model yang diuji secara kompetitif, yaitu Regresi Logistik, Random Forest, Support Vector Machine, XGBoost, LightGBM, dan Multi-Layer Perceptron, dengan validasi menggunakan Spatial Block GroupKFold Cross-Validation untuk mencegah kebocoran data akibat autokorelasi spasial.
+6. Resolusi spasial dibedakan antara skala pelatihan model (10 meter) dan skala prediksi makro (500 meter); perbedaan resolusi ini berpotensi menimbulkan pergeseran domain (domain shift) yang menjadi bagian dari batasan penelitian, bukan sumber bias yang dapat dieliminasi sepenuhnya.
+7. Data lokasi kawasan IKN mengacu pada batas administratif resmi sebagaimana diatur dalam Undang-Undang Nomor 3 Tahun 2022 juncto Undang-Undang Nomor 21 Tahun 2023, sedangkan data topografi dan iklim yang digunakan sebagai variabel kontrol masing-masing bersumber dari model elevasi digital SRTM (Farr et al., 2007) dan data curah hujan CHIRPS (Funk et al., 2015).
+8. Data kawasan pertambangan mengacu pada data konsesi/izin usaha pertambangan yang dipublikasikan oleh instansi terkait maupun lembaga pemantau independen yang kredibel, yang digunakan sebagai salah satu variabel penggerak (driver) dalam model asosiatif, bukan sebagai penentu tunggal.
+9. Indikator perubahan tutupan lahan dibatasi pada matriks transisi antarkelas yang dihitung pada domain spasial bersama (common spatial domain), yaitu titik grid yang secara konsisten bebas dari gangguan tutupan awan pada tahun pembanding (2019 dan 2024).
+10. Keterkaitan antara perubahan tutupan lahan dengan pembangunan IKN dan ekspansi pertambangan dianalisis melalui pendekatan asosiatif berbasis regresi logistik dengan variabel kontrol (elevasi dan curah hujan), sehingga hasilnya dapat memberikan indikasi keterkaitan yang lebih kuat dibandingkan overlay spasial sederhana. Penelitian ini tetap tidak menggunakan desain eksperimen terkontrol dengan randomisasi, sehingga istilah “dampak” pada judul penelitian dipahami dalam pengertian asosiatif-statistik, bukan kausalitas eksperimental murni.
+Tinjauan Pustaka
+Landasan Teori
+2.1.1 Tutupan Lahan dan Perubahan Tutupan Lahan
+Tutupan lahan (land cover) merupakan karakteristik biofisik yang menutupi permukaan bumi, sedangkan land use merujuk pada aktivitas, fungsi, atau bentuk pemanfaatan manusia terhadap suatu wilayah [6]. Dengan demikian, land cover menggambarkan kondisi fisik permukaan seperti hutan, vegetasi, badan air, tanah terbuka, dan area terbangun, sementara land use lebih berkaitan dengan bagaimana permukaan tersebut dimanfaatkan. Pembedaan ini penting dalam penelitian berbasis penginderaan jauh karena citra satelit terutama merekam karakteristik fisik permukaan yang kemudian direpresentasikan ke dalam kelas tutupan lahan [6], [7].
+Tutupan lahan bersifat dinamis dan dapat mengalami perubahan secara spasial maupun temporal akibat proses alami dan aktivitas manusia. Perubahan tutupan lahan (land-cover change) menunjukkan transformasi suatu kondisi tutupan lahan dari waktu ke waktu dan dapat dipahami berdasarkan lokasi, waktu, besaran, serta jenis perubahan yang terjadi [7]. Dalam analisis perubahan, perbandingan luas setiap kelas saja belum cukup untuk menggambarkan pola transformasi karena tidak menunjukkan arah perubahan. Oleh karena itu, perubahan tutupan lahan dapat direpresentasikan sebagai transisi antarkelas, yaitu perubahan dari kelas tutupan lahan tertentu pada waktu awal menuju kelas lainnya pada waktu berikutnya. Pendekatan tersebut memungkinkan identifikasi pola perubahan seperti (Forest → Built-up) atau (Forest → Bare/Mining-like), serta dapat dirangkum melalui matriks transisi [7], [8].
+Dalam penelitian ini, tutupan lahan direpresentasikan ke dalam lima kelas yang disesuaikan dengan kebutuhan analisis, yaitu Forest, Shrubland/Agriculture, Built-up, Bare/Mining-like, dan Water, dengan mengacu pada data referensi ESA WorldCover [9]. Transformasi tutupan lahan selama periode 2019–2024 selanjutnya dianalisis berdasarkan perubahan kelas pada lokasi yang sama sehingga dapat diketahui pola dan arah transisi yang terjadi. Oleh karena itu, konsep tutupan lahan dan transisi antarkelas menjadi dasar untuk merepresentasikan perubahan spasial-temporal di Kalimantan serta mengidentifikasi jenis transformasi lahan yang selanjutnya dianalisis dalam kaitannya dengan pembangunan IKN dan ekspansi pertambangan.
+2.1.2 Deforestasi dan Faktor Pendorong Perubahan Tutupan Lahan
+Deforestasi merupakan salah satu bentuk perubahan tutupan lahan yang ditandai oleh hilangnya tutupan hutan dan konversinya menjadi bentuk tutupan lain. Dalam perspektif land change science, deforestasi merupakan hasil interaksi berbagai faktor sosial, ekonomi, kelembagaan, dan biofisik yang bekerja pada skala ruang dan waktu berbeda [10], [11]. Oleh karena itu, identifikasi kehilangan tutupan hutan perlu disertai dengan pemahaman terhadap faktor-faktor yang berkaitan dengan terjadinya perubahan tersebut.
+Faktor pendorong perubahan lahan dapat dibedakan menjadi penyebab langsung (proximate drivers) dan faktor mendasar (underlying drivers) [10], [11]. Proximate drivers merupakan aktivitas yang secara langsung mengubah tutupan lahan, seperti ekspansi pertanian, penebangan, pembangunan infrastruktur, pertambangan, dan permukiman. Sementara itu, underlying drivers mencakup faktor yang memengaruhi muncul dan berkembangnya aktivitas tersebut, seperti pertumbuhan ekonomi dan penduduk, kebijakan, kondisi pasar, kelembagaan, serta perubahan aksesibilitas [10]. Kerangka ini menunjukkan bahwa perubahan yang diamati pada permukaan bumi merupakan hasil dari interaksi berbagai proses yang saling berkaitan.
+Pembangunan infrastruktur dan pertambangan merupakan proximate drivers yang berpotensi mengubah tutupan lahan secara langsung maupun tidak langsung. Pembangunan dapat menyebabkan pembukaan lahan sekaligus meningkatkan aksesibilitas yang selanjutnya mendorong perkembangan permukiman dan aktivitas ekonomi di sekitarnya [11], [12]. Pertambangan dapat menyebabkan kehilangan vegetasi melalui pembukaan area operasi dan fasilitas pendukung, serta memicu perubahan lanjutan melalui pembangunan jaringan transportasi dan aktivitas ekonomi terkait. Studi di Kalimantan Timur menunjukkan bahwa aktivitas pertambangan berkaitan dengan perubahan tutupan hutan dan gangguan lanskap di wilayah sekitarnya [13].
+Dalam penelitian ini, pembangunan Ibu Kota Nusantara (IKN) dipandang sebagai pembangunan berskala besar yang berpotensi menjadi pendorong transformasi tutupan lahan melalui pembangunan kawasan pemerintahan, infrastruktur, dan fasilitas pendukung. Ekspansi pertambangan dipandang sebagai pendorong lain yang berpotensi berkaitan dengan kehilangan tutupan hutan dan peningkatan luas lahan terbuka. Oleh karena itu, jarak terhadap IKN dan kepadatan pertambangan digunakan sebagai variabel spasial untuk menganalisis keterkaitannya dengan probabilitas terjadinya perubahan tutupan lahan, bersama dengan faktor biofisik yang relevan.
+Dengan demikian, konsep proximate dan underlying drivers memberikan dasar untuk menghubungkan perubahan tutupan lahan yang teridentifikasi secara spasial dengan faktor pembangunan, pertambangan, dan kondisi lingkungan. Kerangka tersebut menjadi landasan bagi analisis faktor pendorong perubahan tutupan lahan di Kalimantan selama periode 2019–2024.
+2.1.3 Penginderaan Jauh untuk Pemantauan Tutupan Lahan
+Penginderaan jauh merupakan metode untuk memperoleh informasi mengenai permukaan bumi melalui sensor yang merekam respons energi elektromagnetik tanpa kontak langsung dengan objek. Perbedaan respons spektral antarobjek memungkinkan permukaan bumi diidentifikasi dan dipetakan ke dalam kelas tutupan lahan. Kemampuan memperoleh data pada wilayah yang luas dan melakukan perekaman secara berulang menjadikan penginderaan jauh banyak digunakan untuk pemetaan dan pemantauan perubahan tutupan lahan [14], [15].
+Pengamatan multitemporal memungkinkan kondisi tutupan lahan pada waktu yang berbeda dibandingkan untuk mengidentifikasi lokasi, besaran, dan jenis perubahan yang terjadi. Dalam kajian land change, informasi spasial dan temporal tersebut penting untuk membedakan kondisi yang tetap dari area yang mengalami perubahan serta memahami dinamika perubahan secara lebih komprehensif [14]. Namun, perbedaan kondisi atmosfer, tutupan awan, waktu perekaman, dan kualitas citra dapat menghasilkan perubahan semu sehingga data antar periode perlu diproses secara konsisten sebelum dibandingkan [15].
+Dalam penelitian ini, penginderaan jauh digunakan untuk memperoleh representasi tutupan lahan Kalimantan pada periode 2019–2024 sebagai dasar analisis perubahan spasial-temporal. Oleh karena itu, kemampuan penginderaan jauh dalam menyediakan observasi permukaan bumi yang luas, berulang, dan dapat dibandingkan antarwaktu menjadi dasar penggunaan citra multitemporal untuk mengidentifikasi transformasi tutupan lahan dalam penelitian ini.
+2.1.4 Sentinel-2 sebagai Data Penginderaan Jauh Multispektral
+Sentinel-2 merupakan misi pengamatan bumi dalam program Copernicus yang menyediakan citra optik multispektral untuk pemantauan daratan. Instrumen Multispectral Instrument (MSI) merekam 13 kanal spektral pada wilayah tampak, near-infrared (NIR), red-edge, dan short-wave infrared (SWIR), dengan resolusi spasial 10, 20, dan 60 meter. Konstelasi Sentinel-2 juga memiliki waktu kunjungan ulang sekitar lima hari sehingga mampu menyediakan observasi permukaan bumi secara berkala [17], [18].
+Karakteristik multispektral dan resolusi spasial Sentinel-2 menjadikannya sesuai untuk pemetaan tutupan lahan karena berbagai jenis permukaan memiliki respons spektral yang berbeda. Kanal visible dan NIR dapat membedakan vegetasi dari permukaan non vegetasi, sedangkan kanal red-edge dan SWIR memberikan informasi tambahan mengenai karakteristik vegetasi, kelembapan, tanah, dan permukaan terbangun. Review Phiri et al. menunjukkan bahwa kombinasi resolusi spasial, frekuensi perekaman, dan keberadaan kanal red-edge merupakan faktor penting yang mendukung penggunaan Sentinel-2 dalam pemetaan dan pemantauan tutupan/penggunaan lahan [17].
+Ketersediaan data Sentinel-2 secara terbuka serta kemampuan akuisisi berulang juga mendukung analisis tutupan lahan dalam skala wilayah yang luas dan periode waktu yang berbeda [17], [18]. Namun, perbedaan resolusi antarband perlu diperhatikan karena sebagian kanal memiliki resolusi 20 meter atau 60 meter sehingga penggunaannya pada klasifikasi beresolusi lebih tinggi memerlukan penyesuaian spasial [18]. Dalam penelitian ini, kanal B2, B3, B4, B8, B11, dan B12 dipilih sebagai sumber informasi spektral utama dan digunakan bersama indeks spektral untuk membentuk fitur klasifikasi.
+Oleh karena itu, karakteristik multispektral, resolusi spasial, dan kemampuan observasi berulang Sentinel-2 memberikan dasar pemilihan citra Sentinel-2 sebagai sumber prediktor untuk klasifikasi dan analisis perubahan tutupan lahan Kalimantan pada periode 2019–2024.
+2.1.5 Indeks Spektral 
+Indeks spektral merupakan transformasi nilai spektral yang dirancang untuk menonjolkan karakteristik tertentu dari permukaan bumi sehingga dapat membantu membedakan kelas tutupan lahan. Penggunaan indeks sebagai fitur tambahan memungkinkan karakteristik objek, seperti vegetasi, permukaan terbangun, kelembapan, dan tanah terbuka, direpresentasikan lebih informatif dibandingkan hanya menggunakan nilai spektral mentah.
+Normalized Difference Vegetation Index (NDVI) digunakan untuk merepresentasikan karakteristik dan kondisi relatif vegetasi melalui perbedaan respons spektral pada kanal merah dan inframerah dekat [19]. Normalized Difference Built-up Index (NDBI) dikembangkan untuk menonjolkan karakteristik permukaan terbangun dan mendukung identifikasi kawasan urban [20]. Sementara itu, indeks berbasis inframerah dekat dan short-wave infrared dapat memberikan informasi mengenai kandungan air vegetasi, yang relevan dalam membedakan kondisi vegetasi dan permukaan lainnya [21]. BSI digunakan untuk meningkatkan keterpisahan permukaan tanah terbuka dari tutupan vegetasi sehingga sesuai untuk mendeteksi area yang mengalami pembukaan atau gangguan permukaan [22].
+Keempat indeks tersebut memberikan informasi yang saling melengkapi mengenai vegetasi, area terbangun, kelembapan, dan permukaan terbuka. Oleh karena itu, indeks spektral digunakan dalam penelitian ini sebagai fitur tambahan untuk meningkatkan kemampuan model dalam membedakan kelas tutupan lahan yang memiliki karakteristik spektral berbeda.
+2.1.6 Klasifikasi Tutupan Lahan Berbasis Machine Learning
+Klasifikasi tutupan lahan berbasis *machine learning* merupakan pendekatan *supervised learning* yang mempelajari hubungan antara karakteristik citra sebagai fitur dan kelas tutupan lahan sebagai label untuk menghasilkan prediksi pada data yang belum berlabel. Pendekatan ini banyak digunakan dalam pemetaan tutupan lahan karena mampu menangkap hubungan nonlinier dan kompleks antara karakteristik spektral dengan kelas permukaan [23], [24].
+Dalam *supervised learning*, kualitas klasifikasi bergantung pada keterwakilan fitur dan label terhadap variasi objek yang diamati. Fitur dapat berupa nilai spektral maupun informasi turunan, sedangkan label berfungsi sebagai kelas acuan yang digunakan model selama proses pembelajaran. Kombinasi keduanya memungkinkan model membentuk batas keputusan (*decision boundary*) untuk membedakan kelas tutupan lahan berdasarkan pola karakteristik yang dipelajarinya [23].
+Tidak terdapat satu algoritma yang selalu memberikan kinerja terbaik untuk seluruh kondisi penginderaan jauh. Random Forest dan metode *gradient boosting* seperti XGBoost dan LightGBM mampu memodelkan hubungan nonlinear melalui pendekatan berbasis pohon, sedangkan Support Vector Machine menggunakan pemisahan berbasis *hyperplane* dan dapat menangani batas kelas yang kompleks [24]–[27]. Perbedaan karakteristik tersebut menjadi alasan penggunaan beberapa algoritma dalam penelitian ini untuk memperoleh model yang paling sesuai dengan karakteristik data dan wilayah penelitian.
+Dalam penelitian ini, fitur spektral Sentinel-2 beserta indeks spektral digunakan untuk mempelajari lima kelas tutupan lahan berdasarkan label referensi ESA WorldCover yang telah disesuaikan dengan tujuan penelitian. Oleh karena itu, klasifikasi berbasis *machine learning* menjadi tahap untuk mengubah informasi spektral menjadi peta tutupan lahan yang selanjutnya digunakan dalam analisis perubahan spasial-temporal selama periode 2019–2024.
+2.1.7 Autokorelasi Spasial dan Validasi Spasial
+Data spasial memiliki karakteristik **ketergantungan spasial (*spatial dependence*)**, yaitu kondisi ketika nilai suatu observasi cenderung berkaitan dengan observasi lain yang berdekatan secara geografis. Salah satu bentuknya adalah **autokorelasi spasial (*spatial autocorrelation*)**, ketika objek yang berdekatan memiliki karakteristik yang lebih serupa atau berbeda secara sistematis dibandingkan objek yang tersebar secara acak. Karakteristik ini menyebabkan asumsi independensi antarobservasi pada metode validasi konvensional tidak selalu terpenuhi [28].
+Dalam klasifikasi berbasis penginderaan jauh, autokorelasi spasial dapat menyebabkan data pelatihan dan validasi yang berdekatan memiliki informasi yang sangat mirip. Apabila sampel dibagi secara acak, model dapat dievaluasi pada wilayah yang secara karakteristik hampir sama dengan data yang digunakan untuk melatihnya sehingga menghasilkan estimasi kinerja yang terlalu optimistis. Kondisi tersebut dikenal sebagai **spatial leakage** [28], [29]. Roberts *et al.* menunjukkan bahwa struktur spasial dalam data dapat menyebabkan prosedur *cross-validation* biasa memberikan estimasi kesalahan prediksi yang tidak merepresentasikan kemampuan generalisasi model terhadap wilayah baru [28]. Ploton *et al.* juga menunjukkan bahwa validasi spasial dapat menghasilkan kinerja prediksi yang lebih rendah dibandingkan validasi acak pada pemodelan spasial berskala luas [29].
+Salah satu pendekatan untuk mengatasi masalah tersebut adalah **spatial block cross-validation**, yaitu membagi wilayah penelitian ke dalam blok geografis dan memastikan observasi dalam blok yang sama tidak tersebar antara data pelatihan dan validasi. Dengan demikian, evaluasi lebih mencerminkan kemampuan model dalam melakukan prediksi pada wilayah yang secara geografis tidak digunakan selama pelatihan [28], [29].
+Dalam penelitian ini, validasi spasial digunakan untuk mengevaluasi kemampuan generalisasi model klasifikasi tutupan lahan di wilayah Kalimantan. Oleh karena itu, pengendalian ketergantungan spasial melalui *spatial block cross-validation* diperlukan agar kinerja model yang diperoleh tidak sekadar mencerminkan kemiripan piksel yang berdekatan, tetapi lebih representatif terhadap kemampuan model pada wilayah yang belum diamati.
+2.1.8 Deteksi Perubahan Tutupan Lahan Spatiotemporal
+Deteksi perubahan (change detection) merupakan pendekatan untuk mengidentifikasi perbedaan kondisi permukaan bumi pada waktu yang berbeda sehingga dinamika perubahan dapat diketahui secara spasial dan temporal [30], [31]. Dalam kajian tutupan lahan, informasi perubahan tidak hanya menunjukkan lokasi yang berubah, tetapi juga dapat menggambarkan jenis perubahan yang terjadi.
+Salah satu pendekatan untuk mengidentifikasi jenis perubahan adalah post-classification comparison, yaitu membandingkan peta tutupan lahan dari waktu yang berbeda untuk menentukan perubahan dari kelas awal menuju kelas akhir [31]. Hasilnya dapat diringkas dalam matriks transisi, yang menunjukkan besaran masing-masing perpindahan antarkelas. Pendekatan ini memberikan informasi yang lebih rinci dibandingkan sekadar membandingkan perubahan luas setiap kelas karena mempertahankan arah perubahan from-to [30], [31].
+Perubahan yang diamati pada beberapa waktu juga dapat direpresentasikan sebagai trajektori perubahan, yaitu pola urutan kondisi tutupan lahan suatu lokasi sepanjang waktu. Representasi ini membantu menggambarkan dinamika lanskap secara lebih komprehensif dan membedakan perubahan berdasarkan arah serta keberlanjutannya.
+Dengan demikian, analisis perubahan spatiotemporal menyediakan kerangka untuk mengidentifikasi dan mengukur transisi antarkelas tutupan lahan, yang menjadi dasar evaluasi transformasi lanskap dalam penelitian ini.
+2.1.9 Analisis Faktor Pendorong dengan Regresi Logistik
+Regresi logistik merupakan metode untuk memodelkan probabilitas terjadinya suatu kejadian biner berdasarkan sejumlah variabel penjelas. Hubungan antara prediktor dan probabilitas kejadian dinyatakan melalui fungsi logit, sehingga perubahan nilai prediktor dapat dikaitkan dengan perubahan peluang terjadinya suatu kejadian [33].
+Koefisien regresi logistik menunjukkan arah hubungan antara suatu prediktor dan log-odds kejadian. Koefisien tersebut dapat ditransformasikan menjadi odds ratio melalui (e^{\beta}), yang digunakan untuk menggambarkan perubahan relatif odds akibat perubahan suatu prediktor. Nilai odds ratio di atas satu menunjukkan peningkatan odds, sedangkan nilai di bawah satu menunjukkan penurunan odds, dengan interpretasi yang bergantung pada arah dan skala variabel [33].
+Dalam studi perubahan tutupan lahan, regresi logistik dapat digunakan untuk menghubungkan karakteristik spasial suatu lokasi dengan probabilitas terjadinya perubahan. Pendekatan ini sejalan dengan konsep land-use change drivers yang memandang perubahan lahan sebagai hasil interaksi faktor antropogenik dan biofisik [10], [11]. Dengan demikian, faktor yang merepresentasikan aktivitas manusia maupun kondisi lingkungan dapat digunakan untuk mengidentifikasi karakteristik lokasi yang berkaitan dengan kemungkinan terjadinya perubahan.
+Oleh karena itu, regresi logistik memberikan kerangka kuantitatif untuk menganalisis hubungan antara faktor-faktor spasial dan probabilitas perubahan tutupan lahan dalam penelitian ini.
+2.1.10 Explainable Machine Learning dengan SHAP
+Model machine learning yang kompleks dapat menghasilkan prediksi yang sulit dijelaskan hanya berdasarkan keluaran akhirnya sehingga sering dipandang sebagai black box. Dalam konteks pemetaan tutupan lahan, kemampuan model untuk memprediksi kelas dengan akurat perlu dilengkapi dengan pemahaman mengenai kontribusi fitur terhadap prediksi tersebut agar hasil model dapat diinterpretasikan secara ilmiah.
+Explainable Machine Learning (XAI) menyediakan pendekatan untuk menjelaskan hubungan antara fitur masukan dan keluaran model. Salah satu metode yang banyak digunakan adalah SHAP (SHapley Additive exPlanations), yang mengadaptasi konsep nilai Shapley dari teori permainan untuk mengatribusikan kontribusi masing-masing fitur terhadap suatu prediksi [35]. Nilai SHAP memungkinkan arah dan besarnya kontribusi suatu fitur terhadap prediksi dibandingkan dengan kondisi dasar (baseline) sehingga interpretasi model dapat dilakukan pada tingkat prediksi individual maupun secara agregat.
+Dalam analisis tutupan lahan, interpretasi berbasis SHAP dapat digunakan untuk mengetahui fitur mana yang paling berkontribusi dalam membedakan kelas tertentu serta bagaimana perubahan nilai fitur tersebut berkaitan dengan arah prediksi model. Pendekatan ini melengkapi evaluasi berbasis akurasi karena tidak hanya menunjukkan seberapa baik model melakukan klasifikasi, tetapi juga memberikan informasi mengenai mengapa model menghasilkan prediksi tertentu [35].
+Oleh karena itu, SHAP digunakan dalam penelitian ini sebagai pendekatan interpretabilitas untuk mengidentifikasi kontribusi relatif fitur terhadap prediksi kelas tutupan lahan dan melengkapi evaluasi kinerja model dengan informasi mengenai dasar pengambilan keputusan model.
+Penelitian Terdahulu
+Kerangka Pikir 
+Materi dan Metode 
+Secara konseptual, penelitian ini merangkai tiga tahapan logis: Klasifikasi - Perubahan - Asosiasi. Pertama, kelas tutupan lahan diklasifikasikan dari citra satelit (Tahap 1). Kedua, peta hasil klasifikasi dari tahun 2019 dan 2024 dibandingkan untuk mengidentifikasi perubahan lahan. Ketiga, diuji apakah kejadian perubahan lahan tersebut berasosiasi secara spasial dengan jarak ke Ibu Kota Nusantara (IKN) dan kepadatan tambang, menggunakan metode regresi logistik terpisah (Tahap 2).
+Seluruh tahapan akuisisi data awal dilakukan memanfaatkan komputasi awan Google Earth Engine (GEE), sedangkan proses pelatihan model Machine Learning dan analisis spasial dieksekusi menggunakan bahasa pemrograman Python.
+Data dan Sumber Data
+Analisis difokuskan pada daratan Pulau Kalimantan, dengan lokus mikro di Kawasan Inti Pusat Pemerintahan (KIPP) IKN. Sumber data geospasial yang diintegrasikan dalam penelitian ini meliputi:
+Citra Satelit Optik: Sentinel-2 Sentinel-2 Surface Reflectance Harmonized (Resolusi 10 m). Digunakan enam pita (band) spektral: B2 (Blue), B3 (Green), B4 (Red), B8 (NIR), B11 (SWIR1), dan B12 (SWIR2) 
+Label Referensi Tutupan Lahan: ESA WorldCover 10m 2021 v200. Data global ini digunakan sebagai reference label untuk membentuk sampel pelatihan klasifikasi, bukan sebagai referensi mutlak (absolute ground truth) di lapangan (Zanaga et al., 2022) 
+Data Topografi: Elevasi diekstrak dari instrumen Shuttle Radar Topography Mission (SRTM) versi 3 beresolusi 30 m (Farr et al., 2007). 
+Data Iklim: Akumulasi presipitasi tahunan diakuisisi dari dataset CHIRPS (Climate Hazards Group InfraRed Precipitation with Station data) (Funk et al., 2015). 
+Data Batas IKN: Titik pusat koordinat digunakan untuk menghitung jarak euklidean dari setiap piksel menuju IKN 
+Data Pertambangan Eksternal: Dataset "Global polygons of surface mining area v2" yang diterbitkan oleh Maus et al. (2022). Data ini independen dari model klasifikasi dan digunakan spesifik pada Tahap 2 untuk menghitung variabel kepadatan tambang. 
+Pra-pemrosesan dan Rekayasa Fitur
+2.2.1. Cloud Masking dan Komposit Temporal
+Untuk meminimalisasi tutupan awan di wilayah ekuator, dilakukan operasi cloud masking berbasis band QA60. Citra harian kemudian diagregasi menggunakan median temporal compositing untuk menghasilkan satu citra representatif tahunan per piksel 
+2.2.2. Ekstraksi Indeks Spektral
+Dibentuk empat indeks turunan sebagai fitur masukan klasifikasi:
+NDVI (Normalized Difference Vegetation Index)
+NDBI (Normalized Difference Built-up Index)
+NDMI (Normalized Difference Moisture Index)
+BSI (Bare Soil Index)
+2.2.3. Standarisasi Fitur
+Untuk algoritma parametrik yang sensitif terhadap skala data (seperti  SVM dan Regresi Logistik), variabel independen diskalakan menggunakan StandardScaler. Berdasarkan implementasi aktual dalam kode pelatihan, standarisasi diaplikasikan secara global pada seluruh set data sebelum proses pemisahan fold validasi silang dilakukan.
+Tahap 1: Klasifikasi Tutupan Lahan
+Pada tahap ini, variabel independen (X) berupa fitur optik dan lingkungan digunakan oleh algoritma klasifikasi untuk memprediksi variabel dependen (Y). Tujuan pemodelan ini adalah membangun fungsi pemetaan (mapping function), bukan inferensia kausal
+Variabel Dependen (Y) merupakan satu variabel kategorik multikelas dengan lima kategori yaitu Forest, Shrubland/Agriculture, Built-up, Bare/Mining-like, Water. Variabel Independen (X) adalah fitur masukan yang digunakan terdiri atas Fitur Spektral (B2, B3, B4, B8, B11, B12), Indeks Spektral (NDVI, NDBI, NDMI, BSI), dan Fitur Lingkungan (Elevation, Annual Rainfall)
+2.3.1 Sampel Pelatihan dan Evaluasi Model
+Sebanyak 30.000 titik sampel berskala 10 m diekstrak dari reference label ESA WorldCover menggunakan Stratified Random Sampling.
+Untuk memitigasi autokorelasi spasial, evaluasi model menggunakan teknik Spatial Block GroupKFold Cross-Validation (Roberts et al., 2017). Wilayah studi dibagi ke dalam blok-blok spasial berukuran 0,5° × 0,5°, memastikan piksel latih dan uji tidak saling tumpang tindih dalam proksimitas geografis.
+Terdapat enam model yang dievaluasi: Support Vector Machine (SVM), LightGBM, XGBoost, Random Forest, Multi-Layer Perceptron (MLP), dan Logistic Regression. Setelah prosedur pencarian parameter (Grid Search), algoritma LightGBM (Ke et al., 2017) dipilih sebagai model operasional final karena menyeimbangkan metrik performa klasifikasi dengan efisiensi komputasi untuk dimensi geospasial tinggi.
+2.3.2 Optimasi Parameter dan Metrik Evaluasi
+Eksperimen pencarian ruang hyperparameter dieksekusi secara ekstensif (Exhaustive Grid Search). Untuk LightGBM, parameter yang dioptimasi mencakup rentang pohon n_estimators {200, 500}, kedalaman maksimal max_depth {10, 20}, dan laju pembelajaran learning_rate {0,05; 0,1}. Kombinasi parameter dievaluasi berdasarkan kapabilitas generalisasi spasial model. 
+Performa model kuantitatif dievaluasi menggunakan metrik komplementer:
+Overall Accuracy (OA), Proporsi akurasi piksel secara keseluruhan 
+Macro F1-Score, Rata-rata harmonis dari Precision dan Recall lintas kelas yang memberikan bobot setara terlepas dari ketidakseimbangan kelas (class imbalance) (Sokolova & Lapalme, 2009). 
+Cohen’s Kappa, Indeks kesepakatan klasifikasi yang mengoreksi probabilitas tebakan acak. 
+Intersection over Union (IoU), Rasio irisan antara prediksi dan observasi dibagi dengan gabungannya, digunakan untuk mendeteksi sensitivitas model terhadap variasi kelas lanskap mikro 
+Prediksi dan Pemetaan Tutupan Lahan
+Model  terbaik diimplementasikan untuk merekonstruksi peta tutupan lahan historis (2019-2024). Analisis spasial memanfaatkan dua pendekatan resolusi:
+Prediksi Makro (500 meter): Resolusi ini digunakan untuk mengevaluasi lanskap daratan Kalimantan secara menyeluruh sekaligus memfasilitasi efisiensi komputasi. 
+Prediksi Mikro (10 meter): Diterapkan khusus di kawasan KIPP IKN guna menjaga detail resolusi asli citra untuk kebutuhan visualisasi spasial infrastruktur lokal.
+Deteksi Perubahan Tutupan Lahan
+Tahap 1 menghasilkan seri peta tutupan lahan tahunan. Untuk mengidentifikasi luasan dan lokasi  perubahan lahan secara presisi, perbandingan peta tahun 2019 dan 2024 tidak dilakukan menggunakan luasan agregat secara sederhana. Pendekatan yang digunakan adalah filter Common Spatial Domain. 
+Konsep ini mengevaluasi titik grid resolusi 500 meter yang secara konsisten terbebas dari gangguan tutupan awan di kedua tahun pengamatan. Metode interseksi spasial ini menjamin bahwa penyebut (denominator) area observasi adalah sama pada tahun pembanding. Hal ini secara signifikan mereduksi potensi false-positive yang sering terjadi akibat anomali musim atau residu bayangan awan (Habibie et al., 2025).
+Berdasarkan domain spasial bersama ini, dihasilkan Matriks Transisi Tutupan Lahan (Land-Cover Transition Matrix). Matriks ini merekam setiap perpindahan piksel antarkelas, yang kemudian direklasifikasi untuk membentuk variabel outcome perubahan biner (misalnya, transisi spesifik dari Hutan ke Non-Hutan). Secara konseptual, Variabel Y pada Tahap 2 tidak sama dengan Y pada Tahap 1, karena Y Tahap 2 merupakan status kejadian (event status) yang diekstrak murni dari matriks transisi ini.
+Tahap 2: Analisis Asosiasi Spasial
+Tahap ini dirancang sebagai analisis asosiasi  spasial observasional untuk mengevaluasi pertanyaan Apakah jarak dari IKN dan kepadatan tambang berasosiasi dengan probabilitas terjadinya perubahan tutupan lahan pada periode 2019-2024, setelah mempertimbangkan elevasi dan curah hujan?
+Karena bersifat observasional, analisis ini tidak menghasilkan klaim deterministik (hubungan sebab-akibat), melainkan melaporkan hubungan statistik (statistical association) probabilitas kejadian antar variabel
+2.6.1 Spesifikasi Model Regresi Logistik
+Analisis ini dieksekusi menggunakan tiga model regresi logistik terpisah. Pendekatan logistik multivariat ini digunakan karena variabel dependen yang diamati merupakan outcome kejadian dikotomis (biner). Model matematis untuk mengestimasi log-odds probabilitas kejadian spasial (P) dari outcome Y diformulasikan sebagai berikut: 
+Keterangan:
+-  : Probabilitas bersyarat terjadinya transisi tutupan lahan
+-  : Konstanta model (intercept)
+-  …  : Parameter koefisien yang mendeskripsikan arah (sign) dan magnitudo estimasi asosiasi dari prediktor terhadap logaritma natural peluang (odds) kejadian
+-  : Galat residu (error term) 
+2.6.2 Definisi Variabel Pemodelan
+Variabel Dependen (Y) terdapat tiga outcome biner yang diestimasi pada tiga struktur regresi logistik terpisah. Nilai 1 disematkan jika kejadian transisi dikonfirmasi terjadi, dan nilai 0 jika tidak terjadi:
+= Forest Loss. Didefinisikan sebagai transisi dari kelas Forest pada tahun awal menjadi kelas selain Forest pada tahun akhir
+= Urbanization. Didefinisikan sebagai  transisi dari kelas selain Built-up menjadi kelas Built-up
+= Bare/Mining-like Expansion. Didefinisikan sebagai transisi dari  kelas selain Bare/Mining-like menjadi kelas Bare/Mining-like. Kelas ini merujuk pada label algoritma, bukan pembuktian operasional pertambangan aktual secara empiris
+Variabel Independen / Prediktor (X) pada masing-masing sisi kanan persamaan model, dievaluasi himpunan variabel yang sama:
+= Distance to IKN. Jarak euklidean proksimal menuju IKN (prediktor utama).
+= Mining Density 10 km. Persentase luasan poligon pertambangan aktual berdasarkan data Maus  et al. (2022) dalam radius 10 km (prediktor utama).  Penggunaan radius 10 km mensimulasikan batas proksimal gangguan debu dan aglomerasi penambang di sekitar konsesi.
+= Elevation. Ketinggian topografis (variabel kontrol)
+= Annual Rainfall. Presipitasi agroklimat (variabel kontrol)
+Interpretasi Model
+Interpretabilitas arsitektur pemodelan divalidasi pada dua struktur berbeda, yaitu Regresi Asosiatif untuk menginterpretasi nilai probabilitas  logistik (Odds Ratio), parameter koefisien (), dan ambang nilai p (p-value) untuk menakar hubungan antara prediktor dan probabilitas outcome. Selain itu, digunakan juga SHAP Feature Importance untuk menganalisis keputusan algoritmik model terbaik pada Tahap 1 menggunakan pendekatan SHapley Additive exPlanations (SHAP). Skor marjinal SHAP ditinjau untuk memverifikasi apakah algoritma menggunakan fitur optik secara saintifik sesuai hukum penginderaan jauh (Lundberg & Lee, 2017)
+Definisi Operasional Variabel
+Struktur peran variabel secara holistik dalam arsitektur dua  tahap diringkas dalam Tabel 2.1
+Tabel 2.1 Definisi Operasional Variabel
+Tahap
+Peran
+Variabel
+Keterangan
+Klasifikasi
+Land-Cover Class
+Satu variabel multikelas (5 kategori tutupan lahan)
+Klasifikasi
+Spectral Features
+Reflektansi spektral B2, B3, B4, B8, B11, B12
+Klasifikasi
+Spectral Indices
+Indeks turunan NDVI, NDBI, NDMI, BSI
+Klasifikasi
+Environmental Features
+Elevation dan Annual  Rainfall
+Asosiasi
+Forest Loss
+Outcome biner (Dianalisis pada model terpisah)
+Asosiasi
+Urbanization
+Outcome biner (Dianalisis pada model terpisah)
+Asosiasi
+Bare/Mining-like Expansion
+Outcome biner (Dianalisis pada model terpisah)
+Asosiasi
+Distance to IKN
+Prediktor utama yang diuji asosiasinya
+Asosiasi
+Mining Density (10 km)
+Prediktor utama menggunakan data eksternal (Maus et al., 2022)
+Asosiasi
+Elevation
+Kovariat kontrol topografis
+Asosiasi
+Annual Rainfall
+Kovariat kontrol iklim
+Penelitian ini memfokuskan analisis spasial pada seluruh daratan Pulau Kalimantan, Indonesia. Secara geografis, wilayah studi oleh koordinat bounding box kira-kira pada bujur 108.5’ BT dan lintang 4.2’ LS hingga 4.5’ LU. Analisis mencakup lima wilayah administratif tingkat provinsi, yaitu Kalimantan Timur, Kalimantan Selatan, Kalimantan Tengah, Kalimantan Barat, dan Kalimantan Utara.
+Selain cakupan makro (seluruh pulau), penelitian ini menetapkan lokus mikro di Kawasan Inti Pusat Pemerintahan (KIPP) Ibu Kota Nusantara (IKN) dengan titik pusat koordinat di 1.128’ LS dan 116.847’ BT. Untuk mengevaluasi sebaran dampak pembangunan IKN terhadap laju deforestasi (telecoupling effect), dibentuk zona-zona penyangga (buffer zones) spasial dengan radius 10 km, 25 km, dan 100 km dari titik pusat IKN. Karakteristik topografi Kalimantan yang bervariasi dari dataran rendah bergambut hingga perbukitan (Diekstrak dari SRTM) memberikan konteks spasial yang kaya untuk memodelkan hambatan geografis terhadap laju ekspansi tutupan lahan.
+Metodologi
+Penelitian ini menggunakan pendekatan kuantitatif berbasis komputasi spasial yang mengintegrasikan penginderaan jauh (remote sensing), algoritma Machine Learning (ML), dan pemodelan statistik inferensial. Seluruh tahapan akuisisi data dan pra pemrosesan awal dilakukan memanfaatkan arsitektur Google Earth Engine (GEE), sementara proses pelatihan model, validasi, dan analisis penggerak (driver analysis) dieksekusi menggunakan bahasa pemrograman Python.
+Alur kerja (workflow) penelitian ini dirancang secara berjenjang dari skala mikro hingga makro, dan dapat diklasifikasi ke dalam lima tahapan utama: (1) Akuisisi dan Pra-pemrosesan Data, (2) Pelatihan Model dan Validasi Spasial, (3) Prediksi Spatiotemporal Multi-Skala, (4) Deteksi Perubahan Lahan, dan (5) Analisis Penggerak Deforestasi dan Interpretabilitas Model. Diagram alir metodologi secara komprehensif disajikan pada Gambar 2.1
+Akuisisi dan Pra-pemrosesan Data (Data Engineering)
+Penelitian ini memanfaatkan citra satelit Sentinel-2 Surface Reflectance (Harmonized) yang memiliki keunggulan resolusi spasial 10 meter dan kanal Red-Edge yang sangat sensitif terhadap kerapatan vegetasi tropis (Phiri et al., 2020). Karakteristik band spektral yang digunakan dalam klasifikasi dirangkum pada Tabel 2.1
+Tabel 2.1 Spesifikasi Spektral Sentinel-2 yang Digunakan
+Band
+Keterangan
+Panjang Gelombang (nm)
+Resolusi Asli
+B2
+Biru (Blue)
+490
+10m
+B3
+Hijau (Green)
+560
+10m
+B4
+Merah (Red)
+665
+10m
+B8
+Inframerah Dekat (NIR)
+842
+10m
+B11
+Inframerah Gelombang Pendek (SWIR-1)
+1610
+20m (Resampled ke 10m)
+B12
+Inframerah Gelombang Pendek (SWIR-2)
+2190
+20m (Resampled ke 10m)
+Untuk meminimalisir gangguan atmosfer dan tutupan awan yang tebal di atas ekuator, dilakukan teknik Cloud Masking menggunakan band QA60 dan median temporal compositing secara tahunan (2019 dan 2024). Selain band spektral mentah, penelitian ini mensintesis empat indeks turunan utama untuk mempertegas batas piksel vegetasi, tanah, dan bangunan. Keempat indeks tersebut dihitung menggunakan persamaan matematis berikut:
+NDVI (Normalized Difference Vegetation Index)
+  
+NDBI (Normalized Difference Built-up Index)
+  
+NDMI (Normalized Difference Moisture Index)
+  
+BSI (Bare Soil Index)
+  
+Untuk kebutuhan pengawasan pembelajaran (Supervised Learning), label klasifikasi (ground truth) diekstrak dari peta referensi global ESA WorldCover 2021 yang dimodifikasi menjadi 5 kelas utama proyek (Tabel 2.2). Sebanyak 30.000 titik piksel murni berskala 10 meter ditarik menggunakan metode Stratified Random Sampling untuk mendistribusikan representasi kelas secara proporsional
+Tabel 2.2 Pemetaan Kelas ESA WorldCover ke Kelas Proyek
+Kelas ESA WorldCover
+Kode Kelas Proyek
+Deskripsi Kelas Proyek
+Tree cover, Mangroves, Wetlands
+0
+Forest (Hutan/Vegetasi Lebat)
+Scrubland, Grassland, Cropland, Moss
+1
+Shrubland/Agriculture (Semak/Pertanian)
+Built-up
+2
+Built-up (Area Terbangun/Infrastruktur)
+Bare / sparse vegetation
+3
+Bare/Mining-like (Tanah Terbuka/Tambang)
+Permanent water bodies
+4
+Water (Badan air)
+Validasi Spasial dan Pemilihan Model (Machine Learning Modelling)
+Berbeda dengan pendekatan klasifikasi tabular konvensional yang mengandalkan pemisahan acak (random split), penelitian ini mengimplementasikan Spatial Block GroupKFold Cross-Validation (0.5 derajat). Pendekatan ini merupakan standar emas (gold standard) dalam ekologi kuantitatif guna mencegah kebocoran data spasial (spatial data leakage) akibat Hukum Geografi Pertama Tobler tentang autokorelasi spasial (Roberts et al., 2017; Peloton et al., 2020). Sebanyak enam algoritma diuji secara kompetitif (SVM, LightGBM, XGBoost, Random Forest, Multi-Layer Perceptron, dan Regresi Logistik). Pemilihan model akhir (operational model) tidak hanya didasarkan pada metrik performa absolut (seperti Overall Accuracy dan Macro F1-Score), melainkan juga mempertimbangkan efisiensi komputasi waktu prediksi, di mana algoritma berbasis Gradient Boosting (seperti LightGBM) terbukti menawarkan trade-off terbaik untuk pemrosesan skala benua atau pulau
+Prediksi Spatiotemporal Multi-Skala
+Untuk mengatasi dilema antara presisi spasial dan batasan memori komputasi (Wu, 2004), tahap prediksi dipecah menjadi dua skala resolusi:
+Prediksi Makro (500m): Dilakukan untuk seluruh daratan Pulau Kalimantan (sekitar 73 juta hektar) guna memfasilitasi analisis trend statistik deforestasi lintas batas provinsi (telecoupling)
+Prediksi Mikro (10m): Diterapkan secara eksklusif pada Kawan Inti Pusat Pemerintahan (KIPP) IKN untuk membuktikan presisi asli model tanpa pengaruh mixed pixels, sekaligus memvalidasi  ekspansi infrastruktur skala lokal
+Deteksi Perubahan dan Konsep Common Domain
+Deteksi perubahan lahan dari 2019 hingga 2024 tidak dilakukan menggunakan pengurangan sederhana, melainkan menggunakan filter Common Spatial Domain. Konsep ini menganalisis 118.943 titik grid yang secara konsisten terbebas dari tutupan awal di kedua tahun pengamatan (2019 dan 2024). Metode ini mereduksi potensi false-positive yang sering terjadi akibat variasi musim atau residu bayangan awan (Habibie et al., 2025)
+Analisis Penggerak (Drivers) dan SHAP Explainability
+Tahap akhir metodologi berfokus pada inferensia kausalitas-asosiatif. Untuk menganalisis penyebab konversi hutan, diaplikasikan Regresi logistik Multivariat untuk menghitung log-odds terjadinya deforestasi. Persamaan regresi logistik dirumuskan sebagai 
+Dimana  adalah probabilitas terjadinya deforestasi,    adalah koefisien variabel independen (Jarak IKN, Kepadatan Tambang, Elevasi) dan  adalah galat sisa (Meyfroid et al, 2014)
+Selain itu, penelitian ini menganalisis sifat black box dari model Machine Learning menggunakan pendekatan SHAP (SHapley Additive exPlanations). Analisis SHAP menghitung kontribusi marjinal dari setiap fitur secara individual menggunakan fungsi penjelasan linear:
+(model penjelas), M (jumlah fitur), dan (nilai kontribusi Shapley untuk fitur ke-j). Pendekatan matematis ini memastikan bahwa arah keputusan algoritma sejalan dengan hukum ekologi dan fisika optik (Lundberg &  Lee, 2017)
+Pengumpulan dan Persiapan Data
+2.3.1 Data Satelit (Sentinel-2)
+Penelitian ini memanfaatkan citra satelit Sentinel-2 Surface Reflectance (SR) Harmonized yang diakses melalui portal Google Earth Engine (GEE).  Satelit Sentinel-2, yang dioperasikan di bawah Program Copernicus oleh European Space Agency (ESA), dipilih karena memiliki resolusi spasial tinggi (10 meter) dan waktu kunjungan ulang (revisit time) yang sangat singkat, yakti sekitar 5 hari. Hal ini menjadikannya sangat ideal untuk memantau dinamika tutupan lahan di  wilayah ekuator yang cepat berubah (Phiri et al., 2020; Karra et al., 2021). Pada penelitian ini,  digunakan enam band spektral utama: Band 2 (Biru), Band 3 (Hijau), Band 4 (Merah), dan Band 8 (NIR) dengan resolusi asli 10m, serta Band 11 (SWIR-1) dan Band 12 (SWIR-2) yang di-resample menjadi 10 meter. Untuk mengatasi tingginya frekuensi tutupan awan di atas Pulau Kalimantan, diterapkan proses cloud masking berbasis band QA60 (ambang batas awan 20%) yang dikombinasikan dengan pembentukan komposit median temporal (median temporal compositing) tahunan untuk periode pengamatan 2019-2024
+2.3.2 Data Topografi dan Lingkungan
+Selain fitur spektral optik, pemodelan penggerak spasial (spatial driver analysis) menuntut integrasi data topografi dan iklim untuk mengukur kerentanan dan probabilitas perubahan lahan.
+Elevasi (Topografi): Data model elevasi digital (DEM) diekstrak dari instrumen Shuttle  Radar Topography Mission (SRTM) versi 3 (SRTMGL1_003) beresolusi 30 meter. Topografi dan kemiringan lereng memainkan peranan krusial dalam menentukan hambatan fisik bagi ekspansi  infrastruktur maupun pertambangan, sekaligus kerentanan area hutan terhadap perambahan (Farr et al., 2007).
+Curah Hujan (Iklim): Parameter curah hujan tahunan (mm/tahun) diakuisisi dari dataset Climate Hazards Group InfraRed Precipitation with Station data (CHIRPS). CHIRPS sangat direkomendasikan untuk wilayah tropis karena menggabungkan klimatologi inframerah satelit dengan observasi stasiun cuaca, menghasilkan estimasi curah hujan beresolusi tinggi (0.05 derajat) yang andal meskipun pada wilayah dengan kepadatan stasiun yang rendah (Funk et al., 2015)
+2.3.3 Indeks Lingkungan
+Proses rekayasa fitur (feature engineering) diperkuat dengan ekstraksi empat indeks spektral turunan. Transformasi matematis dari reflektansi band ini dirancang untuk memaksimalkan sensitivitas model Machine Learning terhadap kelas tutupan lahan spesifik:
+NDVI (Normalized Difference Vegetation Index)
+Dihitung berdasarkan selisih ternormalisasi antara band NIR dan Merah. NDVI secara universal diakui sebagai indikator utama kerapatan, kesehatan, dan biomassa vegetasi (Rouse et al., 1974). Analisis SHAP (SHapley Additive exPlanations) pada model LightGBM mengkonfirmasi bahwa NDVI adalah fitur prediktor paling dominan dalam memisahkan hutan dari area non-vegetasi
+NDBI (Normalized Difference Built-up Index)
+Mengandalkan rasio band SWIR-1 dan NIR. Indeks ini diekstraksi secara khusu untuk memisahkan area terbangun (beton, aspal, infrastruktur IKN) dari tanah gundul alami, karena area terbangun cenderung memiliki reflektansi SWIR yang lebih tinggi dibandingkan NIR (Zha et al., 2003)
+NDBI (Normalized Difference Moisture Index)
+Turunan dari band NIR dan SWIR-1 yang sensitif terhadap kandungan air pada kanopi vegetasi (Gao, 1996). Dalam formulasi proyek ini, formula nilai NDMI merupakan negasi matematis dari NDBI, yang menghasilkan redundansi (korelasi -1.0). Meskipun algoritma ensemble berbasis pohon (tree-based) secara umum kebal terhadap multikolinearitas ini, keberadaannya secara sengaja didokumentasikan sebagai bentuk transparansi.
+BSI (Bare Soil Index)
+Indeks kompleks yang mengintegrasikan band Biru, Merah, NIR, dan SWIR-1. BSI diimplementasikan untuk meningkatkan deteksi  permukaan tanah terbuka, area galian tambang, dan area deforestasi segar yang belum tertutup semak belukar (Rikimaru et al., 2002)
+2.3.4 ESA WorldCover
+Sistem pembelajaran mesin tersupervisi (supervised learning) membutuhkan label kebenaran dasar (ground truth) berkualitas tinggi. Dataset referensi yang digunakan adalah ESA WorldCover 10m 2021 v200, yang diakui luas sebagai salah satu peta tutupan lahan global beresolusi 10 meter yang mutakhir dan akurat (Zanaga et al., 2022). Data WorldCover yang semula terdiri dari 11 kelas direklasifikasi menjadi 5 kelas utama yang difokuskan pada bentang ekosistem Kalimantan: (0) Forest, (1) Shrubland/Agriculture, (2) Built-up, (3) Bare/Mining-like, dan (4) Water. Tahap pra pemrosesan akhir melibatkan penyusunan dataset sampel yang memuat 30.000 titik (piksel) berskala 10 meter. Titik-titik sampel ini diekstraksi dengan teknik Stratified Random Sampling, di mana dilakukan oversampling secara terencana pada kelas-kelas lahan yang secara alamiah minoritas (seperti Built-up dialokasikan 5.000 titik dan Bare/Mining-like 3.000 titik). Hal ini dirancang untuk  meminimalisasi  ketidakseimbangan representasi kelas (class imbalance), yang umum memicu distorsi performa klasifikasi pada model Machine Learning.
+Pemrosesan dan Ekspor Data
+Pemrosesan awal (preprocessing) dilakukan secara paralel pada platform GEE dan lingkungan komputasi lokal berbasis Python. Proses ini mencakup reduksi  spasial, penyelarasan resolusi, dan standarisasi fitur untuk memastikan data mentah siap dikonsumsi oleh algoritma Machine Learning.
+2.4.1. Masking Awan dan Komposit Temporal
+Citra Sentinel-2 pada wilayah ekuator memiliki probabilitas tutupan awan (cloud cover) yang sangat tinggi secara persisten. Oleh karena itu, diterapkan algoritma cloud masking menggunakan informasi kualitas spasial dari band QA60 (Gorelick et al., 2017). Bit 10 (mendeskripsikan awan tebal non-transparan pada band QA60 digunakan untuk mengeksklusi piksel yang terkontaminasi awan. Selanjutnya diaplikasikan operasi median temporal compositing untuk mereduksi deret waktu (time-series) citra harian dalam satu  tahun kalender menjadi satu citra komposit tunggal. Metode median secara matematis lebih tangguh (robust) terhadap nilai pencilan (bayangan awan atau anomali sensor) dibandingkan perhitungan nilai rata-rata (mean)
+2.4.2. Resolusi Multi-Skala dan Pergeseran Domain (Domain Shift)
+Desain arsitektur pengolahan spasial  pada penelitian ini secara intensional mengimplementasikan dua  skala spasial berbeda (Wu, 2004) antara tahap kalibrasi  model dan tahap prediksi makro:
+Skala Pelatihan (10 meter): Sebanyak 30.000 titik sampel diekstrak tepat pada resolusi spasial asli optik (10m). Hal ini mutlak diperlukan untuk menangkap probabilitas pure pixels (piksel murni) tertinggi, guna menghindari kontaminasi kelas saat model sedang mempelajari batas (decision boundary) fitur spektral.
+Skala Prediksi Makro (500 meter): Untuk memetakan dinamika lanskap seluruh Pulau Kalimantan secara temporal (2018-2024), resolusi direduksi (spatial aggregation)  menggunakan fungsi  median reducer ke skala 500m. Ini adalah kompromi (trade-off) yang diwajibkan oleh batasan Random Access Memory (RAM) pada komputasi lokal saat melakukan inferensi di atas puluhan juta titik koordinat.
+Konsekuensi struktural dari perbedaan resolusi ini adalah timbulnya Pergeseran Domain (Domain Shift).  Agregasi 500m secara fundamental menghaluskan varians lokal. Hal ini mengakibatkan model (yang dilatih pada varians tinggi 10m) berpotensi mengalami sedikit bias probabilitas terhadap kelas dominan seperti Hutan dan menurunkan estimasi  luas area kelas minoritas yang berstruktur geometris kecil seperti Area Terbangun (Built-up). Dalam literatur Remote Sensing, fenomena ini diakui sebagai  disonansi resolusi lintas domain (Tuia et al., 2016). Fenomena keterbatasan resolusi ini secara transparansi didokumentasikan sebagai bagian dari batasan arsitektur makro klasifikasi  ini
+2.4.3. Ekspor Data
+Data tabular pelatihan maupun grid prediksi diekspor melalui infrastruktur GEE Batch Export ke format Comma-Separated Values (CSV). Melalui proses filter kualitas tahunan, teridentifikasi anomali kelengkapan citra pada tahun 2018 (masa awal satelit Sentinel-2B mengorbit). Hal ini berakibat pada penyusutan jumlah titik grid 500m secara ekstrem menjadi hanya 13.632 titik (~7.8% dari tahun komplit 2019). Penurunan volume spasial  absolut ini dirangkum pada Tabel 2.3
+Tabel 2.3 Rekapitulasi Dimensi Data Grid Prediksi (Resolusi 500 meter)
+Tahun Pengamatan
+Total Titik (Piksel)
+Persentase Keutuhan Area
+2018*
+13.632
+7.77%
+2019
+175.384
+100.0% (Base)
+2020
+176..624
+100.7%
+2021
+162.940
+92.9%
+2022
+160.261
+91.3%
+2023
+159.949
+91.1%
+2024
+154.137
+87.8%
+* Tahun 2018 mengalami penyusutan grid ekstrem akibat belum lengkapnya jangkauan citra tanpa tutupan awan Sentinel-2
+2.4.4. Standarisasi Fitur
+Sebelum data matriks dieksekusi oleh model Machine Learning parametrik, seperti Support Vector Machine (SVM) dan Logistic Regression, seluruh fitur numerik distandarisasi secara independen (feature scaling). Metode yang digunakan adalah Standard Scaler yang mentransformasi himpunan distribusi data asli ke dalam distribusi  skor-Z standar dengan rata-rata metrik (μ) berada pada nilai nol, dan simpangan baku atau varians (σ) bernilai  1.0 (Pedregosa et al., 2011). Formulasi normalisasi didefinisikan secara konvensional sebagai:
+Di mana  merepresentasikan nilai fitur observasi riil (seperti reflektansi Band 4 atau indeks NDVI),   menunjukkan nilai standar deviasi. Meskipun algoritma gradient boosting berbasis pohon (tree-based) pada dasarnya bersikap invarian terhadap skala fitur, standarisasi tetap diaplikasikan secara terpusat untuk  menjaga keseragaman format (data alignment) masukan antar algoritma di dalam eksperimen komparasi kerangka klasifikasi.
+Pelatihan Model Machine Learning dan Optimasi Hyperparameter
+Tahap ini merupakan inti dari kerangka klasifikasi tutupan lahan  Enam algoritma supervised machine learning dilatih dan dievaluasi secara kompetitif di bawah protokol validasi spasial yang ketat untuk mengidentifikasi  model operasional terbaik.
+2.5.1. Arsitektur Model Klasifikasi
+2.5.2. Strategi Validasi  Spasial: Spatial Block GroupKFold
+Berbeda dengan pemisahan data acak (random train-test split) yang lazim digunakan dalam klasifikasi tabular, data geospasial memiliki karakteristik unik berupa autokorelasi spasial (piksel yang berdekatan secara geografis cenderung memiliki nilai fitur spektral yang serupa, sehingga terjadi kebocoran informasi  (data leakage) antar fold jika pemisahan dilakukan secara acak (Roberts et al., 2017; Ploton et al., 2020)
+Untuk mengatasi hal ini, penelitian ini mengimplementasikan protokol Spatial Block GroupKFold Cross-Validation dengan langkah-langkah sebagai berikut:
+Pembentukan Blok Spasial: Seluruh wilayah studi Kalimantan dibagi ke dalam blok-blok (tiles) spasial berukuran 0.5 derajat x 0.5 derajat (ekuivalen ~55 km x 55 km pada garis khatulistiwa). Setiap titik sampel diasosiasikan ke blok berdasarkan koordinat geografisnya (spatial_block_id)
+Pengelompokan pada Fold: Prosedur GroupKFold dari Scikit-learn memastikan bahwa seluruh titik dalam satu blok spasial selalu berada di fold yang sama (tidak pernah terpecah antara set pelatihan dan set validasi). Ini menjamin jarak spasial minimal ~55 km antara data pelatihan dan data evaluasi.
+Konfigurasi: Digunakan K = 5 fold untuk evaluasi final dan K = 3 fold untuk tahap pencarian hyperparameter cepat (quick search).
+Pendekatan ini secara matematis menjamin bahwa matrik evaluasi mencerminkan kemampuan generalisasi model ke wilayah yang belum pernah dilihat (unseen regions), bukan sekadar interpolasi piksel tetangga. Hal ini merupakan standar emas (gold standard) dalam ekologi kuantitatif dan remote sensing (Roberts et al., 2017)
+2.5.3. Optimasi Hyperparameter
+Optimasi hyperparameter dilaksanakan menggunakan metode  Exhaustive Grid Search yang dikombinasikan dengan validasi silang spasial 3-fold (GroupKFold,  K=3).  Untuk setiap kombinasi parameter pada grid, model dilatih pada 2 fold dan dievaluasi pada 1 fold yang terpisah secara spasial, lalu rata-rata Overall Accuracy (OA) dihitung. Kombinasi parameter dengan skor OA tertinggi dipilih sebagai konfigurasi optimal. Ruang pencarian (search space) hyperparameter untuk setiap model disajikan pada Tabel 2.5
+Tabel 2.3 Ruang Pencarian Hyperparameter per Model)
+Model
+Hyperparameter
+Persentase Keutuhan Area
+LogReg
+Regulasi (C) 
+{0.1 ; 1; 10}
+RF
+Jumlah pohon(n_estimators); Kedalaman (max_depth); Daun minimum (min_samples_leaf)
+{200, 500}; {None, 20}; {1,2}
+XGBoost
+Jumlah pohon; Kedalaman; Learning rate
+{200, 500}; {6, 10}; {0,05; 0,1}
+LighGBM
+Jumlah pohon; Kedalaman; Learning rate
+{200, 500}; {10, 20}; {0,05; 0,1}
+SVM
+Regulasi (C); Kernel
+{1, 10}; {RBF}
+MLP
+159.949
+{(128,64),(256,128)}; {0,001;0,01}
+Setelah konfigurasi optimal ditemukan, model dilatih ulang dan dievaluasi secara final menggunakan 5-fold Spatial Block GroupKFold pada seluruh 30.000 sampel (kecuali MLP yang menggunakan 10.000 sampel). Terakhir, model final dilatih pada seluruh data tanpa pemisahan fold untuk menghasilkan model operasional yang akan digunakan pada tahap prediksi.
+2.5.4 Metrik  Evaluasi
+Performa klasifikasi  dievaluasi menggunakan empat metrik komplementer:
+Overall  Accuracy (OA): Proporsi total piksel yang diklasifikasikan dengan benar terhadap jumlah seluruh piksel
+ (elemen diagonal matriks konfusi), c (jumlah kelas), dan N (total  piksel)
+Macro F1-Score: Rata-rata aritmatika F1-Score seluruh kelas,  memberikan bobot yang setara kepada setiap kelas tanpa memandang proporsi populasinya (Sokolova & Lapalme, 2009). Metrik ini sangat penting dalam konteks ketidakseimbangan kelas lahan.
+Cohen’s Kappa (κ): Mengukur tingkat kesepakatan (agreement) klasifikasi setelah memperhitungkan kemungkinan kebenaran secara kebetulan (chance agreement) (Cohen, 1960). Interpretasi nilai κ: 0.61 - 0.80 = Substantial; 0.81 - 1.00 = Almost Perfect
+ (proporsi kesepakatan observasi),  (proporsi kesepakatan acak yang diharapkan)
+Intersection over Union (IoU) per Kelas: Mengukur tumpang tindih (overlap) antara prediksi dan kebenaran dasar untuk setiap kelas individual, sangat sensitif terhadap kesalahan spasial baik false positive maupun false negative. 
+Deteksi Perubahan Temporal dan Analisis Penggerak
+2.6.1 Konsep Common Spatial Domain
+Deteksi perubahan lahan dari 2019 hingga 2024 tidak dilakukan melalui pengurangan luasan agregat secara sederhana, melainkan menggunakan filter Common Spatial Domain. Konsep ini hanya mengevaluasi 118.943 titik grid (resolusi 500 meter) yang secara konsisten terbebas dari gangguan tutupan awan di kedua tahun pengamatan awal (2019) dan akhir (2024). Metode interseksi ketat ini memastikan bahwa penyebut (denominator) luasan lahan adalah sama di antara tahun-tahun pembanding, sehingga mereduksi false-positive semu yang diakibatkan oleh ketiadaan data akibat awan atau anomali musim (Habibie et al., 2025). Berdasarkan domain spasial bersama ini, dihasilkan matriks transisi tutupan lahan yang mendokumentasikan lintasan spesifik perubahan lahan, seperti perpindahan dari Hutan (Kelas 0) menjadi Area Terbangun (Kelas 2).
+2.6.2 Regresi Logistik Dual-Driver
+Tahap akhir analisis berfokus pada inferensia kausalitas spasial menggunakan Regresi Logistik Multivariat. Pendekatan ini bertujuan untuk menghitung besaran log-odds terjadinya tiga fenomena transisi lahan utama:
+(1) Deforestasi (Forest Loss), (2) Urbanisasi (Urbanization), (3) Ekspansi Tambang (Mining Expansion).
+Pemodelan ini menggunakan variabel dependen biner  (Y∈{0,1}) dan mengintegrasikan sekumpulan variabel penggerak (driver variables) independen spasial
+Jarak ke IKN (distance_to_ikn): Jarak euklidian titik dari pusat KIPP IKN
+Kepadatan Tambang (mining_density_10km): Persentase luasan area tambang terbuka aktual dalam radius 10 km menggunakan dataset independen “Global polygons of surface mining area v2” (Maus et al., 2022) yang diinterseksikan dengan titik sampel secara lokal menggunakan analisis geospasial (geopandas)
+Elevasi (elevation): Elevasi topografis (SRTM)
+Curah Hujan (rainfall_annual): Curah hujan tahunan (CHIRPS)
+Persamaan probabilitas regresi logistik dirumuskan sebagai
+Sebelum diumpamakan ke model regresi, seluruh variabel independen ditransformasi menggunakan Standard Scaler untuk memungkinkan komparasi langsung antar nilai koefisien parsial (). Tingkat signifikansi statistik dievaluasi melalui uji-z dengan ambang batas keandalan 95% (p <  0.05).
+Analisis SHAP
+Sistem klasifikasi berbasis gradient boosting ensemble (seperti LightGBM) sering dikritik sebagai “kotak hitam” (black box). Untuk memastikan bahwa kriteria pengambilan keputusan algoritma konsisten secara ilmiah dengan prinsip fisika optik dan ekologi, model dibedah secara komprehensif menggunakan kerangka kerja SHAP.
+Algoritma mengimplementasikan TreeExplainer sebuah varian SHAP yang dioptimalkan khusus untuk ensemble pohon keputusan (decision tree ensemble), guna menghitung kontribusi marjinal presisi tinggi untuk setiap piksel prediksi. Nilai SHAP mendekomposisi output probabilitas logaritma model menjadi jumlahan komponen kontribusi tiap fitur melalui persamaan penjelas linear.
+ mewakili model penjelasan aditif,  adalah total jumlah fitur masukan (misalnya 10 fitur spektral), dan  mewakili kontribusi Shapley dari masing-masing komponen spektral  ke-j untuk klasifikasi spesifik.
+Eksperimen ini mengekstrak skor rata-rata absolute nilai SHAP per kelas akan memverifikasi, misalnya, apakah model benar-benar menggunakan indeks NDVI sebagai alasan utama memprediksi sebuah piksel sebagai Kelas “Hutan”, dan apakah algoritma menggunakan NDBI saat memprediksi “Area Terbangun”. Analisis ini memvalidasi keandalan fisis model operasional di luar metrik akurasi murni (Lundberg & Lee, 2017).
+hasil
+Distribusi Tutupan Lahan dan Korelasi Fitur
+Evaluasi sebaran kelas lahan difokuskan secara spesifik pada 118.943 titik piksel di dalam domain spasial bersama (common spatial domain) yang menunjukkan lokasi yang sama dan memiliki data valid pada seluruh periode perbandingan. Pendekatan ini diterapkan guna memastikan perbandingan antarwaktu tetap konsisten, sekaligus menghindari munculnya bias yang disebabkan oleh perbedaan cakupan perekaman data satelit.
+Kawasan tutupan lahan di wilayah kajian didominasi secara absolut oleh kategori Forest. Pada awal periode pengamatan (2019), hamparan hutan meliputi 72,69% (86.464 piksel) dari keseluruhan area analisis. Tren luasan ini terus mengalami peningkatan hingga menyentuh angka 75,54% (89.851 piksel) pada akhir observasi di tahun 2024, dengan rekor luasan tertinggi terekam pada tahun 2022 (78,07%).
+Posisi kedua ditempati oleh tutupan Shrubland/Agriculture, meskipun porsinya terlihat menyusut dari 19,75% pada 2019 menjadi 17,12% di 2024. Pola penyusutan serupa juga dialami oleh infrastruktur atau area Built-up (turun dari 2,02% ke 1,65%). Sebaliknya, luasan lahan terbuka atau area tambang (Bare/Mining-like) mencatatkan sedikit eskalasi dari 0,40% menuju 0,48%. Sementara itu, bentang perairan (Water) menunjukkan kondisi yang cenderung statis di kisaran 5,13% hingga 5,22% sepanjang periode penelitian. 
+Tabel 3.1 Komparasi Proporsi Kelas Tutupan Lahan (Domain Bersama) 
+Kategori Lahan
+Persentase (2019)
+Persentase (2024)
+Forest
+72,69%
+75,54%
+Shrubland/Agricultur
+19,57%
+17,12%
+Built-up
+2,02%
+1,65%
+Bare/Mining-like
+0,40%
+0,48%
+Water
+5,13%
+5,22%
+Selain observasi sebaran spasial, pengujian korelasi Pearson diaplikasikan pada himpunan data latih tahun 2021 untuk melihat hubungan linear antarvariabel prediktor. Dari total 45 kombinasi pasangan fitur yang dianalisis, ditampilkan tujuh pasangan dengan korelasi paling kuat sebagai temuan utama. Hasil uji mendeteksi asosiasi positif yang sangat pekat di antara sejumlah band spektral, misalnya kedekatan B2 dan B3 (0,974), B3 dengan B4 (0,960), serta B11 dan B12 (0,928). Besarnya angka korelasi ini menegaskan bahwa saluran spektral yang memiliki rentang gelombang berdekatan akan menghasilkan pantulan sinyal yang identik. 
+Temuan yang paling mencolok adalah munculnya korelasi negatif yang bersifat sempurna (-1,000) pada pasangan indeks NDMI dan NDBI. Fenomena fisis-matematis ini sangat wajar terjadi mengingat kedua formula tersebut dibangun dari kombinasi kanal reflektan yang sama, namun dengan logika operasi yang saling meniadakan, satu untuk menonjolkan fitur beton/terbangun, dan lainnya untuk mengekstraksi tingkat kebasahan daun. Di samping itu, variabel B8 dan NDVI turut memperlihatkan kaitan positif yang lumayan kuat (0,709) karena keduanya sama-sama merespons kandungan klorofil pada tutupan vegetasi hijau. 
+Tabel 3.2 Nilai Korelasi Pearson Antarvariabel Prediktor 
+Kombinasi Variabel
+Nilai Pearson (r)
+Karakteristik Hubungan
+NDBI - NDMI
+-1,000
+Negatif Sempurna
+B2 - B3
+0,974
+Positif Sangat Kuat
+B3 - B4
+0,960
+Positif Sangat Kuat
+B11 - B12
+0,928
+Positif Sangat Kuat
+NDBI - BSI
+0,795
+Positif Kuat
+NDMI - BSI
+-0,795
+Negatif Kuat
+B8 - NDVI
+0,709
+Positif Kuat
+Angka korelasi yang ekstrem ini sejatinya mengisyaratkan adanya pengulangan informasi (redundansi), terutama pada indeks serumpun maupun band yang berhimpitan. Walaupun begitu, keseluruhan fitur tetap diikutsertakan ke dalam kerangka pemodelan. Hal ini didasari pertimbangan bahwa setiap arsitektur Machine Learning memiliki mekanisme berbeda dalam memecah kombinasi fitur untuk membangun batas keputusan (decision boundary). Isu multikolinearitas semacam ini umumnya sangat mengganggu model regresi parametrik maupun SVM, tetapi algoritma ansambel yang berbasis pohon keputusan (seperti Random Forest, XGBoost, dan LightGBM) secara inheren jauh lebih kebal dalam menangkal efek prediktor yang saling berkorelasi. 
+Analisis Distribusi dan Potensi Outlier
+Pemeriksaan sebaran data dilakukan terhadap 30.000 sampel latih tahun 2021 untuk mendeteksi anomali nilai. Indikasi outlier disaring menggunakan pendekatan Interquartile Range (IQR), dengan acuan batas bawah serta batas atas.
+Berdasarkan hasil kalkulasi, saluran B2 dan B3 memegang rasio anomali tertinggi, masing-masing menyentuh angka 7,06% dan 7,09%. Tingkat kemunculan ekstrem yang cukup besar juga terlihat pada kanal B4 sebesar 5,55%. Sebaliknya, kanal inframerah dekat B8 menunjukkan catatan outlier yang paling minim, yakni di angka 0,32%. 
+Tabel 3.3 Distribusi Data dan Sebaran Outlier 
+Fitur
+Rata-rata
+Median
+Minimum
+Maksimum
+Potensi Outlier
+B2
+0,0668
+0,0439
+0,0014
+0,8324
+7,06%
+B3
+0,0888
+0,0690
+0,0067
+0,7598
+7,09%
+B4
+0,0793
+0,0490
+0,0030
+0,7292
+5,55%
+B8
+0,2501
+0,2673
+0,0001
+0,7404
+0,32%
+B11
+0,1885
+0,1876
+0,0007
+0,8001
+2,37%
+B12
+0,1886
+0,0909
+0,0001
+0,8868
+3,25%
+NDVI
+0,4567
+0,5842
+-0,9913
+0,9410
+0,03%
+NDBI
+-0,1583
+-0,1868
+-0,9290
+0,9697
+0,33%
+NDMI
+0,1583
+0,1868
+-0,9697
+0,9290
+0,33%
+BSI
+-0,1138
+-0,1244
+-0,7645
+0,5713
+0,01%
+Kesenjangan antara nilai rerata dan titik tengah mengindikasikan bahwa beberapa fitur memiliki kurva distribusi yang tidak simetris (skewed). Sebagai ilustrasi, indeks NDVI mencatatkan rerata 0,4567 dengan nilai median yang lebih tinggi pada posisi 0,5842. Fakta ini membuktikan adanya kehadiran nilai-nilai kecil yang mendistorsi rerata ke arah bawah. Angka minimum NDVI yang mendekati -1 secara karakteristik fisis mewakili bentang non-vegetasi, contohnya perairan, tanah terbuka, ataupun infrastruktur buatan manusia. 
+Temuan nilai-nilai ekstrem pada kanal satelit tidak serta-merta dikategorikan sebagai kerusakan data (noise). Fluktuasi tersebut bisa lahir secara natural akibat keragaman objek muka bumi, fenomena piksel campuran (mixed pixels), dinamika gangguan atmosfer, maupun tanda tangan spektral yang khas. Oleh karenanya, seluruh data tersebut sengaja dibiarkan utuh tanpa melalui proses pemangkasan. Nilai-nilai di luar kebiasaan ini justru menyimpan informasi penting yang membantu sistem dalam memilah kelas target, khususnya pada kategori Built-up, Bare/Mining-like, dan Water. 
+Perbandingan Kinerja Model
+Pengujian komparatif dijalankan terhadap enam arsitektur supervised machine learning, mencakup Regresi Logistik, Random Forest, Support Vector Machine (SVM), XGBoost, LightGBM, serta Multi-Layer Perceptron (MLP). Prosedur validasi menerapkan skema Spatial Block GroupKFold sebanyak lima lipatan guna menekan potensi spatial data leakage. Metrik evaluasi yang diamati meliputi tingkat ketepatan global, F1 Macro, F1 Weighted, Cohen’s Kappa, serta durasi waktu pelatihan model.
+Tabel 3.4 Perbandingan Kinerja Model
+Model
+Jumlah Sampel
+Accuracy
+F1 Macro
+F1 Weighted
+Kappa
+Waktu (detik)
+SVM
+30.000
+0,8399
+0,8423
+0,8403
+0,7884
+759,9
+LightGBM
+30.000
+0,8332
+0,8347
+0,8336
+0,7795
+116,6
+XGBoost
+30.000
+0,8320
+0,8337
+0,8323
+0,7777
+189,3
+MLP
+30.000
+0,8285
+0,8328
+0,8286
+0,7742
+340,6
+Random Forest
+30.000
+0,8253
+0,8267
+0,8528
+0,7690
+449,5
+Regresi Logistik
+30.000
+0,7936
+0,7931
+0,7931
+0,7263
+14,6
+Berdasarkan rekapan hasil uji, arsitektur SVM mencatatkan skor performa paling unggul secara keseluruhan dengan tingkat akurasi global mencapai 0,8399, F1 Macro 0,8423, serta nilai Cohen’s Kappa di angka 0,7884. Capaian ini mengindikasikan bahwa SVM memiliki daya pisah yang paling optimal dalam mengenali kelima kelas tutupan lahan. 
+LightGBM menempati posisi kedua dengan Overall Accuracy sebesar 0,8332 dan F1 Macro sebesar 0,8347. Selisih akurasi antara SVM dan LightGBM relatif kecil, yaitu 0,0067. Namun, waktu pelatihan LightGBM hanya 116,6 detik, sedangkan SVM membutuhkan waktu 759,9 detik. Dengan demikian, waktu pelatihan SVM sekitar 6,5 kali lebih lama dibandingkan LightGBM.
+Kinerja yang relatif setara dengan LightGBM ditunjukkan oleh XGBoost melalui perolehan akurasi 0,8320. Sementara itu, Random Forest mencatatkan angka 0,8253 dan MLP berada di level 0,8285. Perlu dicatat bahwa pengujian MLP menggunakan porsi data yang lebih sedikit (10.000 sampel) akibat kendala sumber daya komputasi, sehingga perbandingan performanya harus dibaca secara proporsional. Di sisi lain, Regresi Logistik menduduki posisi terendah dengan akurasi 0,7936. Walaupun menawarkan waktu komputasi paling kilat (14,6 detik), keterbatasan skor tersebut membuktikan bahwa pola hubungan antara pantulan spektral dan kelas tutupan lahan di wilayah tropis memiliki kompleksitas tinggi yang tidak bisa diselesaikan secara linier. 
+Keputusan akhir penentuan model operasional diambil dengan menimbang aspek efisiensi operasional secara makro. Walaupun SVM memimpin dalam hal akurasi murni, kebutuhan inferensi spasial yang mencakup jutaan titik grid di seluruh Pulau Kalimantan serta pemodelan multitemporal (2019–2024) menuntut adanya keseimbangan sumber daya. Oleh sebab itu, LightGBM ditetapkan sebagai model operasional utama karena mampu memberikan kualitas prediksi yang hampir setara dengan SVM namun dengan efisiensi waktu komputasi yang jauh lebih superior. Dengan skema ini, SVM diposisikan sebagai acuan validasi terbaik, sedangkan LightGBM diandalkan untuk mengeksekusi pemetaan lahan serta analisis perubahan spasial secara keseluruhan. 
+Dashboard Optimasi
+Platform visualisasi interaktif dibangun memanfaatkan framework Streamlit guna memaparkan seluruh rangkaian keluaran riset, mulai dari sebaran kelas lahan, validasi algoritma, deteksi pergerakan transisi, hingga pemodelan faktor pendorong dan interpretasi hasil. Kehadiran media ini memfasilitasi penelusuran data secara mandiri tanpa harus mengeksekusi ulang komputasi di tingkat skrip.
+Struktur antarmuka sistem dibagi ke dalam beberapa fungsionalitas menu utama: 
+Land Cover Maps, menyajikan peta tematik tutupan lahan berdasarkan rentang tahun observasi. 
+Change Detection, melacak dinamika perpindahan serta arah transisi antarkelas spasial. 
+Model Comparison, mengadu metrik performa dari keenam arsitektur machine learning. 
+Driver Impact, mengkaji kaitan antara jarak menuju titik pusat IKN serta intensitas sebaran tambang terhadap alih fungsi lahan. 
+Spatiotemporal Heatmap, menyoroti pola sebaran perubahan secara periodik dan kewilayahan. 
+SHAP Analysis, membedah tingkat pengaruh masing-masing fitur terhadap keputusan prediksi algoritma. 
+Secara khusus, halaman Model Comparison merangkum tabel performa komprehensif yang mencakup tingkat ketepatan global (Overall Accuracy), F1 Macro, F1 Weighted, Cohen’s Kappa, volume sampel, serta durasi eksekusi pelatihan. Menu ini turut dilengkapi grafik analitik guna mempermudah pembacaan kurva akurasi sekaligus analisis trade-off antara kecepatan komputasi dan reliabilitas model. 
+Paparan sistem memperlihatkan bahwa arsitektur SVM memimpin perolehan validasi murni dengan tingkat akurasi 0,8399, F1 Macro 0,8423, serta koefisien Kappa 0,7884. Kendati demikian, LightGBM ditetapkan sebagai model operasional utama karena menawarkan performa yang hampir setara namun dengan efisiensi waktu pelatihan yang jauh lebih ringkas (116,6 detik berbanding 759,9 detik milik SVM). 
+Di samping evaluasi global, platform turut menyediakan rincian metrik spesifik per kelas bagi model LightGBM, meliputi akurasi produsen, akurasi pengguna, serta Intersection over Union (IoU) untuk mendeteksi kategori objek yang paling mudah maupun paling sulit dikenali. Keterangan teknis mengenai penerapan validasi silang Spatial Block GroupKFold 5-fold (dengan ukuran blok seluas 0,5° atau sekitar 55 km) juga disematkan agar pembaca memahami bahwa pengujian performa model diuji pada blok wilayah yang benar-benar independen guna menghindari kebocoran data spasial. 
+Secara keseluruhan, platform interaktif ini berfungsi sebagai sarana komunikasi ilmiah yang efektif guna mengeksplorasi data, melengkapi analisis statistik formal, serta menyajikan temuan riset agar lebih dinamis dan transparan bagi pengguna. 
+Kinerja Model Machine Learning
+Pengujian tingkat keandalan model dilakukan dengan memanfaatkan data uji melalui metode validasi silang Spatial Block GroupKFold 5-fold. Dari total enam algoritma yang diuji, meliputi Regresi Logistik, Random Forest, Support Vector Machine (SVM), XGBoost, LightGBM, hingga Multi-Layer Perceptron (MLP) arsitektur LightGBM dipilih sebagai model operasional utama untuk memetakan kondisi lahan. Pemodelan ini dilatih menggunakan 30.000 titik sampel dengan rincian pengaturan parameter berupa 500 jumlah pohon (estimators), tingkat laju belajar sebesar 0,01, serta batas maksimum percabangan 63 daun (leaves). Berdasarkan kalkulasi global, LightGBM mencatatkan tingkat akurasi menyeluruh (Overall Accuracy) di angka 0,8332, skor F1 Macro 0,8347, F1 Weighted 0,8336, serta koefisien kesepakatan Cohen’s Kappa sebesar 0,7795 
+Tabel 3.5 Rincian Performa Klasifikasi per Kategori Lahan
+Kelas Tutupan Lahan
+Producer’s Accuracy
+User’s Accuracy
+IoU
+Forest
+0,8412
+0,8585
+0,7388
+Shrubland/Agriculture
+0,7755
+0,7658
+0,6274
+Built-up
+0,8346
+0,8143
+0,7016
+Bare/Mining-like
+0,7832
+0,7771
+0,6405
+Water
+0,9490
+0,9496
+0,9037
+Berdasarkan hasil evaluasi per kelas, Water merupakan kelas dengan kinerja klasifikasi terbaik. Nilai Producer’s Accuracy sebesar 0,9490 dan User’s Accuracy sebesar 0,9496 menunjukkan bahwa sebagian besar piksel air berhasil dikenali dengan benar dan prediksi kelas Water relatif jarang tertukar dengan kelas lain. Nilai IoU sebesar 0,9037 juga menunjukkan tingkat kesesuaian prediksi yang sangat tinggi.
+Kelas Forest menghasilkan Producer’s Accuracy sebesar 0,8412 dan User’s Accuracy sebesar 0,8585, dengan IoU sebesar 0,7388. Hasil ini menunjukkan bahwa karakteristik spektral vegetasi hutan relatif dapat dibedakan oleh model. Namun, sebagian piksel Forest masih berpotensi tertukar dengan kelas Shrubland/Agriculture karena keduanya sama-sama memiliki respons vegetasi yang kuat.
+Kelas Built-up memiliki Producer’s Accuracy sebesar 0,8346, User’s Accuracy sebesar 0,8143, dan IoU sebesar 0,7016. Kinerja tersebut menunjukkan bahwa model cukup mampu mengenali permukaan terbangun. Kesalahan klasifikasi pada kelas ini dapat terjadi karena permukaan terbangun memiliki karakteristik spektral yang beragam dan dapat menyerupai tanah terbuka atau area dengan vegetasi rendah.
+Kelas Bare/Mining-like memiliki IoU sebesar 0,6405. Nilai ini lebih rendah dibandingkan kelas Forest, Built-up, dan Water. Hal tersebut dapat disebabkan oleh kemiripan karakteristik spektral antara tanah terbuka, area tambang, lahan yang baru dibuka, dan permukaan terbangun. Selain itu, kelas Bare/Mining-like memiliki proporsi piksel yang relatif kecil sehingga variasi karakteristik internal kelas lebih sulit direpresentasikan oleh model.
+Kelas dengan kinerja terendah adalah Shrubland/Agriculture, dengan Producer’s Accuracy sebesar 0,7755, User’s Accuracy sebesar 0,7658, dan IoU sebesar 0,6274. Kelas ini mencakup beberapa jenis penutup lahan, seperti semak, padang rumput, dan lahan pertanian. Keragaman tersebut menyebabkan karakteristik spektralnya lebih heterogen. Kelas ini juga berpotensi tertukar dengan Forest, terutama pada wilayah hutan sekunder atau vegetasi yang jarang, serta dengan Bare/Mining-like pada lahan pertanian atau lahan terbuka.
+Kepentingan Fitur (Feature Importance)
+Analisis SHAP
+Deteksi Perubahan Spatiotemporal (2019-2024)
+Pemetaan Skala Mikro Kawasan Inti IKN
+Pendorong Spasial Deforestasi
+Keterbatasan 
+Berdasarkan latar belakang dan identifikasi masalah yang telah diuraikan, uraikan tujuan penelitian yang akan dilakukan secara ringkas namun jelas dan terukur, atau pertanyaan penelitian yang akan dijawab melalui penelitian. 
+pembahasan
+Interpretasi Kinerja Model Machine Learning
+Setelah Keenam algoritma dijalankan, didapatkan 2 algoritma hasil sebagai berikut :
+ 
+Akurasi
+F1
+Kappa
+Waktu
+SVM
+84%
+84,23
+78,84
+760s
+LGBM
+83,32
+83,47
+77,95
+120s
+Random forest
+82,53%
+82,67%
+76,9
+450s
+xgboost
+83,2%
+83,37%
+77,77
+189s
+MLP
+82,9%
+83,28%
+77,4%
+340s
+logreg
+79,36%
+79,31%
+72,63
+14.6s
+ 
+Berdasarkan hasil, didapatkan perbedaan signifikan pada waktu komputasi antar algoritma dengan hasil akurasi,f1, dan kappa hampir sama pada setiap algoritma. Namun, pemilihan algoritma dengan akurasi tertinggi seperti SVM dibandingkan dengan algoritma logreg dengan perbedaan sekitar 5% dibandingkan SVM pada akurasi dan f1.Perbandingan ini menunjukkan bahwa terdapat trade-pff akurasi dan waktu komputasi pada tiap algoritma yaitu algoritma logreg dapat menghasilkan analisis dalam waktu paling cepat dengan menukar hasil komputasi akurasi dan lainnya lebih rendah dibandingkan algoritma lainnya begitu pula dengan algoritma svm yang mempunyai waktu komputasi paling lama dibandingkan algoritma lainnya dengan penukaran hasil akurasi lebih akurat dibandingkan lightgbm. Pada tahap selanjutnya, dipilihlah lightgbm sebagai model utama untuk interpretasi SHAP dan prediksi spatiotemporal dikarenakan hasil akurasi,f1,dan kappa termasuk tinggi disertai waktu komputasi tidak memakan waktu yang lama(Ke et al., 2017).
+Pada tingkat kelas, model LightGBM menghasilkan Intersection over Union (IoU) tertinggi pada kelas Water dan terendah pada kelas Shrubland/Agriculture, seperti dirangkum pada Tabel 5.1 berikut.
+Kelas dengan IoU terendah bukan kelas dengan proporsi sampel terkecil: Bare/Mining-like hanya berkontribusi 0,40% dari titik grid 2019, sedangkan Shrubland/Agriculture, yang proporsinya jauh lebih besar (19,75%), justru menghasilkan IoU terendah. Pola ini menunjukkan bahwa kesulitan klasifikasi tidak hanya disebabkan oleh class imbalance, melainkan juga disebabkan oleh oversampling pada tahap pelatihan (Bab 3) yaitu pada pelatihan data spektral antar-kelas vegetasi. Matriks konfusi model SVM, sebagai representasi, memperlihatkan kesalahan silang terbesar antara Forest dan Shrubland/Agriculture: 1.410 piksel Forest terklasifikasi sebagai Shrubland/Agriculture, dan 1.109 piksel sebaliknya, jauh melampaui pasangan kelas lain. Hal ini konsisten dengan literatur yang menyebutkan bahwa lanskap vegetasi tropis heterogen cenderung menghasilkan proporsi mixed pixel yang tinggi akibat tumpang tindih ambang NDVI antara hutan sekunder dan semak belukar (Lu & Weng, 2007; Gómez et al., 2016).
+Kelas
+IoU
+Proporsi Sampel (Grid 2019)
+Water
+0,9037
+-
+Forest
+0,7388
+-
+Built-up
+0,7016
+-
+Bare/Mining-like
+0,6405
+0,40%
+Shrubland/Agriculture
+0,6274
+19,75%
+Feature importance berbasis split count pada LightGBM menempatkan B12, B11, B3, NDVI, dan B2 sebagai fitur paling sering digunakan sebagai kriteria pemisahan pohon. Namun, dikarenakan metrik ini hanya menghitung frekuensi penggunaan fitur tanpa memperhitungkan besarnya kontribusi terhadap probabilitas dengan  kelas lain. Skor rata-rata nilai absolut SHAP untuk lima fitur teratas dirangkum pada Tabel 5.2 berikut.
+NDVI tercatat sebagai kontributor dominan, jauh melampaui fitur lainnya. Temuan ini sesuai dengan ekspektasi fisik pada Bab 3: NDVI, yang secara formulasi menonjolkan kontras kanopi vegetasi, menjadi penentu utama klasifikasi Hutan, sedangkan indeks turunan SWIR (B11, B12, NDBI) berkontribusi signifikan terhadap pemisahan kelas Area Terbangun dan Lahan Terbuka.
+Fitur
+Rata-rata |SHAP|
+NDVI
+0,938
+B12
+0,470
+B11
+0,443
+B3
+0,217
+NDBI
+0,178
+Analisis SHAP juga mengkonfirmasi indikasi multikolinearitas sempurna antara NDMI dan NDBI yang telah disinggung pada Bab 3. Verifikasi numerik terhadap statistik fitur tahunan menunjukkan nilai rata-rata NDMI dan NDBI yang identik namun berlawanan tanda secara presisi (pada tahun 2019, misalnya, NDMI = 0,28544 dan NDBI = -0,28544), sesuai dengan hubungan matematis keduanya sebagai negasi satu sama lain. Arsitektur tree-based seperti LightGBM tidak terganggu oleh multikolinearitas ini dalam hal akurasi prediksi, tetapi kontribusi kepentingan fitur pada hasil SHAP tampak terpecah  menjadi dua indeks yaitu  NDBI tercatat berkontribusi signifikan (0,178) sedangkan NDMI jauh lebih kecil (0,046, padahal keduanya merupakan  mempunyai sinyal spektral yang identik. Kontribusi gabungan sinyal kelembaban/area terbangun yang sesungguhnya lebih besar daripada yang tampak bila kedua indeks dibaca terpisah karena algoritma pembentukan pohon secara acak memilih salah satu representasi pada tiap simpul pemisah. SHAP berbasis fitur individual pada pasangan indeks yang berkorelasi sempurna perlu dibaca secara indeks gabungan  bukan dibandingkan langsung sebagai indeks independen.
+Validasi melalui Spatial Block Cross-Validation menghasilkan Kappa per-fold pada rentang 0,7601–0,7994 (rata-rata sekitar 0,779) untuk LightGBM setara dengan Kappa evaluasi akhir (0,7795) dari skema pelatihan-pengujian standar. Tidak terjadi penurunan performa tajam seperti yang lazim dilaporkan pada kajian yang membandingkan validasi spasial dan validasi acak  sehingga model tidak bergantung pada autokorelasi spasial lokal untuk mencapai akurasinya. Variasi antar-fold tetap teramati, dengan rentang sekitar 0,04 poin Kappa, yang mencerminkan heterogenitas karakteristik lanskap antar blok spasial Kalimantan tetapi tidak sampai mengindikasikan overfitting sistemik terhadap struktur spasial data latih.
+Dinamika Tutupan Lahan dan Efek Kelas Campuran
+Matriks transisi tutupan lahan pada tahun 2019–2024 dengan  118.943 titik grid Common Spatial Domain dirangkum pada Tabel 4.1. Kelas Forest secara dominan bersifat persisten, tetapi juga melepas area cukup besar ke Shrubland/Agriculture dan Built-up. Transisi perubahan kelas hutan/forest dari Shrubland/Agriculture jauh lebih besar sehingga secara agregat total Forest Gain melampaui total Forest Loss pada periode enam tahun tersebut: proporsi Forest pada domain bersama meningkat dari 72,69% (2019) menjadi 75,54% (2024).
+Kategori
+Titik Grid
+Persentase
+BNaBasis
+Forest tetap (persisten)
+79.664 / 86.464
+92,1%
+Forest
+Forest → Shrubland/Agriculture
+6.215
+7,19%
+Forest
+Forest → Built-up
+409
+0,47%
+Forest
+Shrubland/Agriculture → Forest
+9.694
+7,86%
+Forest
+Total Forest Gain
+10.187
+29,85%
+Non forest
+Total Forest Loss
+6.800
+31,37%
+Non forest
+Pola net gain hutan sebesar ini secara ekologis sulit dijelaskan dalam rentang waktu enam tahun dan mengindikasikan adanya efek mixed pixel, sebagaimana diantisipasi pada kerangka metodologi (Bab 3, subbagian 2.4.2). Bukti kuantitatif pendukung diperoleh dari evaluasi tingkat keyakinan (confidence) prediksi. Piksel yang diklasifikasikan stabil memiliki probabilitas maksimum rata-rata jauh lebih tinggi dibandingkan piksel yang terdeteksi mengalami transisi, baik perubahan sementara,tetap, ataupun fluktuatif. Sebagian besar piksel yang tercatat berubah kelas berada dekat batas keputusan (decision boundary) model, pola yang lebih konsisten dengan tumpang tindih spektral antara Shrubland/Agriculture dan Forest pada skala agregasi 500 meter dibandingkan perubahan tutupan lahan yang sesungguhnya.
+Kategori Piksel
+Probabilitas Maksimum Rata-rata
+Simpangan Baku
+Stabil (tidak berubah)
+0,908
+0,072
+Transisi (Tetap,sementara, dan fluktuatif)
+0,699–0,765
+~0,134
+Analisis konsistensi temporal memperkuat indikasi ini, seperti dirangkum pada Tabel 4.3. Porsi  perubahan label pixel fluktuatif terjadi cukup besar pada kedua arah transisi. Perubahan secepat itu  seharusnya jarang terjadi pada tutupan hutan riil dalam rentang tahunan dan  memperkuat dugaan bahwa sebagian signifikan sinyal perubahan yang tertangkap merupakan kekurangan klasifikasi akibat variasi komposisi sub-piksel dari tahun ke tahun bukan dinamika lanskap hutan yang sesungguhnya.
+Jenis Transisi
+Tetap
+Fluktuatif
+Forest Gain
+62,43%
+35,36%
+Forest Loss
+59,18%
+36,49%
+Perbandingan kualitatif antara peta prediksi makro (500 m, seluruh Kalimantan) dan peta prediksi mikro (10 m, khusus KIPP IKN tahun 2019 dan 2024) turut mendukung interpretasi ini. Pada resolusi 10 m, detail perubahan berskala kecil, seperti pembukaan jalan akses dan klaster bangunan baru di sekitar kawasan inti. Penggunaan peta prediksi mikro lebih jelas merekam prediksi dibandingkan peta agregasi 500 m karena piksel besar tersebut didominasi oleh kelas mayoritas di sekitarnya. Efek kelas campuran ini membatasi presisi pengukuran dampak riil pembangunan berskala kecil ketika dianalisis pada resolusi makro. Interpretasi hasil regresi logistik pada tingkat asosiasi spasial menjadi pendekatan yang lebih sesuai untuk mengukur dampak IKN dan pertambangan pada skala Kalimantan secara keseluruhan.
+Dampak Pembangunan IKN dan Penambangan (Telecoupling)
+Regresi logistik multivariat terhadap tiga  transisi lahan (Deforestasi, Urbanisasi, dan Ekspansi Tambang) menunjukkan variabel mining_density_10km mempunyai konsistensi dan berasosiasi positif pada ketiga model seperti dirangkum pada Tabel 4.4. Kepadatan aktivitas pertambangan  dalam radius 10 km berasosiasi dengan peningkatan perubahan akibat  ketiga transisi lahan artinya terdapat efek pemicu berantai (cascading effect) dari aktivitas tambang terhadap pembukaan akses dan permukiman di sekitarnya (Werner et al., 2023).
+Variabel
+Deforestasi
+Urbanisasi
+Ekspansi Tambang
+mining_density_10km
+OR 1,068 (p<0,001)
+OR 1,215 (p<0,001)
+OR 1,261 (p<0,001)
+distance_to_ikn
+OR 1,108 (p<0,001)
+tidak signifikan (p=0,087)
+OR 0,784 (p<0,001)
+Pada model Deforestasi, outputnya menghasilkan koefisiennya positif dan signifikan artinya  semakin jauh suatu titik dari pusat IKN maka  semakin tinggi peluang kejadian deforestasi berkebalikan dengan intuisi sederhana bahwa dampak pembangunan berpusat di lokasi intinya saja. Pola ini selaras dengan konsep telecoupling. Kawasan inti IKN dipenuhi oleh kawasan hijau  perkotaan sehingga tekanan deforestasi bergeser menjadi kawasan ekonomi. IKN berperan sebagai underlying driver berskala luas  walaupun pembangunannya menjadi titik inti daerah sekitarnya (Meyfroidt et al., 2014). Pola berlawanan muncul pada model Ekspansi Tambang yaitu semakin dekat dengan IKN maka semakin tinggi peluang ekspansi tambang. Dengan kata lain, pembangunan IKN turut memicu permintaan material tambang di wilayah sekitarnya secara lebih langsung. Sedangkan pada model Urbanisasi, variabel ini tidak signifikan (p = 0,087) sehingga tidak dapat diklaim  jarak IKN mempunyai asosiasi terhadap urbanisasi berdasarkan data ini.
+Variabel elevasi dan curah hujan tahunan konsisten berasosiasi negatif dan signifikan pada ketiga model, seperti dirangkum pada Tabel 4.5. Temuan ini sejalan dengan kendala fisik pembangunan lahan dengan elevasi rendah dan curah hujan lebih kering secara praktis lebih mudah dikonversi untuk permukiman, jalur akses, maupun aktivitas tambang dibandingkan lahan pegunungan atau berhujan tinggi.
+Variabel
+Rentang OR (ketiga model)
+p-value
+Elevasi
+0,46–0,77
+<0,001
+Curah hujan tahunan
+0,73–0,91
+<0,001
+Keterbatasan Penelitian
+Keterbatasan metodologis utama penelitian ini bersumber dari perbedaan resolusi antara skala pelatihan model dan skala prediksi makro Tabel 4.6.
+Tahap
+Resolusi
+Keterangan
+Pelatihan model
+10 m (Sentinel-2 asli)
+30.000 titik sampel murni (pure pixel)
+Prediksi makro
+500 m
+Kalimantan sekitar 73 juta hektar
+ Model dilatih pada resolusi asli Sentinel-2  dengan batas keputusan (decision boundary) untuk pemetaan seluruh daratan Kalimantan dengan resolusi prediksi diturunkan ke 500 m. Pemilihan resolusi yang kecil menjadi alternatif karena biaya komputasi,waktu, dan penyimpanan yang tidak mendukung untuk inferensi data Sentinel-2 resolusi tinggi 10 meter.
+Konsekuensi dari Pergeseran Domain (Domain Shift) ini teramati  yaitu terdapatnya total Forest Gain (10.187 titik) yang melampaui melampaui Forest Loss (6.800 titik) pada domain daerah waktu bersama 2019-2024. Dalam waktu 6 tahun, kemungkinan terjadinya perubahan ekologis seperti itu termasuk mustahil. Selain itu, piksel yang terdeteksi bertransisi memiliki keyakinan prediksi jauh lebih rendah (probabilitas maksimum rata-rata 0,699-0,765) dibandingkan piksel stabil (0,908). Pola ini konsisten dengan fenomena mixed pixel pada agregasi 500 m: satu piksel makro dapat berisi campuran beberapa kelas tutupan lahan berskala kecil, misalnya semak belukar bercampur hutan sekunder atau jalur akses kecil, sehingga hard classification memaksa model memilih satu label dominan yang berpotensi bias ke kelas dengan varians spektral lebih rendah pada resolusi agregat. Fenomena disonansi resolusi lintas domain semacam ini telah didokumentasikan dalam literatur penginderaan jauh (Tuia et al., 2016), termasuk sebagai konsekuensi matematis dari Modifiable Areal Unit Problem (MAUP) ketika resolusi spasial diubah (Wu, 2004), serta kerentanan hard classification terhadap kemiripan spektral vegetasi tropis heterogen (Lu & Weng, 2007; Gómez et al., 2016).
+Keterbatasan kedua terdapat pada tahap interpretasi, yaitu multikolinearitas sempurna antara indeks NDMI dan NDBI (korelasi -1,0, terverifikasi secara numerik pada statistik fitur tahunan). Kondisi ini tidak memengaruhi akurasi klasifikasi model tree-based seperti LightGBM tetapi mengakibatkan skor kepentingan fitur pada analisis SHAP terpecah antara kedua indeks. Interpretasi kontribusi individual NDMI atau NDBI terhadap keputusan klasifikasi perlu dibaca dengan hati-hati. Secara ideal, keduacindikator tersebut digabungkan sebagai satu sinyal kelembaban/area terbangun bukan dibandingkan sebagai dua sumber kontribusi yang independen.
+Berdasarkan kedua keterbatasan tersebut, penelitian lanjutan disarankan untuk mengeksplorasi strategi inferensi resolusi seragam pada infrastruktur cloud computing berkapasitas lebih besar agar prediksi makro dapat dilakukan langsung pada resolusi 10 m tanpa agregasi paksa. Pendekatan soft classification atau estimasi fraksi sub-piksel (sub-pixel unmixing) juga disarankan untuk merepresentasikan proporsi kelas campuran secara lebih akurat dibandingkan  memaksakan satu label dominan per piksel pada wilayah dengan heterogenitas lanskap tinggi seperti Kalimantan..
+KESIMPULAN
+Bagian ini menjelaskan secara sistematis desain dan pendekatan penelitian, sumber serta jenis data, teknik pengumpulan data (jika dilakukan), variabel dan definisi operasional, metode analisis yang digunakan, serta alat atau model yang diterapkan agar penelitian dapat direplikasi dan dipertanggungjawabkan secara ilmiah. 
+Untuk penelitian yang berkaitan dengan sistem informasi atau perancangan software perlu dijelaskan model/algoritma atau arsitektur sistem yang digunakan, serta lingkungan komputasi dan tools (bahasa pemrograman, library, perangkat keras/perangkat lunak). Selain itu, dapat dijelaskan alur rencana implementasi, metrik evaluasi kinerja, serta prosedur validasi atau pengujian sistem untuk menjamin reprodusibilitas dan keandalan hasil.
+Pada bagian ini dapat juga ditambahkan kerangka pikir penelitian yang menjelaskan secara visual dan ringkas keseluruhan komponen penelitian, yang mencakup:
+Identifikasi masalah
+Tujuan penelitian
+Metode yang digunakan
+Sumber data (opsional)
+Kriteria Evaluasi
+seperti contoh-contoh berikut:
+Gambar 2. Contoh Kerangka Penelitian
+Dapat juga ditambahkan rencana jadwal penelitian yang menjelaskan secara sistematis tentang perencanaan timeline penelitian dari awal hingga akhir.
+tkan sebelum tabel terkait, seperti yang ditunjukkan pada Tabel II.
+TABEL III
+CONTOH KETERANGAN TABEL
+Judul kolom
+Judul kolom
+Judul kolom
+Judul kolom
+Contoh isian tabela
+aContoh catatan kaki pada tabel.
+C. Format Persamaan/Rumus
+Persamaan secara berurutan diikuti dengan penomoran angka dalam tanda kurung dengan margin rata kanan, seperti dalam (1). Untuk Microsoft Word, gunakan equation editor untuk membuat persamaan. Untuk membuat persamaan lebih rapat, gunakan tanda garis miring ( / ), fungsi pangkat, atau pangkat yang tepat. Gunakan tanda kurung untuk menghindari kerancuan dalam pemberian angka pecahan. Beri spasi tab dan tulis nomor persamaan dalam tanda kurung seperti tertulis pada Persamaan 1 berikut:
+  (1)
+Daftar Pustaka
+A. E. Brouwer and W. H. Haemers, Spectra of Graphs.New York:
+Springer, 2012.
+P. Shakarian, A. Bhatnagar, A. Aleali, E. Shaabani, and R. Guo, The Independent Cascade and Linear Threshold Models. Cham: Springer International Publishing, 2015, pp. 35–48.
+C. Chen, H. Tong, B. A. Prakash, C. E. Tsourakakis, T. Eliassi-Rad, C. Faloutsos, and D. H. Chau, “Node immunization on large graphs: Theory and algorithms,” IEEE Transaction on Knowledge and Data Engineering, vol. 28, no. 1, pp. 113–126, Jan 2016.
+A. W. Wijayanto and T. Murata, “Learning adaptive graph protection strategy on dynamic networks via reinforcement learning,” in 2018 IEEE/WIC/ACM International Conference on Web Intelligence (WI), ser. WI 2018. New York, USA: IEEE, Dec 2018, pp. 534–539.
+Facebook. (2017, 3) How does news feed decide which stories to show? [Online]. Available: https://www.facebook.com/help/166738576721085
+A. Di Gregorio and L. J. M. Jansen, Land Cover Classification System (LCCS): Classification Concepts and User Manual, 2nd ed. Rome, Italy: Food and Agriculture Organization of the United Nations, 2005. [Online]. Available: https://www.fao.org/4/y7220e/y7220e00.htm
+Z. Zhu, S. Qiu, and S. Ye, “Remote sensing of land change: A multifaceted perspective,” Remote Sensing of Environment, vol. 282, Art. no. 113266, 2022, doi: 10.1016/j.rse.2022.113266. [Online]. Available: https://www.sciencedirect.com/science/article/pii/S0034425722003728
+A. Hussain, K. S. S. S. N. S. S. N. N. N., et al., “Change detection techniques in remote sensing: A review,” Remote Sensing Applications: Society and Environment, 2021. [Online]. Available melalui ScienceDirect: https://www.sciencedirect.com/science/article/pii/S2352938521000185
+D. Zanaga et al., ESA WorldCover 10 m 2021 v200. Zenodo, 2022, doi: 10.5281/zenodo.7254220.
+E. F. Lambin et al., “The causes of land-use and land-cover change: Moving beyond the myths,” Global Environmental Change, vol. 11, no. 4, pp. 261–269, 2001, doi: 10.1016/S0959-3780(01)00007-3.
+E. F. Lambin and P. Meyfroidt, “Land use transitions: Socio-ecological feedback versus socio-economic change,” Land Use Policy, vol. 27, no. 2, pp. 108–118, 2010, doi: 10.1016/j.landusepol.2009.09.003.
+W. F. Laurance et al., “A global strategy for road building,” Nature, vol. 513, pp. 229–232, 2014, doi: 10.1038/nature13717.
+H. Werner et al., “Patterns of infringement, risk, and impact driven by coal mining permits in Indonesia,” Ambio, 2023, doi: 10.1007/s13280-023-01944-y.
+Z. Zhu, S. Qiu, and S. Ye, “Remote sensing of land change: A multifaceted perspective,” Remote Sensing of Environment, vol. 282, Art. no. 113266, 2022, doi: 10.1016/j.rse.2022.113266.
+. Hussain, D. Chen, A. Cheng, H. Wei, and D. Stanley, “Change detection from remotely sensed images: From pixel-based to object-based approaches,” ISPRS Journal of Photogrammetry and Remote Sensing, vol. 80, pp. 91–106, 2013, doi: 10.1016/j.isprsjprs.2013.03.006.
+Z. Zhu, C. E. Woodcock, M. Olofsson, and others, “Transitioning from change detection to monitoring with remote sensing: A paradigm shift,” Remote Sensing of Environment, 2019.
+D. Phiri, M. Simwanda, S. Salekin, V. R. Nyirenda, Y. Murayama, and M. Ranagalage, “Sentinel-2 data for land cover/use mapping: A review,” Remote Sensing, vol. 12, no. 14, Art. no. 2291, 2020, doi: 10.3390/rs12142291.
+European Space Agency, “Sentinel-2: Facts and figures,” ESA. [Online]. 
+REFERENSI BAB 2
+Breiman, L. (2001). Random forests. Machine Learning, 45(1), 5–32. https://doi.org/10.1023/A:1010933404324
+Chen, T., & Guestrin, C. (2016). XGBoost: A scalable tree boosting system. Proceedings of the 22nd ACM SIGKDD International Conference on Knowledge Discovery and Data Mining, 785–794. https://doi.org/10.1145/2939672.2939785
+Cohen, J. (1960). A coefficient of agreement for nominal scales. Educational and Psychological Measurement, 20(1), 37–46. https://doi.org/10.1177/001316446002000104
+Cortes, C., & Vapnik, V. (1995). Support-vector networks. Machine Learning, 20(3), 273–297. https://doi.org/10.1007/BF00994018
+Farr, T. G., Rosen, P. A., Caro, E., Crippen, R., Duren, R., Hensley, S., Kobrick, M., Paller, M., Rodriguez, E., Roth, L., Seal, D., Shaffer, S., Shimada, J., Umland, J., Werner, M., Oskin, M., Burbank, D., & Alsdorf, D. E. (2007). The Shuttle Radar Topography Mission. Reviews of Geophysics, 45(2). https://doi.org/10.1029/2005RG000183
+Funk, C., Peterson, P., Landsfeld, M., Pedreros, D., Verdin, J., Shukla, S., Husak, G., Rowland, J., Harrison, L., Hoell, A., & Michaelsen, J. (2015). The climate hazards infrared precipitation with stations—a new environmental record for monitoring extremes. Scientific Data, 2, 150066. https://doi.org/10.1038/sdata.2015.66
+Gao, B.-C. (1996). NDWI—A normalized difference water index for remote sensing of vegetation liquid water from space. Remote Sensing of Environment, 58(3), 257–266. https://doi.org/10.1016/S0034-4257(96)00067-3
+Gorelick, N., Hancher, M., Dixon, M., Ilyushchenko, S., Thau, D., & Moore, R. (2017). Google Earth Engine: Planetary-scale geospatial analysis for everyone. Remote Sensing of Environment, 202, 18–27. https://doi.org/10.1016/j.rse.2017.06.031
+Karra, K., Kontgis, C., Statman-Weil, Z., Mazzariello, J. C., Mathis, M., & Brumby, S. P. (2021). Global land use/land cover mapping using Sentinel-2 data. 2021 IEEE International Geoscience and Remote Sensing Symposium (IGARSS), 4704–4707. https://doi.org/10.1109/IGARSS47720.2021.9553499
+Ke, G., Meng, Q., Finley, T., Wang, T., Chen, W., Ma, W., Ye, Q., & Liu, T.-Y. (2017). LightGBM: A highly efficient gradient boosting decision tree. Advances in Neural Information Processing Systems, 30.
+Lundberg, S. M., & Lee, S.-I. (2017). A unified approach to interpreting model predictions. Advances in Neural Information Processing Systems, 30.
+Meyfroidt, P., Lambin, E. F., Erb, K.-H., & Hertel, T. W. (2014). Globalization of land use: Distant drivers of land change and geographic displacement of land use. Current Opinion in Environmental Sustainability, 5(5), 438–444.
+Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O., Blondel, M., Prettenhofer, P., Weiss, R., Dubourg, V., Vanderplas, J., Passos, A., Cournapeau, D., Brucher, M., Perrot, M., & Duchesnay, É. (2011). Scikit-learn: Machine learning in Python. Journal of Machine Learning Research, 12, 2825–2830.
+Phiri, D., Simwanda, M., Salekin, S., Nyirenda, V. R., Murayama, Y., & Ranagalage, M. (2020). Sentinel-2 data for land cover/use mapping: A review. Remote Sensing, 12(14), 2291. https://doi.org/10.3390/rs12142291
+Ploton, P., Mortier, F., Réjou-Méchain, M., Barbier, N., Picard, N., Rossi, V., Dormann, C., Cornu, G., Barbier, N., Couteron, P., & others. (2020). Spatial validation reveals poor predictive performance of large-scale ecological mapping models. Nature Communications, 11, 4540.
+Roberts, D. R., Bahn, V., Ciuti, S., Boyce, M. S., Elith, J., Guillera-Arroita, G., Hauenstein, S., Lahoz-Monfort, J. J., Schröder, B., Thuiller, W., Warton, D. I., Wintle, B. A., Hartig, F., & Dormann, C. F. (2017). Cross-validation strategies for data with temporal, spatial, hierarchical, or phylogenetic structure. Ecography, 40(8), 913–929. https://doi.org/10.1111/ecog.02881
+Rikimaru, A., Roy, P. S., & Miyatake, S. (2002). Tropical forest cover density mapping. Tropical Ecology, 43(1), 39–47.
+Rouse, J. W., Haas, R. H., Schell, J. A., & Deering, D. W. (1974). Monitoring vegetation systems in the Great Plains with ERTS. In Third Earth Resources Technology Satellite-1 Symposium (NASA SP-351, pp. 309–317). NASA.
+Sokolova, M., & Lapalme, G. (2009). A systematic analysis of performance measures for classification tasks. Information Processing & Management, 45(4), 427–437. https://doi.org/10.1016/j.ipm.2009.03.002
+Talukdar, S., Singha, P., Mahato, S., Shahfahad, Pal, S., Liou, Y.-A., & Rahman, A. (2020). Land-use land-cover classification by machine learning classifiers for satellite observations—A review. Remote Sensing, 12(7), 1135. https://doi.org/10.3390/rs12071135
+Tuia, D., Persello, C., & Bruzzone, L. (2016). Domain adaptation for the classification of remote sensing data: An overview of recent advances. IEEE Geoscience and Remote Sensing Magazine, 4(2), 41–57.
+Wu, J. (2004). Effects of changing scale on landscape pattern analysis: Scaling relations. Landscape Ecology, 19, 125–138.
+Zanaga, D., Van De Kerchove, R., Daems, D., De Keersmaecker, W., Brockmann, C., Kirches, G., Wevers, J., Cartus, O., Santoro, M., Fritz, S., Lesiv, M., Herold, M., Tsendbazar, N.-E., Xu, P., Ramoino, F., & Arino, O. (2022). ESA WorldCover 10 m 2021 v200. Zenodo. https://doi.org/10.5281/zenodo.7254221
+Zha, Y., Gao, J., & Ni, S. (2003). Use of normalized difference built-up index in automatically mapping urban areas from TM imagery. International Journal of Remote Sensing, 24(3), 583–594. https://doi.org/10.1080/01431160304987
