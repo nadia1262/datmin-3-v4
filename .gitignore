@@ -33,3 +33,8 @@ skills_dok.md
 
 # Laporan
 *.docx
+
+
+/.vscode/*
+
+/graphify-out/*
