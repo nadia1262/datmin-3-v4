@@ -2,6 +2,7 @@
 skills/
 
 data/
+reports/
 # *.csv
 # *.sql
 
@@ -13,6 +14,7 @@ data/
 *.cpg
 *.prj
 *.npz
+*.md
 
 # Legacy archive
 _ARCHIVE/

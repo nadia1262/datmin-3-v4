@@ -23,34 +23,54 @@ st.markdown("Visualisasi klasifikasi tutupan lahan di Kalimantan untuk periode 2
 year = st.slider("Pilih Tahun:", min_value=2018, max_value=2024, value=2024)
 
 # Grid size info
-GRID_SIZES = {2018: 13632, 2019: 175384, 2020: 176624, 2021: 162940, 2022: 160261, 2023: 159949, 2024: 154137}
+GRID_SIZES = {
+    2018: 13632, 
+    2019: 1794435, 
+    2020: 176624, 
+    2021: 162940, 
+    2022: 160261, 
+    2023: 159949, 
+    2024: 1530847
+}
 
 if year == 2018:
     st.warning("**Catatan:** Grid 2018 hanya memiliki 13.632 titik (vs ~155.000+ tahun lain) karena keterbatasan citra Sentinel-2 cloud-free. Proporsi tidak directly comparable.")
 
 @st.cache_data
 def load_map_data(y):
-    for prefix in [f'predictions_lgbm_{y}', f'predictions_rf_{y}', f'predictions_{y}']:
-        file_path = os.path.join(PREDICTIONS_DIR, f'{prefix}.csv')
-        if os.path.exists(file_path):
+    # Coba dataset Majority Voting terbaru dulu, lalu fallback ke Centroid lama
+    prefixes = [f'majority_voting_{y}', f'predictions_lgbm_{y}', f'predictions_{y}']
+    file_path = None
+    data_source_type = "Unknown"
+    
+    for prefix in prefixes:
+        test_path = os.path.join(PREDICTIONS_DIR, f'{prefix}.csv')
+        if os.path.exists(test_path):
+            file_path = test_path
+            data_source_type = "Majority Voting (500m)" if 'majority' in prefix else "Centroid (10km)"
             break
-    if os.path.exists(file_path):
+            
+    if file_path:
         df_full = pd.read_csv(file_path)
         
-        # Smart Sampling for Map Rendering (Max ~60k points)
+        # Standardize column names if it's the majority voting dataset
+        if 'majority_class' in df_full.columns:
+            df_full = df_full.rename(columns={'majority_class': 'predicted_class', 'majority_label': 'predicted_label'})
+            
+        # Smart Sampling for Map Rendering (Max ~75k points for smooth browser rendering)
         # We want to preserve minority classes (mining, water, urban) which might disappear in random sampling
-        if len(df_full) > 60000:
+        if len(df_full) > 75000:
             df_map = df_full.groupby('predicted_class', group_keys=False).apply(
-                lambda x: x.sample(min(len(x), 12000), random_state=42)
+                lambda x: x.sample(min(len(x), 15000), random_state=42)
             )
         else:
             df_map = df_full.copy()
             
-        return df_full, df_map
+        return df_full, df_map, data_source_type
     else:
-        return None, None
+        return None, None, None
 
-df_full, df_map = load_map_data(year)
+df_full, df_map, data_source_type = load_map_data(year)
 
 if df_full is None:
     st.error("Data prediksi tidak ditemukan untuk tahun ini.")
@@ -62,6 +82,13 @@ if df_full is None:
 CLASS_COLORS_RGB = {cls: list(rgba[:3]) for cls, rgba in CLASS_COLORS_RGBA.items()}
 
 df_map['color'] = df_map['predicted_class'].map(CLASS_COLORS_RGB)
+
+if data_source_type == "Majority Voting (500m)":
+    st.info(f"📍 **Sumber Data:** Resolusi Tinggi {data_source_type} (Konsensus 25 Titik Sub-grid). Radius rendering disesuaikan.")
+    render_radius = 1800
+else:
+    st.info(f"📍 **Sumber Data:** Resolusi Standar {data_source_type} (1 Titik per Sel). Radius rendering disesuaikan.")
+    render_radius = 2500
 
 col1, col2 = st.columns([3, 1])
 
@@ -92,7 +119,7 @@ with col1:
         data=df_map[['lon', 'lat', 'color', 'predicted_label']], # Only load required columns to frontend
         get_position='[lon, lat]',
         get_color='color',
-        get_radius=2500,  # Lebar disesuaikan agar menutupi grid lebih padat (radius 2.5km)
+        get_radius=render_radius,  # Radius dinamis bergantung tipe data
         pickable=True,
         opacity=0.9,      # Sedikit transparan agar tumpukan terlihat
         stroked=False,

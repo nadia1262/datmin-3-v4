@@ -18,6 +18,9 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '../
 from configs.constants import *
 from configs.color_palette import *
 
+# Root project directory (for accessing reports/)
+BASE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')
+
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 from theme import apply_theme
 
@@ -36,16 +39,17 @@ def macro_decomposition_view():
     st.markdown("Analisis transisi tutupan lahan dan deteksi perubahan temporal menggunakan Common Spatial Domain.")
 
     st.markdown("---")
-    st.subheader("Tapak Spasial: Common Spatial Domain")
-    st.markdown("Visualisasi **118.943 titik observasi** yang terekam bebas awan secara konsisten di tahun 2019 dan 2024. Area yang kosong/gelap merepresentasikan wilayah yang dieksklusi (*masked out*) akibat anomali tutupan awan persisten.")
+    st.subheader("Tapak Spasial: Grid Majority Voting (500m)")
+    st.markdown("Visualisasi **~1,5 juta sel** yang mewakili konsensus (*majority voting*) 25 titik sub-grid pada setiap area 500m di Kalimantan. Area yang kosong merepresentasikan wilayah tanpa data yang valid di kedua tahun (awam persisten atau batas data).")
 
     @st.cache_data
     def load_common_domain():
-        path = os.path.join(CHANGE_DIR_V2, 'change_points_2019_2024.csv')
+        path = os.path.join(BASE_DIR, 'reports', 'majority_voting_kalimantan.csv')
         if os.path.exists(path):
-            # We only need lon and lat for this specific map to minimize memory
-            df = pd.read_csv(path, usecols=['lon', 'lat'])
-            return df
+            # Cukup ambil koordinat (hanya pakai baris kelipatan 10 agar browser tidak crash render 1.5 juta titik)
+            df = pd.read_csv(path, usecols=['lon_2019', 'lat_2019'])
+            df = df.rename(columns={'lon_2019': 'lon', 'lat_2019': 'lat'})
+            return df.iloc[::10]
         return None
 
     df_common_domain = load_common_domain()
@@ -90,25 +94,37 @@ def macro_decomposition_view():
     # Load Transition Matrix
     @st.cache_data
     def load_transition_matrix():
-        path = os.path.join(CHANGE_DIR_V2, 'transition_matrix_2019_2024.csv')
+        path = os.path.join(BASE_DIR, 'reports', 'majority_voting_kalimantan.csv')
         if os.path.exists(path):
-            cm = pd.read_csv(path, index_col=0)
-            # Remove margins if present
-            cm = cm.drop('All', axis=0, errors='ignore').drop('All', axis=1, errors='ignore')
-            return cm
-        return None
+            df = pd.read_csv(path, usecols=['majority_label_2019', 'majority_label_2024'])
+            cm = pd.crosstab(df['majority_label_2019'], df['majority_label_2024'])
+            return cm, df
+        return None, None
 
     # Load Change Summary
     @st.cache_data
-    def load_change_summary():
-        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data', 'change_summary.json')
-        if os.path.exists(path):
-            with open(path) as f:
-                return json.load(f)
-        return None
+    def calculate_change_summary(df):
+        if df is None: return None
+        total = len(df)
+        changed = (df['majority_label_2019'] != df['majority_label_2024']).sum()
+        change_pct = round(changed / total * 100, 1) if total > 0 else 0
+        forest_loss = ((df['majority_label_2019'] == 'Forest') & (df['majority_label_2024'] != 'Forest')).sum()
+        forest_gain = ((df['majority_label_2019'] != 'Forest') & (df['majority_label_2024'] == 'Forest')).sum()
+        urbanization = ((df['majority_label_2019'] != 'Built-up') & (df['majority_label_2024'] == 'Built-up')).sum()
+        mining_exp = ((df['majority_label_2019'] != 'Bare/Mining-like') & (df['majority_label_2024'] == 'Bare/Mining-like')).sum()
+        
+        return {
+            'total_points': total,
+            'changed_points': changed,
+            'change_rate_pct': change_pct,
+            'forest_loss': forest_loss,
+            'forest_gain': forest_gain,
+            'urbanization': urbanization,
+            'mining_expansion': mining_exp
+        }
 
-    cm = load_transition_matrix()
-    summary = load_change_summary()
+    cm, df_full = load_transition_matrix()
+    summary = calculate_change_summary(df_full)
 
     col1, col2 = st.columns([1, 1])
 
@@ -158,8 +174,10 @@ def macro_decomposition_view():
         st.markdown("- Urbanisasi seringkali terjadi secara bertahap (Forest → Shrubland → Built-up).")
         
         st.info("""
-        **Catatan Metodologis: Common Spatial Domain**
-        Transisi antar kelas di atas HANYA dihitung untuk **118.943 titik** yang secara historis *terbebas dari awan di kedua tahun* (2019 dan 2024). Metode interseksi ketat ini menghilangkan anomali luas lahan semu akibat tutupan awan musiman, memastikan bahwa perubahan yang terdeteksi adalah transisi tutupan lahan yang sesungguhnya.
+        **Catatan Metodologis: Majority Voting (Sub-grid)**
+        Transisi antar kelas di atas dihitung menggunakan **~1,5 juta sel (500m)** di seluruh Kalimantan.
+        Setiap sel adalah hasil konsensus (*majority voting*) dari 25 titik sub-grid (100m) yang terbebas dari tutupan awan di 2019 dan 2024. 
+        Metode ini mengeleminasi bias under-sampling dari metode *centroid* (piksel tunggal), memastikan representasi agregat yang jauh lebih akurat untuk estimasi deforestasi regional.
         """)
 
     # Temporal Trends
@@ -167,13 +185,18 @@ def macro_decomposition_view():
     st.subheader("Tren Komposisi Tutupan Lahan (2019–2024)")
 
     @st.cache_data
-    def load_temporal():
-        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data', 'temporal_composition.csv')
-        if os.path.exists(path):
-            return pd.read_csv(path)
-        return None
+    def load_temporal(df):
+        if df is None: return None
+        counts_19 = df['majority_label_2019'].value_counts()
+        counts_24 = df['majority_label_2024'].value_counts()
+        
+        data = []
+        for cls in counts_19.index.union(counts_24.index):
+            data.append({'year': 2019, 'class_name': cls, 'proportion': counts_19.get(cls, 0) / len(df) * 100})
+            data.append({'year': 2024, 'class_name': cls, 'proportion': counts_24.get(cls, 0) / len(df) * 100})
+        return pd.DataFrame(data)
 
-    tc = load_temporal()
+    tc = load_temporal(df_full)
     if tc is not None:
         fig = px.line(tc, x='year', y='proportion', color='class_name',
                       markers=True,
