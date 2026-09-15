@@ -37,7 +37,7 @@ graph TD
 
     subgraph S4 ["<b>4. DETEKSI PERUBAHAN</b>"]
         direction TB
-        CSD["Common Spatial Domain (2019 vs 2024)"]:::process
+        CSD["Majority Voting Grid 500m<br/>1.499.024 sel (2019 vs 2024)"]:::process
         Y_Logit["<b>Y = Binary Change Outcomes</b><br/>Y₁ = Forest Loss<br/>Y₂ = Urbanization<br/>Y₃ = Bare/Mining-like Expansion"]:::highlight
         CSD --> Y_Logit
     end
@@ -95,7 +95,7 @@ LightGBM yang sudah terlatih digunakan untuk melakukan prediksi. Proses ini dica
 - **Mikro (IKN):** Prediksi detail di resolusi asli 10 m khusus radius IKN.
 
 ### Tahap 6: Analisis Perubahan Tutupan Lahan
-Menggunakan peta prediksi makro, kita memfilter piksel yang konsisten selalu terekam tanpa awan di tahun 2019 maupun 2024 (**Common Spatial Domain**). Melalui perbandingan dua titik waktu ini, dihasilkan matriks transisi yang mengkuantifikasi parameter utama: *Forest Loss, Urbanization*, dan *Mining Expansion*.
+Menggunakan peta prediksi makro, setiap sel grid 500 m didekomposisi menjadi sub-grid 5×5 (25 sub-piksel) dan kelas tutupan lahan ditentukan via **Majority Voting**. Metode ini menghasilkan **1.499.024 sel valid** — 12× lebih banyak dari metode Centroid lama. Melalui perbandingan dua titik waktu (2019 vs 2024), dihasilkan matriks transisi yang mengkuantifikasi parameter utama: *Forest Loss, Urbanization*, dan *Mining Expansion*. Untuk Tahap 3 (Regresi), label Majority Voting di-*downsample* ke grid sistematis 10 km (**122.478 titik**) via *Spatial Intersection* guna menjaga asumsi independensi statistik.
 
 ### Tahap 7: Data Tambang Eksternal (Independen)
 Secara **terpisah** dari *pipeline* klasifikasi optik, dataset independen poligon tambang aktual dari **Maus et al. (2022)** diproses secara spasial untuk menghasilkan variabel kepadatan tambang (*Mining Density 10 km*).
