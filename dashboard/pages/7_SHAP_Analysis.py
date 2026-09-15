@@ -27,17 +27,13 @@ Melalui analisis **SHAP (SHapley Additive exPlanations)**, kita membedah "otak" 
 
 SHAP_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../../results/shap/lgbm')
 
-def load_image(filename):
+@st.cache_data(show_spinner=False)
+def load_image_base64(filename):
     path = os.path.join(SHAP_DIR, filename)
     if os.path.exists(path):
-        return Image.open(path)
+        with open(path, "rb") as f:
+            return base64.b64encode(f.read()).decode()
     return None
-
-def image_to_base64(pil_img):
-    """Convert PIL Image to base64 data URI string."""
-    buf = BytesIO()
-    pil_img.save(buf, format='PNG')
-    return base64.b64encode(buf.getvalue()).decode()
 
 # ── Load SHAP Importance Data ──
 importance_path = os.path.join(SHAP_DIR, 'shap_importance.csv')
@@ -89,10 +85,9 @@ with col2:
 # ── SHAP Summary Beeswarm Plot ──
 st.markdown("---")
 st.subheader("SHAP Summary Plot (Beeswarm)")
-img_bees = load_image('shap_summary.png')
-if img_bees:
+b64_bees = load_image_base64('shap_summary.png')
+if b64_bees:
     bees_alt = "SHAP beeswarm plot: setiap titik mewakili satu sampel. Warna merah = nilai fitur tinggi, biru = rendah. Posisi horizontal menunjukkan pengaruhnya terhadap keputusan model."
-    b64_bees = image_to_base64(img_bees)
     st.markdown(
         f'<img src="data:image/png;base64,{b64_bees}" alt="{html.escape(bees_alt)}" style="width:100%; max-width:100%">',
         unsafe_allow_html=True
@@ -102,31 +97,29 @@ else:
     st.warning("Grafik SHAP summary belum tersedia.")
 
 # ── Per-class heatmap ──
-img_heat = load_image('shap_per_class_heatmap.png')
-if img_heat:
+b64_heat = load_image_base64('shap_per_class_heatmap.png')
+if b64_heat:
     st.markdown("---")
     st.subheader("SHAP Importance per Kelas")
     heat_alt = "Heatmap SHAP importance per kelas tutupan lahan (Forest, Shrubland/Agriculture, Built-up, Bare/Mining-like, Water) per fitur spektral."
-    b64_heat = image_to_base64(img_heat)
     st.markdown(
         f'<img src="data:image/png;base64,{b64_heat}" alt="{html.escape(heat_alt)}" style="width:100%; max-width:100%">',
         unsafe_allow_html=True
     )
     st.caption(heat_alt)
 
+st.markdown("---")
 st.markdown("""
----
-### Insights dari Analisis Spektral
-
-| Peringkat | Fitur | Mean \|SHAP\| | Interpretasi |
-|---|---|---|---|
-| 1 | **NDVI** | 0.938 | Variabel mutlak terpenting. Model mengandalkannya untuk memisahkan vegetasi lebat (Hutan) dari area terbuka. |
-| 2 | **B12 (SWIR-2)** | 0.470 | Sangat sensitif terhadap kelembaban tanah dan mineral, kunci mengenali tambang dan tanah terbuka. |
-| 3 | **B11 (SWIR-1)** | 0.443 | Komplemen dari B12. Bersama-sama, pasangan SWIR mendominasi deteksi area non-vegetasi. |
-| 4 | **B3 (Green)** | 0.217 | Membantu membedakan jenis vegetasi (hijau vs kering). |
-| 5 | **NDBI** | 0.178 | Fitur kunci untuk mendeteksi infrastruktur beton dan aspal (*built-up*). |
-| ... | **NDMI** | 0.046 | Hampir tidak berkontribusi — secara matematis identik dengan negasi NDBI (NDMI ≈ −NDBI). |
-
-> **Catatan Penting:** SHAP menjelaskan **bagaimana model membuat keputusan** (interpretabilitas), bukan **mengapa** suatu lahan berubah (kausalitas). 
-> SHAP value tinggi pada NDVI berarti model sangat mengandalkan NDVI saat mengklasifikasi, bukan berarti NDVI menyebabkan perubahan lahan.
-""")
+<div class="forest-card" style="margin-top: 1rem;">
+    <span class="step-badge">SINTESIS FISIKA OPTIK SPEKTRAL</span>
+    <h4 style="margin: 0.2rem 0 0.6rem 0;">Tiga Temuan Utama Fisika Penginderaan Jauh</h4>
+    <div style="font-size: 0.88rem; color: #4B5A50; line-height: 1.65;">
+        • <strong>NDVI (Mean |SHAP| = 0,938):</strong> Variabel spektral paling dominan. Menjadi pemisah utama antara kanopi vegetasi lebat (Hutan/Semak) dengan lanskap non-vegetasi.<br>
+        • <strong>Pasangan SWIR B12 & B11 (Mean |SHAP| = 0,470 & 0,443):</strong> Sangat sensitif terhadap kadar air kanopi dan pantulan mineral tanah terbuka. Kombinasi kanal inframerah gelombang pendek ini menjadi kunci utama LightGBM dalam mendeteksi bukaan tambang batubara aktif dan alur infrastruktur jalan.<br>
+        • <strong>NDBI (0,178) vs NDMI (0,046):</strong> Membuktikan temuan multikolinearitas sempurna (r = -1,000). Nilai SHAP terbagi di antara kedua indeks spektral komplementer ini.
+    </div>
+    <div style="margin-top: 0.8rem; padding-top: 0.6rem; border-top: 1px solid #DCE4D8; font-size: 0.8rem; color: #6E7D73;">
+        <em>Catatan Interpretabilitas:</em> Nilai SHAP menguantifikasi kontribusi fitur terhadap keputusan prediksi algoritma (bagaimana model membedakan spektral), bukan hubungan kausalitas lingkungan.
+    </div>
+</div>
+""", unsafe_allow_html=True)

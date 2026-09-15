@@ -79,34 +79,34 @@ UNCERTAINTY_CMAP = 'RdYlGn_r'  # Red=high uncertainty, Green=low
 RESIDUAL_CMAP = 'RdBu'         # Red=overestimation, Blue=underestimation
 
 # ============================================================
-# DASHBOARD THEME — "Instrument Panel"
-# Light, hard-edged, hazard-grade saturation. Chosen over the
-# previous cream/sage palette because the subject (deforestation,
-# mining degradation) needs a register that reads as a monitoring
-# instrument, not a calm lifestyle app — see
-# dashboard/design-demos/direction-approved.md.
+# DASHBOARD THEME — "Forest & Botanical Clean" (Inspired by PPT)
+# Refined organic forest tones, clean airy canvas, soft sage borders,
+# and high-contrast editorial typography.
 # ============================================================
 DASHBOARD_THEME = {
-    'bg_primary':    '#F0F2ED',  # Light gray-green background
-    'bg_secondary':  '#FFFFFF',  # White panel/card surface
-    'bg_tertiary':   '#EAF0E3',  # Active/selected background (nav rail)
-    'text_primary':  '#171A15',  # Near-black text
-    'text_secondary':'#5B6156',  # Muted ink
-    'accent':        '#1F7A3D',  # Forest green (primary interactive elements)
-    'accent_green':  '#1F7A3D',
-    'accent_red':    '#C6371F',  # Built-up red (urgency/warning)
-    'accent_orange': '#B87A1E',  # Bare/mining ochre (secondary warning)
-    'border':        '#C7CDBD',  # Hard-edge borders (no shadows, no radius)
+    'bg_primary':    '#F6F8F4',  # Soft pale moss/cream canvas
+    'bg_secondary':  '#FFFFFF',  # Clean white card surface
+    'bg_tertiary':   '#E8EFE5',  # Subtle sage tint (active tabs / pill tags)
+    'text_primary':  '#16281C',  # Deep forest slate text
+    'text_secondary':'#4B5A50',  # Muted forest moss text
+    'accent':        '#1E482D',  # Deep evergreen primary
+    'accent_green':  '#2D6A4F',  # Canopy emerald
+    'accent_olive':  '#527853',  # Sage / olive foliage
+    'accent_red':    '#B23A22',  # Terracotta / rust (forest loss / built-up)
+    'accent_orange': '#C27B22',  # Warm ochre / amber (mining / bare)
+    'accent_sand':   '#C4A482',  # Warm timber / sand
+    'border':        '#DCE4D8',  # Soft hairline sage border
+    'border_dark':   '#BAC8B4',  # Defined border for inputs
 }
 
 # ============================================================
-# PLOTLY TEMPLATE
+# PLOTLY TEMPLATE & STYLING
 # ============================================================
 PLOTLY_TEMPLATE = 'plotly_white'
 PLOTLY_PAPER_COLOR = '#FFFFFF'
 PLOTLY_PLOT_COLOR = '#FFFFFF'
-PLOTLY_FONT_COLOR = '#171A15'
-PLOTLY_GRID_COLOR = '#C7CDBD'
+PLOTLY_FONT_COLOR = '#16281C'
+PLOTLY_GRID_COLOR = '#E5EDE2'
 
 # ============================================================
 # MATPLOTLIB DEFAULTS
@@ -116,17 +116,17 @@ FIGURE_DEFAULTS = {
     'figure.dpi': 150,
     'figure.facecolor': PLOTLY_PAPER_COLOR,
     'axes.facecolor': PLOTLY_PLOT_COLOR,
-    'axes.edgecolor': DASHBOARD_THEME['text_primary'],
-    'axes.linewidth': 1.2,
-    'axes.labelsize': 12,
+    'axes.edgecolor': DASHBOARD_THEME['border'],
+    'axes.linewidth': 1.0,
+    'axes.labelsize': 11,
     'axes.labelcolor': DASHBOARD_THEME['text_primary'],
-    'axes.titlesize': 14,
+    'axes.titlesize': 13,
     'text.color': DASHBOARD_THEME['text_primary'],
-    'xtick.labelsize': 10,
-    'xtick.color': DASHBOARD_THEME['text_primary'],
-    'ytick.labelsize': 10,
-    'ytick.color': DASHBOARD_THEME['text_primary'],
-    'legend.fontsize': 10,
+    'xtick.labelsize': 9.5,
+    'xtick.color': DASHBOARD_THEME['text_secondary'],
+    'ytick.labelsize': 9.5,
+    'ytick.color': DASHBOARD_THEME['text_secondary'],
+    'legend.fontsize': 9.5,
     'font.family': 'sans-serif',
-    'font.sans-serif': ['Inter', 'Arial', 'DejaVu Sans'],
+    'font.sans-serif': ['Plus Jakarta Sans', 'Inter', 'Segoe UI', 'sans-serif'],
 }

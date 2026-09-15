@@ -42,20 +42,31 @@ if df_metrics is None:
     st.stop()
 
 # ── Highlight Best Model ──
-# SVM may have slightly higher accuracy, but LightGBM is the operational choice due to speed
 chosen_model = 'lgbm'
 chosen_row = df_metrics[df_metrics['model'] == chosen_model].iloc[0]
 
-st.success(
-    f"**Model Operasional Terpilih: {MODEL_DISPLAY_NAMES.get(chosen_model, chosen_model)}** — "
-    f"OA={chosen_row['accuracy']:.4f} | F1-Macro={chosen_row['f1_macro']:.4f} | Waktu={chosen_row['time_s']}s"
-)
-st.info(
-    "💡 **Catatan:** Meskipun Support Vector Machine (SVM) memiliki metrik evaluasi yang sedikit lebih tinggi, "
-    "**LightGBM** dipilih sebagai model operasional final. SVM membutuhkan waktu komputasi yang sangat lama "
-    "(>700 detik untuk latih), sementara LightGBM sangat cepat (~116 detik) dengan akurasi yang ekuivalen (selisih < 1%). "
-    "Efisiensi ini krusial untuk memprediksi jutaan piksel pada skala makro 500m dan mikro 10m."
-)
+st.markdown(f"""
+<div class="forest-card" style="margin-bottom: 1.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap;">
+        <div>
+            <span class="step-badge">MODEL OPERASIONAL FINAL</span>
+            <h3 style="margin: 0.2rem 0 0.4rem 0; font-size: 1.35rem; color: #16281C;">
+                LightGBM (Light Gradient Boosting Machine)
+            </h3>
+            <p style="color: #4B5A50; font-size: 0.88rem; margin: 0; max-width: 720px; line-height: 1.55;">
+                Meskipun SVM mencapai akurasi sedikit lebih tinggi (+0,67%), LightGBM dipilih sebagai model operasional utama 
+                karena efisiensi komputasi <strong>6,5× lebih cepat</strong> (116,6 detik vs 759,9 detik). Kecepatan eksekusi ini mutlak diperlukan 
+                untuk memprediksi jutaan titik pada skala pulau makro 500m dan presisi mikro 10m.
+            </p>
+        </div>
+        <div style="display: flex; gap: 0.6rem; margin-top: 0.5rem;">
+            <div class="stat-pill">OA: <strong>{chosen_row['accuracy']*100:.2f}%</strong></div>
+            <div class="stat-pill">F1-Macro: <strong>{chosen_row['f1_macro']:.4f}</strong></div>
+            <div class="stat-pill">Waktu: <strong>{chosen_row['time_s']:.1f}s</strong></div>
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 # ── Summary Table ──
 st.subheader("Tabel Perbandingan Metrik")
