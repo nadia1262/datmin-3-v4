@@ -27,12 +27,7 @@ from theme import apply_theme
 st.set_page_config(page_title="Change Detection", page_icon="◈", layout="wide")
 apply_theme()
 
-# --- SIDEBAR NAVIGATION ---
-st.sidebar.title("Navigasi Modul")
-selected_menu = st.sidebar.radio(
-    "Pilih Skala Analisis:",
-    ['Dekomposisi Makro (500m)', 'Validasi Mikro KIPP IKN (10m)']
-)
+# --- MAIN VIEW HEADER ---
 
 def macro_decomposition_view():
     st.title("Deteksi Perubahan Tutupan Lahan (2019 → 2024)")
@@ -232,47 +227,29 @@ def micro_validation_ippk_view():
     st.title("Validasi Mikro KIPP IKN: Resolusi Murni 10 Meter")
     
     st.markdown("""
-    <p style="font-size:1.05rem; color:#4B5A50; line-height:1.6; margin-bottom:1.5rem;">
-        Membongkar paradoks resolusi satelit: Mengapa di skala makro pulau (500 meter) hutan terkesan stabil, 
+    <p style="font-size:1.05rem; color:#4B5A50; line-height:1.6; margin-bottom:1.2rem;">
+        Membongkar paradoks resolusi satelit: Mengapa di skala makro pulau (500 meter) tutupan hutan terkesan stabil, 
         namun pada skala mikro murni 10 meter di <strong>Kawasan Inti Pusat Pemerintahan (KIPP IKN)</strong> 
-        terlihat pembukaan hutan masif akibat koridor Jalan Tol Akses dan Sumbu Kebangsaan.
+        terlihat pembukaan tutupan vegetasi nyata akibat koridor Jalan Tol Akses dan Sumbu Kebangsaan.
     </p>
     """, unsafe_allow_html=True)
     
-    st.subheader("Perbandingan Visual KIPP IKN (2019 vs 2024)")
+    st.subheader("Peta Slider Swipe: Perbandingan Visual KIPP IKN (2019 vs 2024)")
     
-    if leafmap is not None:
-        m = leafmap.Map(center=[-0.965, 116.705], zoom=12, draw_control=False, measure_control=False)
-        m.add_basemap("HYBRID")
-        
-        tiff_2019 = os.path.join(DATA_DIR, 'external', 'ipp_k_10m_2019.tif')
-        tiff_2024 = os.path.join(DATA_DIR, 'external', 'ipp_k_10m_2024.tif')
-        color_palette = ['#1F7A3D', '#6E9A2E', '#C6371F', '#B87A1E', '#1B5FA8']
-        
-        if os.path.exists(tiff_2019) and os.path.exists(tiff_2024):
-            m.split_map(
-                left_layer=tiff_2019, 
-                right_layer=tiff_2024, 
-                left_label="2019 (Pra-Konstruksi IKN)", 
-                right_label="2024 (Fase Konstruksi Masif)",
-                left_args={"cmap": color_palette, "vmin": 0, "vmax": 4, "opacity": 0.65},
-                right_args={"cmap": color_palette, "vmin": 0, "vmax": 4, "opacity": 0.65}
-            )
-        else:
-            m.split_map(left_layer="SATELLITE", right_layer="OpenTopoMap",
-                       left_label="2019 (Satelit Historis)", right_label="2024 (Topografi Lapangan)")
-            m.add_marker(location=[-0.965, 116.705], popup="Istana Negara / Sumbu Kebangsaan", tooltip="Zona KIPP Inti")
-            m.add_marker(location=[-0.940, 116.755], popup="Bendungan Sepaku Semoi", tooltip="Infrastruktur Air KIPP")
-            
-        m.to_streamlit(height=520)
-        
-        st.markdown("**Legenda Tutupan Lahan (10m):**")
-        leg_cols = st.columns(5)
-        leg_cols[0].markdown(f"<div style='background-color:#1F7A3D; padding:8px; color:white; border-radius:6px; text-align:center; font-size:0.85rem; font-weight:600;'>Hutan</div>", unsafe_allow_html=True)
-        leg_cols[1].markdown(f"<div style='background-color:#6E9A2E; padding:8px; color:white; border-radius:6px; text-align:center; font-size:0.85rem; font-weight:600;'>Semak/Pertanian</div>", unsafe_allow_html=True)
-        leg_cols[2].markdown(f"<div style='background-color:#C6371F; padding:8px; color:white; border-radius:6px; text-align:center; font-size:0.85rem; font-weight:600;'>Area Terbangun</div>", unsafe_allow_html=True)
-        leg_cols[3].markdown(f"<div style='background-color:#B87A1E; padding:8px; color:white; border-radius:6px; text-align:center; font-size:0.85rem; font-weight:600;'>Lahan Terbuka / Tambang</div>", unsafe_allow_html=True)
-        leg_cols[4].markdown(f"<div style='background-color:#1B5FA8; padding:8px; color:white; border-radius:6px; text-align:center; font-size:0.85rem; font-weight:600;'>Air</div>", unsafe_allow_html=True)
+    col_ctrl1, col_ctrl2 = st.columns([3, 2])
+    with col_ctrl1:
+        st.markdown("""
+        <div style="font-size:0.86rem; color:#4B5A50; line-height:1.5; margin-bottom:0.5rem;">
+            <strong>Interaksi Geser:</strong> Geser tuas pemisah <code>⟨ ❘ ⟩</code> di tengah peta ke arah <strong>kiri</strong> untuk membuka tutupan <strong>2024</strong> (puncak konstruksi), atau ke arah <strong>kanan</strong> untuk melihat <strong>2019</strong> (rona awal hutan alami). Peta tersinkronisasi otomatis saat digeser atau diperbesar.
+        </div>
+        """, unsafe_allow_html=True)
+    with col_ctrl2:
+        opacity_pct = st.slider("Transparansi Lapisan Klasifikasi ML (%):", min_value=30, max_value=100, value=75, step=5)
+        overlay_opacity = opacity_pct / 100.0
+    
+    # Import and render high-performance Leaflet swipe map
+    from components.kipp_swipe_map import render_kipp_swipe_map
+    render_kipp_swipe_map(split_pct=50, height=560, overlay_opacity=overlay_opacity)
     
     st.markdown("---")
     st.subheader("Statistik Perubahan Lahan Mikro — Prediksi Model LightGBM (10m)")
@@ -398,9 +375,16 @@ def micro_validation_ippk_view():
     """, unsafe_allow_html=True)
 
 # ============================================================
-# MAIN ROUTING LOGIC
+# MAIN ROUTING VIA PROMINENT TABS (FAST & DIRECT)
 # ============================================================
-if selected_menu == 'Dekomposisi Makro (500m)':
-    macro_decomposition_view()
-elif selected_menu == 'Validasi Mikro KIPP IKN (10m)':
+tab_micro, tab_macro = st.tabs([
+    "Peta Slider Swipe Before (2019) vs After (2024) — KIPP IKN 10m",
+    "Dekomposisi Makro 500m (Matriks Transisi 1,5 Juta Sel)"
+])
+
+with tab_micro:
     micro_validation_ippk_view()
+
+with tab_macro:
+    macro_decomposition_view()
+

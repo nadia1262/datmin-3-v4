@@ -20,20 +20,23 @@ apply_theme()
 st.title("Peta Spasiotemporal Tutupan Lahan")
 st.markdown("Visualisasi klasifikasi tutupan lahan Pulau Kalimantan membandingkan kondisi rona awal (2019) dan fase puncak konstruksi fisik (2024).")
 
-# Pilihan Tahun Terfokus
-col_yr1, col_yr2 = st.columns([2, 3])
+# Slider Pemilih Tahun Interaktif (2019 - 2024)
+col_yr1, col_yr2 = st.columns([3, 2])
 with col_yr1:
-    year_mode = st.radio(
-        "Fokus Periode Analisis:",
-        ["2024 (Puncak Konstruksi)", "2019 (Rona Awal Pra-IKN)", "Tahun Lain (2020–2023)"],
-        horizontal=True
+    year = st.slider(
+        "Pilih Tahun Pengamatan Tutupan Lahan (Geser untuk Membandingkan):",
+        min_value=2019,
+        max_value=2024,
+        value=2024,
+        step=1
     )
-    if "2024" in year_mode:
-        year = 2024
-    elif "2019" in year_mode:
-        year = 2019
+    if year == 2024:
+        period_desc = "Puncak Konstruksi Fisik IKN (1.530.847 sel)"
+    elif year == 2019:
+        period_desc = "Rona Awal Pra-IKN (1.794.435 sel)"
     else:
-        year = st.selectbox("Pilih Tahun:", [2023, 2022, 2021, 2020], index=0)
+        period_desc = f"Fase Transisi Tahunan ({year})"
+    st.markdown(f"<span style='font-size: 0.82rem; color: #2D6A4F; font-weight: 600;'>Fokus Analisis: {period_desc}</span>", unsafe_allow_html=True)
 
 with col_yr2:
     st.markdown("""
