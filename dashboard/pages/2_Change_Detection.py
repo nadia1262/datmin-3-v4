@@ -52,33 +52,80 @@ def macro_decomposition_view():
     df_common_domain = load_common_domain()
 
     if df_common_domain is not None:
+        layers = []
+        
+        # 1. Boundary layer outline
+        geojson_path = os.path.join(BASE_DIR, 'data', 'external', 'kalimantan_boundary.geojson')
+        if os.path.exists(geojson_path):
+            with open(geojson_path, 'r') as f:
+                boundary_data = json.load(f)
+            boundary_layer = pdk.Layer(
+                "GeoJsonLayer",
+                data=boundary_data,
+                stroked=True,
+                filled=False,
+                get_line_color=[30, 72, 45, 180],
+                get_line_width=2200,
+                pickable=False,
+            )
+            layers.append(boundary_layer)
+
+        # 2. 500m Grid Points (Emerald Green)
         scatter_layer = pdk.Layer(
             "ScatterplotLayer",
             data=df_common_domain,
             get_position='[lon, lat]',
-            get_fill_color=[45, 106, 79, 120], # Canopy Emerald (#2D6A4F)
+            get_fill_color=[34, 112, 70, 160], # Vibrant Canopy Emerald
             get_radius=2200,
-            opacity=0.85,
+            opacity=0.9,
             stroked=False,
             filled=True,
             pickable=False,
         )
+        layers.append(scatter_layer)
+
+        # 3. KIPP IKN Reference Marker (Pulsing Pin on East Kalimantan)
+        ikn_pin_df = pd.DataFrame([{
+            'lon': 116.705, 
+            'lat': -0.965, 
+            'name': 'Kawasan Inti IKN (Lokasi Sampel Validasi Mikro 10m)'
+        }])
+        ikn_pin_layer = pdk.Layer(
+            "ScatterplotLayer",
+            data=ikn_pin_df,
+            get_position='[lon, lat]',
+            get_fill_color=[198, 55, 31, 240], # Hazard Red Accent
+            get_radius=15000,
+            stroked=True,
+            get_line_color=[255, 255, 255, 255],
+            get_line_width=2500,
+            pickable=True,
+        )
+        layers.append(ikn_pin_layer)
         
         view_state = pdk.ViewState(
             latitude=0.0,
             longitude=114.2,
-            zoom=4.8,
+            zoom=4.9,
             pitch=0,
         )
         
+        # Render clean Light-Mode Map matching botanical PPT theme
         deck = pdk.Deck(
-            layers=[scatter_layer],
+            layers=layers,
             initial_view_state=view_state,
             map_provider="carto",
-            map_style="dark",
-            tooltip=False
+            map_style="light",
+            tooltip={"text": "{name}"}
         )
-        st.pydeck_chart(deck)
+        st.pydeck_chart(deck, use_container_width=True)
+        
+        st.markdown("""
+        <div style="display: flex; gap: 16px; align-items: center; justify-content: center; background: #F6F8F4; border: 1px solid #DCE4D8; border-radius: 20px; padding: 6px 18px; margin-top: 0.5rem; font-size: 0.8rem; color: #354738; font-weight: 600;">
+            <span><span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#227046; margin-right:6px;"></span>Kisi Grid Makro 500m (~1,5 Juta Sel Majority Voting)</span>
+            <span><span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#C6371F; border:1.5px solid white; margin-right:6px;"></span>Titik Sampel KIPP IKN (Uji Kepekaan Mikro 10m)</span>
+        </div>
+        """, unsafe_allow_html=True)
     else:
         st.warning("Data Majority Voting tidak ditemukan.")
 
