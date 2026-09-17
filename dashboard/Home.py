@@ -36,19 +36,19 @@ st.markdown("""
     }
     .hero-title {
         font-family: 'Plus Jakarta Sans', sans-serif !important;
-        font-size: 1.85rem !important;
+        font-size: 2.25rem !important;
         font-weight: 800 !important;
         color: #FFFFFF !important;
         -webkit-text-fill-color: #FFFFFF !important;
-        line-height: 1.32 !important;
+        line-height: 1.24 !important;
         margin: 0 0 0.85rem 0 !important;
-        letter-spacing: -0.02em !important;
+        letter-spacing: -0.025em !important;
         text-shadow: 0 3px 20px rgba(0,0,0,0.85) !important;
         text-transform: uppercase;
     }
     @media (max-width: 768px) {
         .hero-title {
-            font-size: 1.35rem !important;
+            font-size: 1.45rem !important;
             line-height: 1.25 !important;
         }
     }
@@ -74,34 +74,38 @@ st.markdown("""
         padding: 3.8rem 2.8rem;
         max-width: 960px;
     ">
+        <div style="
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: #A7D7C5;
+            margin-bottom: 0.85rem;
+            background: rgba(16, 36, 24, 0.55);
+            border: 1px solid rgba(116, 198, 157, 0.35);
+            padding: 0.35rem 0.95rem;
+            border-radius: 30px;
+            backdrop-filter: blur(6px);
+        ">
+            POLSTAT STIS • OBSERVATORI SPASIOTEMPORAL 2019–2024
+        </div>
         <h1 class="hero-title">
-            TRANSFORMASI TUTUPAN LAHAN DAN SPATIAL TELECOUPLING PEMBANGUNAN IKN SERTA EKSPANSI PERTAMBANGAN DI KALIMANTAN: PENDEKATAN MACHINE LEARNING MULTI-SKALA
+            MENATAP KALIMANTAN: DARI TELESKOP HINGGA MIKROSKOP
         </h1>
         <div style="
             font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 1.15rem;
-            font-weight: 700;
+            font-size: 1.20rem;
+            font-weight: 600;
             color: #74C69D;
             letter-spacing: -0.01em;
-            margin-bottom: 1.1rem;
-            line-height: 1.45;
-            text-shadow: 0 2px 14px rgba(0,0,0,0.85);
-        ">
-            Komparasi Spasial Rona Awal dan Puncak Konstruksi Menggunakan Citra Multispektral Sentinel-2
-        </div>
-        <p style="
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-size: 0.94rem;
-            font-weight: 400;
-            color: rgba(255,255,255,0.94);
-            max-width: 820px;
-            line-height: 1.6;
+            line-height: 1.5;
+            max-width: 840px;
             margin: 0 auto;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+            text-shadow: 0 2px 14px rgba(0,0,0,0.9);
         ">
-            Investigasi Spatiotemporal Rona Awal (2019) Menuju Puncak Konstruksi IKN (2024): 
-            Membedah Efek Spillover IKN vs Hegemoni Pertambangan Menggunakan Citra Multispektral Sentinel-2, Agregasi Majority Voting 1,5 Juta Sel, dan Analisis Spatial Telecoupling.
-        </p>
+            Membedah Transformasi Lahan Pembangunan IKN dan Hegemoni Pertambangan Lewat Lensa Multi-Skala Satelit
+        </div>
     </div>
 </div>
 """, unsafe_allow_html=True)
