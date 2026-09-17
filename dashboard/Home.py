@@ -27,8 +27,8 @@ st.markdown("""
         overflow: hidden;
         margin-bottom: 2.8rem;
         border: 1px solid #DCE4D8;
-        box-shadow: 0 10px 30px rgba(16, 36, 24, 0.07);
-        min-height: 440px;
+        box-shadow: 0 10px 30px rgba(16, 36, 24, 0.08);
+        min-height: 430px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -36,100 +36,94 @@ st.markdown("""
     }
     .hero-title {
         font-family: 'Plus Jakarta Sans', sans-serif !important;
-        font-size: 2.8rem !important;
+        font-size: 1.85rem !important;
         font-weight: 800 !important;
         color: #FFFFFF !important;
         -webkit-text-fill-color: #FFFFFF !important;
-        line-height: 1.15 !important;
-        margin: 0 0 0.6rem 0 !important;
-        letter-spacing: -0.025em !important;
-        text-shadow: 0 4px 24px rgba(0,0,0,0.7) !important;
+        line-height: 1.32 !important;
+        margin: 0 0 0.85rem 0 !important;
+        letter-spacing: -0.02em !important;
+        text-shadow: 0 3px 20px rgba(0,0,0,0.85) !important;
+        text-transform: uppercase;
     }
     @media (max-width: 768px) {
         .hero-title {
-            font-size: 1.9rem !important;
+            font-size: 1.35rem !important;
+            line-height: 1.25 !important;
         }
     }
 </style>
 """, unsafe_allow_html=True)
 
 @st.cache_data(show_spinner=False)
-def load_b64_image(path):
+def load_b64_file(path):
     if os.path.exists(path):
         with open(path, "rb") as f:
             return base64.b64encode(f.read()).decode()
     return ""
 
-# --- Hero Section with Forest Background ---
+# --- Hero Section with Dynamic Video Footage Background ---
+video_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets', 'Footage.mp4')
 hero_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets', 'hero_kalimantan.jpg')
-hero_b64 = load_b64_image(hero_path)
 
-if hero_b64:
-    st.markdown(f"""
-    <div class="hero-showcase">
-        <img src="data:image/jpeg;base64,{hero_b64}" 
-             style="position: absolute; top:0; left:0; width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.42) contrast(1.10);" />
-        <div style="position: absolute; top:0; left:0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(10, 24, 16, 0.45) 0%, rgba(8, 20, 13, 0.78) 100%);"></div>
+hero_b64 = load_b64_file(hero_path)
+video_b64 = load_b64_file(video_path) if os.path.exists(video_path) else ""
+
+video_source_tags = '<source src="app/static/Footage.mp4" type="video/mp4">'
+if video_b64:
+    video_source_tags += f'\n<source src="data:video/mp4;base64,{video_b64}" type="video/mp4">'
+
+poster_attr = f'poster="data:image/jpeg;base64,{hero_b64}"' if hero_b64 else ''
+
+st.markdown(f"""
+<div class="hero-showcase">
+    <video autoplay loop muted playsinline {poster_attr} 
+           style="position: absolute; top:0; left:0; width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.80) contrast(1.05);">
+        {video_source_tags}
+    </video>
+    <div style="position: absolute; top:0; left:0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(8, 20, 13, 0.20) 0%, rgba(6, 16, 10, 0.65) 100%); pointer-events: none;"></div>
+    <div style="
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 3.8rem 2.8rem;
+        max-width: 960px;
+    ">
+        <h1 class="hero-title">
+            TRANSFORMASI TUTUPAN LAHAN DAN SPATIAL TELECOUPLING PEMBANGUNAN IKN SERTA EKSPANSI PERTAMBANGAN DI KALIMANTAN: PENDEKATAN MACHINE LEARNING MULTI-SKALA
+        </h1>
         <div style="
-            position: relative;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 3.5rem 2.5rem;
-            max-width: 880px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #74C69D;
+            letter-spacing: -0.01em;
+            margin-bottom: 1.1rem;
+            line-height: 1.45;
+            text-shadow: 0 2px 14px rgba(0,0,0,0.85);
         ">
-            <div style="
-                display: inline-flex;
-                align-items: center;
-                background: rgba(255, 255, 255, 0.12);
-                backdrop-filter: blur(10px);
-                -webkit-backdrop-filter: blur(10px);
-                border: 1px solid rgba(255, 255, 255, 0.24);
-                border-radius: 30px;
-                padding: 0.35rem 1.15rem;
-                margin-bottom: 1.25rem;
-            ">
-                <span style="
-                    font-family: 'IBM Plex Mono', monospace;
-                    font-size: 0.74rem;
-                    font-weight: 700;
-                    text-transform: uppercase;
-                    letter-spacing: 0.15em;
-                    color: #C2E7D5;
-                ">EARTH OBSERVATION & MACHINE LEARNING • POLSTAT STIS</span>
-            </div>
-            <div class="hero-title">LAND TRANSFORMATION INTELLIGENCE</div>
-            <div style="
-                font-family: 'Plus Jakarta Sans', sans-serif;
-                font-size: 1.15rem;
-                font-weight: 700;
-                color: #74C69D;
-                letter-spacing: -0.01em;
-                margin-bottom: 1rem;
-                text-shadow: 0 2px 10px rgba(0,0,0,0.7);
-            ">BEYOND THE CAPITAL: MENYIBAK TABIR ALIH FUNGSI LAHAN KALIMANTAN</div>
-            <p style="
-                font-family: 'Plus Jakarta Sans', sans-serif;
-                font-size: 0.96rem;
-                font-weight: 400;
-                color: rgba(255,255,255,0.92);
-                max-width: 780px;
-                line-height: 1.6;
-                margin: 0 auto;
-                text-shadow: 0 2px 10px rgba(0,0,0,0.6);
-            ">
-                Investigasi Spatiotemporal Rona Awal (2019) Menuju Puncak Konstruksi IKN (2024): 
-                Membedah Efek Spillover IKN vs Hegemoni Pertambangan Menggunakan Citra Multispektral Sentinel-2, Agregasi Majority Voting 1,5 Juta Sel, dan Analisis Spatial Telecoupling.
-            </p>
+            Komparasi Spasial Rona Awal dan Puncak Konstruksi Menggunakan Citra Multispektral Sentinel-2
         </div>
+        <p style="
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.94rem;
+            font-weight: 400;
+            color: rgba(255,255,255,0.94);
+            max-width: 820px;
+            line-height: 1.6;
+            margin: 0 auto;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+        ">
+            Investigasi Spatiotemporal Rona Awal (2019) Menuju Puncak Konstruksi IKN (2024): 
+            Membedah Efek Spillover IKN vs Hegemoni Pertambangan Menggunakan Citra Multispektral Sentinel-2, Agregasi Majority Voting 1,5 Juta Sel, dan Analisis Spatial Telecoupling.
+        </p>
     </div>
-    """, unsafe_allow_html=True)
-else:
-    st.title("Land Transformation Intelligence")
-    st.markdown("Klasifikasi Spatiotemporal Tutupan Lahan di Kalimantan (2019 – 2024)")
+</div>
+""", unsafe_allow_html=True)
 
 # --- Section di Bawah Hero: Methodology Header ---
 st.markdown("""
