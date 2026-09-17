@@ -74,22 +74,6 @@ st.markdown("""
         padding: 3.8rem 2.8rem;
         max-width: 960px;
     ">
-        <div style="
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 0.76rem;
-            font-weight: 700;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            color: #A7D7C5;
-            margin-bottom: 0.85rem;
-            background: rgba(16, 36, 24, 0.55);
-            border: 1px solid rgba(116, 198, 157, 0.35);
-            padding: 0.35rem 0.95rem;
-            border-radius: 30px;
-            backdrop-filter: blur(6px);
-        ">
-            POLSTAT STIS • OBSERVATORI SPASIOTEMPORAL 2019–2024
-        </div>
         <h1 class="hero-title">
             MENATAP KALIMANTAN: DARI TELESKOP HINGGA MIKROSKOP
         </h1>
