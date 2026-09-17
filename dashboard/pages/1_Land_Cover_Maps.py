@@ -14,7 +14,7 @@ from configs.color_palette import *
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 from theme import apply_theme, render_botanical_footer
 
-st.set_page_config(page_title="Land Cover Maps", page_icon="◈", layout="wide")
+st.set_page_config(page_title="Land Cover Maps", layout="wide")
 apply_theme()
 
 st.title("Peta Spasiotemporal Tutupan Lahan")

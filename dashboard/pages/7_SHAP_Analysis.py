@@ -16,7 +16,7 @@ from configs.constants import BAND_DESCRIPTIONS
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 from theme import apply_theme, render_botanical_footer
 
-st.set_page_config(page_title="SHAP Analysis", page_icon="◈", layout="wide")
+st.set_page_config(page_title="SHAP Analysis", layout="wide")
 apply_theme()
 
 st.title("Interpretability with SHAP")
