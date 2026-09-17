@@ -12,7 +12,7 @@ from configs.constants import *
 from configs.color_palette import *
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
-from theme import apply_theme
+from theme import apply_theme, render_botanical_footer
 
 st.set_page_config(page_title="Dual-Driver Impact", page_icon="◈", layout="wide")
 apply_theme()
@@ -120,3 +120,6 @@ st.markdown("""
     </div>
 </div>
 """, unsafe_allow_html=True)
+
+# Botanical Footer
+render_botanical_footer()

@@ -22,7 +22,7 @@ from configs.color_palette import *
 BASE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
-from theme import apply_theme
+from theme import apply_theme, render_botanical_footer
 
 st.set_page_config(page_title="Change Detection", page_icon="◈", layout="wide")
 apply_theme()
@@ -434,4 +434,7 @@ with tab_micro:
 
 with tab_macro:
     macro_decomposition_view()
+
+# Botanical Footer
+render_botanical_footer()
 

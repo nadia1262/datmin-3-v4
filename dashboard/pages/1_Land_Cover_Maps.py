@@ -12,7 +12,7 @@ from configs.constants import *
 from configs.color_palette import *
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
-from theme import apply_theme
+from theme import apply_theme, render_botanical_footer
 
 st.set_page_config(page_title="Land Cover Maps", page_icon="◈", layout="wide")
 apply_theme()
@@ -172,7 +172,7 @@ with col1:
         tooltip={"text": "Koordinat: {lon}, {lat}\nKelas: {predicted_label}"},
     )
 
-    st.pydeck_chart(deck)
+    st.pydeck_chart(deck, use_container_width=True)
 
 with col2:
     total_pop = y_stats.get('total', len(df_full) if df_full is not None else len(df_map))
@@ -207,3 +207,6 @@ with col2:
         </div>
     </div>
     """, unsafe_allow_html=True)
+
+# Botanical Footer
+render_botanical_footer()

@@ -10,7 +10,7 @@ from configs.constants import *
 from configs.color_palette import *
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
-from theme import apply_theme
+from theme import apply_theme, render_botanical_footer
 
 st.set_page_config(page_title="Spatiotemporal Heatmap", page_icon="◈", layout="wide")
 apply_theme()
@@ -175,3 +175,5 @@ if df is not None:
 
 else:
     st.error("Data transisi (change_points_2019_2024.csv) tidak ditemukan. Pastikan pipeline deteksi perubahan sudah dijalankan.")
+
+render_botanical_footer()

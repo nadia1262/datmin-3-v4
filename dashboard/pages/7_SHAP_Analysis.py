@@ -14,7 +14,7 @@ from configs.color_palette import *
 from configs.constants import BAND_DESCRIPTIONS
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
-from theme import apply_theme
+from theme import apply_theme, render_botanical_footer
 
 st.set_page_config(page_title="SHAP Analysis", page_icon="◈", layout="wide")
 apply_theme()
@@ -84,15 +84,23 @@ with col2:
 
 # ── SHAP Summary Beeswarm Plot ──
 st.markdown("---")
-st.subheader("SHAP Summary Plot (Beeswarm)")
+st.subheader("Distribusi Nilai SHAP Global (Beeswarm Plot)")
 b64_bees = load_image_base64('shap_summary.png')
 if b64_bees:
     bees_alt = "SHAP beeswarm plot: setiap titik mewakili satu sampel. Warna merah = nilai fitur tinggi, biru = rendah. Posisi horizontal menunjukkan pengaruhnya terhadap keputusan model."
-    st.markdown(
-        f'<img src="data:image/png;base64,{b64_bees}" alt="{html.escape(bees_alt)}" style="width:100%; max-width:100%">',
-        unsafe_allow_html=True
-    )
-    st.caption(bees_alt)
+    st.markdown(f"""
+    <div class="forest-card" style="padding: 1.25rem; margin-top: 0.75rem;">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; font-weight: 700; color: #2D6A4F; text-transform: uppercase; margin-bottom: 0.6rem;">
+            DENSITAS ATRIBUSI FITUR (SAMPLE-LEVEL SHAP VALUE)
+        </div>
+        <div style="background: #FAFCF9; border: 1px solid #E2EBDD; border-radius: 10px; padding: 1.2rem; text-align: center; box-shadow: inset 0 1px 4px rgba(0,0,0,0.02);">
+            <img src="data:image/png;base64,{b64_bees}" alt="{html.escape(bees_alt)}" style="width: 100%; max-width: 960px; border-radius: 6px; display: block; margin: 0 auto;" />
+        </div>
+        <div style="font-size: 0.83rem; color: #4B5A50; margin-top: 0.85rem; line-height: 1.55;">
+            <strong>Panduan Interpretasi Sumbu:</strong> Setiap titik mewakili 1 piksel observasi valid. Sumbu horizontal menunjukkan besaran kontribusi SHAP: nilai ke arah kanan mendorong prediksi ke kelas target, sedangkan ke arah kiri menurunkan peluangnya. Gradasi warna (merah = nilai reflektansi/indeks tinggi, biru = rendah) mengonfirmasi sensitivitas fisik kanal satelit.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 else:
     st.warning("Grafik SHAP summary belum tersedia.")
 
@@ -100,13 +108,21 @@ else:
 b64_heat = load_image_base64('shap_per_class_heatmap.png')
 if b64_heat:
     st.markdown("---")
-    st.subheader("SHAP Importance per Kelas")
-    heat_alt = "Heatmap SHAP importance per kelas tutupan lahan (Forest, Shrubland/Agriculture, Built-up, Bare/Mining-like, Water) per fitur spektral."
-    st.markdown(
-        f'<img src="data:image/png;base64,{b64_heat}" alt="{html.escape(heat_alt)}" style="width:100%; max-width:100%">',
-        unsafe_allow_html=True
-    )
-    st.caption(heat_alt)
+    st.subheader("Diferensiasi SHAP Importance Antarkelas Tutupan Lahan")
+    heat_alt = "Heatmap SHAP importance per kelas tutupan lahan per fitur spektral."
+    st.markdown(f"""
+    <div class="forest-card" style="padding: 1.25rem; margin-top: 0.75rem;">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; font-weight: 700; color: #2D6A4F; text-transform: uppercase; margin-bottom: 0.6rem;">
+            MATRIKS KONTRIBUSI SPEKTRAL PER KELAS LAHAN
+        </div>
+        <div style="background: #FAFCF9; border: 1px solid #E2EBDD; border-radius: 10px; padding: 1.2rem; text-align: center; box-shadow: inset 0 1px 4px rgba(0,0,0,0.02);">
+            <img src="data:image/png;base64,{b64_heat}" alt="{html.escape(heat_alt)}" style="width: 100%; max-width: 960px; border-radius: 6px; display: block; margin: 0 auto;" />
+        </div>
+        <div style="font-size: 0.83rem; color: #4B5A50; margin-top: 0.85rem; line-height: 1.55;">
+            <strong>Analisis Kelas:</strong> Menunjukkan diferensiasi peran band Sentinel-2: NDVI mendominasi identifikasi kanopi hutan, SWIR B12 dan B11 membedakan mineral tanah terbuka dan bukaan tambang dari semak belukar, serta NDBI menonjol pada pemetaan area terbangun.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
 st.markdown("---")
 st.markdown("""
@@ -123,3 +139,5 @@ st.markdown("""
     </div>
 </div>
 """, unsafe_allow_html=True)
+
+render_botanical_footer()

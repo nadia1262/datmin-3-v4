@@ -11,7 +11,7 @@ from configs.constants import *
 from configs.color_palette import *
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
-from theme import apply_theme
+from theme import apply_theme, render_botanical_footer
 
 st.set_page_config(page_title="Model Comparison", page_icon="◈", layout="wide")
 apply_theme()
@@ -159,3 +159,6 @@ st.info("""**Catatan Metodologis:** Akurasi yang dilaporkan berasal dari Spatial
          bukan *random split* biasa. Blok spasial berukuran 0.5° (~55km) memastikan titik-titik bertetangga tidak bocor 
          antara set train dan test. Ini menyebabkan akurasi lebih rendah dari yang biasanya dilaporkan (~93–98%) 
          karena tidak ada *spatial autocorrelation leakage*.""")
+
+# Botanical Footer
+render_botanical_footer()

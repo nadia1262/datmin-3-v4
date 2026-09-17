@@ -7,50 +7,48 @@ import base64
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 from configs.constants import *
 from configs.color_palette import *
-from theme import apply_theme
+from theme import apply_theme, render_botanical_footer
 
 st.set_page_config(
     page_title="Land Transformation Intelligence — Kalimantan",
     page_icon="🌿",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="expanded"
 )
 
 apply_theme()
 
-# Custom styles for hero and section content
+# Custom style overrides for Home page
 st.markdown("""
 <style>
-    .block-container { 
-        padding-top: 0 !important; 
-        max-width: 100% !important; 
-        padding-left: 0 !important; 
-        padding-right: 0 !important; 
-        padding-bottom: 3rem !important; 
+    .hero-showcase {
+        position: relative;
+        border-radius: 20px;
+        overflow: hidden;
+        margin-bottom: 2.8rem;
+        border: 1px solid #DCE4D8;
+        box-shadow: 0 10px 30px rgba(16, 36, 24, 0.07);
+        min-height: 440px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #0E1F15;
     }
-    header[data-testid="stHeader"] { 
-        background-color: transparent !important; 
-    }
-    .stMainBlockContainer { 
-        padding-top: 0 !important; 
-        padding-bottom: 0 !important; 
-    }
-    
     .hero-title {
         font-family: 'Plus Jakarta Sans', sans-serif !important;
-        font-size: 3.4rem !important;
+        font-size: 2.8rem !important;
         font-weight: 800 !important;
         color: #FFFFFF !important;
-        line-height: 1.12 !important;
-        margin: 0 0 1rem 0 !important;
-        letter-spacing: -0.03em !important;
-        text-shadow: 0 4px 30px rgba(0,0,0,0.85) !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+        line-height: 1.15 !important;
+        margin: 0 0 0.6rem 0 !important;
+        letter-spacing: -0.025em !important;
+        text-shadow: 0 4px 24px rgba(0,0,0,0.7) !important;
     }
-    
-    .content-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 3rem 2rem;
+    @media (max-width: 768px) {
+        .hero-title {
+            font-size: 1.9rem !important;
+        }
     }
 </style>
 """, unsafe_allow_html=True)
@@ -68,18 +66,10 @@ hero_b64 = load_b64_image(hero_path)
 
 if hero_b64:
     st.markdown(f"""
-    <div class="hero-wrapper" style="
-        position: relative;
-        width: 100vw;
-        min-height: 85vh;
-        margin-left: calc(-50vw + 50%);
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    ">
+    <div class="hero-showcase">
         <img src="data:image/jpeg;base64,{hero_b64}" 
-             style="position: absolute; top:0; left:0; width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.48);" />
+             style="position: absolute; top:0; left:0; width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.42) contrast(1.10);" />
+        <div style="position: absolute; top:0; left:0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(10, 24, 16, 0.45) 0%, rgba(8, 20, 13, 0.78) 100%);"></div>
         <div style="
             position: relative;
             z-index: 2;
@@ -88,41 +78,51 @@ if hero_b64:
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 4rem 2rem;
-            max-width: 900px;
+            padding: 3.5rem 2.5rem;
+            max-width: 880px;
         ">
             <div style="
                 display: inline-flex;
                 align-items: center;
                 background: rgba(255, 255, 255, 0.12);
-                backdrop-filter: blur(8px);
-                border: 1px solid rgba(255, 255, 255, 0.25);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.24);
                 border-radius: 30px;
-                padding: 0.35rem 1.2rem;
-                margin-bottom: 1.5rem;
+                padding: 0.35rem 1.15rem;
+                margin-bottom: 1.25rem;
             ">
                 <span style="
                     font-family: 'IBM Plex Mono', monospace;
-                    font-size: 0.76rem;
-                    font-weight: 600;
+                    font-size: 0.74rem;
+                    font-weight: 700;
                     text-transform: uppercase;
-                    letter-spacing: 0.18em;
-                    color: #E2EBDD;
-                ">POLITEKNIK STATISTIKA STIS — DATA MINING 2025</span>
+                    letter-spacing: 0.15em;
+                    color: #C2E7D5;
+                ">EARTH OBSERVATION & MACHINE LEARNING • POLSTAT STIS</span>
             </div>
-            <div class="hero-title">Land Transformation Intelligence</div>
-            <p style="
+            <div class="hero-title">LAND TRANSFORMATION INTELLIGENCE</div>
+            <div style="
                 font-family: 'Plus Jakarta Sans', sans-serif;
                 font-size: 1.15rem;
+                font-weight: 700;
+                color: #74C69D;
+                letter-spacing: -0.01em;
+                margin-bottom: 1rem;
+                text-shadow: 0 2px 10px rgba(0,0,0,0.7);
+            ">BEYOND THE CAPITAL: MENYIBAK TABIR ALIH FUNGSI LAHAN KALIMANTAN</div>
+            <p style="
+                font-family: 'Plus Jakarta Sans', sans-serif;
+                font-size: 0.96rem;
                 font-weight: 400;
                 color: rgba(255,255,255,0.92);
-                max-width: 760px;
-                line-height: 1.65;
-                margin: 0 auto 2rem auto;
-                text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+                max-width: 780px;
+                line-height: 1.6;
+                margin: 0 auto;
+                text-shadow: 0 2px 10px rgba(0,0,0,0.6);
             ">
-                Kerangka Kerja Geospasial Sekuensial Tiga Tahap Membandingkan Rona Awal (2019) dan Puncak Konstruksi (2024) 
-                Menggunakan Citra Multispektral Sentinel-2, Agregasi Majority Voting 1,5 Juta Sel, dan Analisis Spatial Telecoupling IKN × Tambang.
+                Investigasi Spatiotemporal Rona Awal (2019) Menuju Puncak Konstruksi IKN (2024): 
+                Membedah Efek Spillover IKN vs Hegemoni Pertambangan Menggunakan Citra Multispektral Sentinel-2, Agregasi Majority Voting 1,5 Juta Sel, dan Analisis Spatial Telecoupling.
             </p>
         </div>
     </div>
@@ -131,23 +131,18 @@ else:
     st.title("Land Transformation Intelligence")
     st.markdown("Klasifikasi Spatiotemporal Tutupan Lahan di Kalimantan (2019 – 2024)")
 
-# --- Section di Bawah Hero: Botanical Foliage & Content Overview ---
-botanical_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets', 'botanical_leaves.jpg')
-b64_botanical = load_b64_image(botanical_path)
-
+# --- Section di Bawah Hero: Methodology Header ---
 st.markdown("""
-<div style="max-width: 1200px; margin: 0 auto; padding: 2.5rem 1.5rem 1rem 1.5rem;">
-    <div style="text-align: center; margin-bottom: 2.5rem;">
-        <p style="font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: #2D6A4F; margin-bottom: 0.4rem;">
-            KERANGKA KERJA ILMIAH TERPADU
-        </p>
-        <h2 style="font-size: 2.1rem; font-weight: 800; color: #16281C; margin: 0 0 0.75rem 0; letter-spacing: -0.02em;">
-            Metodologi Sekuensial Tiga Tahap
-        </h2>
-        <p style="color: #4B5A50; max-width: 680px; margin: 0 auto; line-height: 1.6; font-size: 0.95rem;">
-            Menjembatani resolusi satelit multi-skala untuk mengatasi bias tutupan awan khatulistiwa dan mengevaluasi interaksi spasial kebijakan pemindahan ibu kota.
-        </p>
-    </div>
+<div style="text-align: center; margin: 1.5rem auto 2.5rem auto; max-width: 780px;">
+    <p style="font-family: 'IBM Plex Mono', monospace; font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: #2D6A4F; margin-bottom: 0.35rem;">
+        KERANGKA KERJA ILMIAH TERPADU
+    </p>
+    <h2 style="font-size: 2.1rem; font-weight: 800; color: #16281C; margin: 0 0 0.6rem 0; letter-spacing: -0.02em;">
+        Metodologi Sekuensial Tiga Tahap
+    </h2>
+    <p style="color: #4B5A50; line-height: 1.6; font-size: 0.94rem; margin: 0;">
+        Menjembatani resolusi satelit multi-skala untuk mengatasi bias tutupan awan khatulistiwa dan mengevaluasi interaksi spasial kebijakan pemindahan ibu kota.
+    </p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -222,11 +217,11 @@ with m4:
 
 # --- Quick Navigation Modules ---
 st.markdown("""
-<div style="max-width: 1200px; margin: 2.5rem auto 1rem auto;">
-    <p style="font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #2D6A4F; margin-bottom: 0.3rem;">
+<div style="margin: 3.5rem 0 1.2rem 0;">
+    <p style="font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: #2D6A4F; margin-bottom: 0.25rem;">
         MODUL INTERAKTIF
     </p>
-    <h3 style="font-size: 1.4rem; font-weight: 700; color: #16281C; margin: 0 0 1.2rem 0;">
+    <h3 style="font-size: 1.45rem; font-weight: 800; color: #16281C; margin: 0 0 0.8rem 0; letter-spacing: -0.015em;">
         Eksplorasi Data dan Analisis Geospasial
     </h3>
 </div>
@@ -274,4 +269,7 @@ with nav3:
         <p style="font-size:0.84rem; color:#4B5A50; margin:0;">Transparansi model LightGBM: atribusi fitur spektral satelit (NDVI, SWIR, NDBI).</p>
     </div>
     """, unsafe_allow_html=True)
+
+# Botanical Rolling Hills Footer
+render_botanical_footer()
 
