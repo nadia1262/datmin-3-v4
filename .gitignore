@@ -2,7 +2,7 @@
 skills/
 
 data/
-# *.csv
+*.csv
 # *.sql
 
 # Large files
@@ -36,4 +36,24 @@ skills_dok.md
 
 
 /.vscode/*
+
+/results/*
+
+jobdesk_*.md
+
+ppt_notes.md
+jobdesk.md
+
+ppt_notes.md
+
+rag_repo.md
+
+evaluate*.md
+
+
+/data/*
+
+PPT_*.pdf
+
+/reports/*
 
