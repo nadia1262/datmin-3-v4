@@ -1,0 +1,41 @@
+{
+  "total_pixels": 198025,
+  "stats": [
+    {
+      "Kelas Lahan": "Forest (Hutan)",
+      "Piksel 2019": 138376,
+      "Piksel 2024": 83651,
+      "Area 2019 (Ha)": 1383.8,
+      "Area 2024 (Ha)": 836.5,
+      "Delta (Ha)": -547.2,
+      "Perubahan (%)": -39.5
+    },
+    {
+      "Kelas Lahan": "Shrubland (Semak)",
+      "Piksel 2019": 40515,
+      "Piksel 2024": 45300,
+      "Area 2019 (Ha)": 405.2,
+      "Area 2024 (Ha)": 453.0,
+      "Delta (Ha)": 47.8,
+      "Perubahan (%)": 11.8
+    },
+    {
+      "Kelas Lahan": "Built-up (Terbangun)",
+      "Piksel 2019": 2,
+      "Piksel 2024": 1,
+      "Area 2019 (Ha)": 0.0,
+      "Area 2024 (Ha)": 0.0,
+      "Delta (Ha)": -0.0,
+      "Perubahan (%)": -50.0
+    },
+    {
+      "Kelas Lahan": "Bare/Mining (Terbuka)",
+      "Piksel 2019": 19132,
+      "Piksel 2024": 69073,
+      "Area 2019 (Ha)": 191.3,
+      "Area 2024 (Ha)": 690.7,
+      "Delta (Ha)": 499.4,
+      "Perubahan (%)": 261.0
+    }
+  ]
+}

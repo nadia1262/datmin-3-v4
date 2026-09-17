@@ -18,30 +18,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'
 from configs.color_palette import DASHBOARD_THEME
 
 
-@st.cache_data(show_spinner=False)
-def _get_mossy_hills_b64():
-    """Load transparent mossy hills image as Base64 string."""
-    p = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets', 'mossy_hills_transparent.png')
-    if os.path.exists(p):
-        with open(p, 'rb') as f:
-            return base64.b64encode(f.read()).decode()
-    return ""
-
-
-@st.cache_data(show_spinner=False)
-def _get_tropical_leaves_b64():
-    """Load transparent tropical leaves image as Base64 string."""
-    p = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets', 'tropical_leaves_transparent.png')
-    if os.path.exists(p):
-        with open(p, 'rb') as f:
-            return base64.b64encode(f.read()).decode()
-    return ""
-
-
 def apply_theme():
     """Inject Forest & Botanical Clean CSS into the current Streamlit page."""
-    b64_hills = _get_mossy_hills_b64()
-    b64_leaves = _get_tropical_leaves_b64()
 
     st.markdown(f"""
     <style>
@@ -441,16 +419,13 @@ def apply_theme():
     """, unsafe_allow_html=True)
 
     # Render rich botanical branding card and mossy hills in sidebar
-    _render_sidebar_botanical(b64_hills)
+    _render_sidebar_botanical()
 
 
-def _render_sidebar_botanical(b64_hills=None):
+def _render_sidebar_botanical():
     """Renders a single cohesive, organic botanical card grounded by the rolling hills."""
-    if b64_hills is None:
-        b64_hills = _get_mossy_hills_b64()
-
     with st.sidebar:
-        hills_html = f"<div style='line-height: 0; margin-top: 0.5rem; background: #0A1710; border-top: 1px solid rgba(255, 255, 255, 0.05);'><img src='data:image/png;base64,{b64_hills}' style='width: 100%; display: block; opacity: 0.85; filter: contrast(1.05);' alt='Rolling Hills' /></div>" if b64_hills else ""
+        hills_html = "<div style='line-height: 0; margin-top: 0.5rem; background: #0A1710; border-top: 1px solid rgba(255, 255, 255, 0.05);'><img src='app/static/mossy_hills_transparent.png' style='width: 100%; display: block; opacity: 0.85; filter: contrast(1.05);' alt='Rolling Hills' /></div>"
         st.markdown(f"""
         <div style="
             margin-top: 2rem;

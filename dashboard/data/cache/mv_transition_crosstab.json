@@ -1,0 +1,37 @@
+{
+  "Bare/Mining-like": {
+    "Bare/Mining-like": 2144,
+    "Built-up": 766,
+    "Forest": 3797,
+    "Shrubland/Agriculture": 2470,
+    "Water": 1042
+  },
+  "Built-up": {
+    "Bare/Mining-like": 818,
+    "Built-up": 6163,
+    "Forest": 6853,
+    "Shrubland/Agriculture": 6616,
+    "Water": 173
+  },
+  "Forest": {
+    "Bare/Mining-like": 1342,
+    "Built-up": 3456,
+    "Forest": 1106197,
+    "Shrubland/Agriculture": 104412,
+    "Water": 538
+  },
+  "Shrubland/Agriculture": {
+    "Bare/Mining-like": 1768,
+    "Built-up": 8640,
+    "Forest": 68678,
+    "Shrubland/Agriculture": 148975,
+    "Water": 722
+  },
+  "Water": {
+    "Bare/Mining-like": 1056,
+    "Built-up": 465,
+    "Forest": 449,
+    "Shrubland/Agriculture": 1800,
+    "Water": 19684
+  }
+}

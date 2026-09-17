@@ -1,0 +1,110 @@
+{
+  "2019": {
+    "total": 1794435,
+    "source_type": "Majority Voting (500m)",
+    "counts": {
+      "Forest": 1437236,
+      "Shrubland/Agriculture": 297221,
+      "Water": 28506,
+      "Built-up": 22490,
+      "Bare/Mining-like": 8982
+    },
+    "percentages": {
+      "Forest": 80.09,
+      "Shrubland/Agriculture": 16.56,
+      "Water": 1.59,
+      "Built-up": 1.25,
+      "Bare/Mining-like": 0.5
+    }
+  },
+  "2020": {
+    "total": 176624,
+    "source_type": "LightGBM Centroid",
+    "counts": {
+      "Forest": 135393,
+      "Shrubland/Agriculture": 30301,
+      "Water": 7522,
+      "Built-up": 2506,
+      "Bare/Mining-like": 902
+    },
+    "percentages": {
+      "Forest": 76.66,
+      "Shrubland/Agriculture": 17.16,
+      "Water": 4.26,
+      "Built-up": 1.42,
+      "Bare/Mining-like": 0.51
+    }
+  },
+  "2021": {
+    "total": 162940,
+    "source_type": "LightGBM Centroid",
+    "counts": {
+      "Forest": 125595,
+      "Shrubland/Agriculture": 26591,
+      "Water": 7674,
+      "Built-up": 2283,
+      "Bare/Mining-like": 797
+    },
+    "percentages": {
+      "Forest": 77.08,
+      "Shrubland/Agriculture": 16.32,
+      "Water": 4.71,
+      "Built-up": 1.4,
+      "Bare/Mining-like": 0.49
+    }
+  },
+  "2022": {
+    "total": 160261,
+    "source_type": "LightGBM Centroid",
+    "counts": {
+      "Forest": 129367,
+      "Shrubland/Agriculture": 20593,
+      "Water": 7072,
+      "Built-up": 2008,
+      "Bare/Mining-like": 1221
+    },
+    "percentages": {
+      "Forest": 80.72,
+      "Shrubland/Agriculture": 12.85,
+      "Water": 4.41,
+      "Built-up": 1.25,
+      "Bare/Mining-like": 0.76
+    }
+  },
+  "2023": {
+    "total": 159949,
+    "source_type": "LightGBM Centroid",
+    "counts": {
+      "Forest": 124972,
+      "Shrubland/Agriculture": 22773,
+      "Water": 7278,
+      "Built-up": 3285,
+      "Bare/Mining-like": 1641
+    },
+    "percentages": {
+      "Forest": 78.13,
+      "Shrubland/Agriculture": 14.24,
+      "Water": 4.55,
+      "Built-up": 2.05,
+      "Bare/Mining-like": 1.03
+    }
+  },
+  "2024": {
+    "total": 1530847,
+    "source_type": "Majority Voting (500m)",
+    "counts": {
+      "Forest": 1246040,
+      "Shrubland/Agriculture": 229874,
+      "Water": 23494,
+      "Built-up": 21013,
+      "Bare/Mining-like": 10426
+    },
+    "percentages": {
+      "Forest": 81.4,
+      "Shrubland/Agriculture": 15.02,
+      "Water": 1.53,
+      "Built-up": 1.37,
+      "Bare/Mining-like": 0.68
+    }
+  }
+}

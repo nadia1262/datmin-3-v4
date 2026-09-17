@@ -1,0 +1,9 @@
+{
+  "total_points": 1499024,
+  "changed_points": 215861,
+  "forest_loss": 79777,
+  "forest_gain": 109748,
+  "urbanization": 14460,
+  "mining_expansion": 8075,
+  "change_rate_pct": 14.4
+}

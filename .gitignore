@@ -1,7 +1,7 @@
 # Ignore entire skills folder (reference markdown, mjs scripts, nested scripts)
 skills/
-
-data/
+/data/
+/static/
 reports/
 # *.csv
 # *.sql

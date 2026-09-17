@@ -55,31 +55,12 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-@st.cache_data(show_spinner=False)
-def load_b64_file(path):
-    if os.path.exists(path):
-        with open(path, "rb") as f:
-            return base64.b64encode(f.read()).decode()
-    return ""
-
 # --- Hero Section with Dynamic Video Footage Background ---
-video_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets', 'Footage.mp4')
-hero_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets', 'hero_kalimantan.jpg')
-
-hero_b64 = load_b64_file(hero_path)
-video_b64 = load_b64_file(video_path) if os.path.exists(video_path) else ""
-
-video_source_tags = '<source src="app/static/Footage.mp4" type="video/mp4">'
-if video_b64:
-    video_source_tags += f'\n<source src="data:video/mp4;base64,{video_b64}" type="video/mp4">'
-
-poster_attr = f'poster="data:image/jpeg;base64,{hero_b64}"' if hero_b64 else ''
-
-st.markdown(f"""
+st.markdown("""
 <div class="hero-showcase">
-    <video autoplay loop muted playsinline {poster_attr} 
+    <video autoplay loop muted playsinline poster="app/static/hero_kalimantan.jpg" 
            style="position: absolute; top:0; left:0; width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.80) contrast(1.05);">
-        {video_source_tags}
+        <source src="app/static/Footage.mp4" type="video/mp4">
     </video>
     <div style="position: absolute; top:0; left:0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(8, 20, 13, 0.20) 0%, rgba(6, 16, 10, 0.65) 100%); pointer-events: none;"></div>
     <div style="
