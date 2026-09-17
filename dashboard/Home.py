@@ -11,7 +11,7 @@ from theme import apply_theme, render_botanical_footer
 
 st.set_page_config(
     page_title="Land Transformation Intelligence — Kalimantan",
-    page_icon="🌿",
+    page_icon="K",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -25,7 +25,7 @@ st.markdown("""
         position: relative;
         border-radius: 20px;
         overflow: hidden;
-        margin-bottom: 2.8rem;
+        margin-bottom: 1.8rem;
         border: 1px solid #DCE4D8;
         box-shadow: 0 10px 30px rgba(16, 36, 24, 0.08);
         min-height: 430px;
@@ -127,7 +127,7 @@ st.markdown(f"""
 
 # --- Section di Bawah Hero: Methodology Header ---
 st.markdown("""
-<div style="text-align: center; margin: 1.5rem auto 2.5rem auto; max-width: 780px;">
+<div style="text-align: center; margin: 0.8rem auto 1.5rem auto; max-width: 780px;">
     <p style="font-family: 'IBM Plex Mono', monospace; font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: #2D6A4F; margin-bottom: 0.35rem;">
         KERANGKA KERJA ILMIAH TERPADU
     </p>
@@ -198,7 +198,7 @@ with c3:
     """, unsafe_allow_html=True)
 
 # --- Key Vital Metrics Bar ---
-st.markdown("<div style='height: 1.5rem;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='height: 0.5rem;'></div>", unsafe_allow_html=True)
 m1, m2, m3, m4 = st.columns(4)
 with m1:
     st.metric(label="SEL GRID MAKRO DIANALISIS", value="1.499.024", delta="100% Bebas Bias Awan")
@@ -211,7 +211,7 @@ with m4:
 
 # --- Quick Navigation Modules ---
 st.markdown("""
-<div style="margin: 3.5rem 0 1.2rem 0;">
+<div style="margin: 2rem 0 0.8rem 0;">
     <p style="font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: #2D6A4F; margin-bottom: 0.25rem;">
         MODUL INTERAKTIF
     </p>

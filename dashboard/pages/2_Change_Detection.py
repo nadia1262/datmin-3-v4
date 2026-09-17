@@ -24,7 +24,7 @@ BASE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..')
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 from theme import apply_theme, render_botanical_footer
 
-st.set_page_config(page_title="Change Detection", page_icon="◈", layout="wide")
+st.set_page_config(page_title="Change Detection", layout="wide")
 apply_theme()
 
 # --- MAIN VIEW HEADER ---
@@ -281,22 +281,26 @@ def micro_validation_ippk_view():
     </p>
     """, unsafe_allow_html=True)
     
-    st.subheader("Peta Slider Swipe: Perbandingan Visual KIPP IKN (2019 vs 2024)")
+    st.subheader("Peta Slider Swipe: Dual-Layer Makro 500m + Mikro 10m (2019 vs 2024)")
     
     col_ctrl1, col_ctrl2 = st.columns([3, 2])
     with col_ctrl1:
         st.markdown("""
         <div style="font-size:0.86rem; color:#4B5A50; line-height:1.5; margin-bottom:0.5rem;">
-            <strong>Interaksi Geser:</strong> Geser tuas pemisah <code>⟨ ❘ ⟩</code> di tengah peta ke arah <strong>kiri</strong> untuk membuka tutupan <strong>2024</strong> (puncak konstruksi), atau ke arah <strong>kanan</strong> untuk melihat <strong>2019</strong> (rona awal hutan alami). Peta tersinkronisasi otomatis saat digeser atau diperbesar.
+            <strong>Dual-Layer:</strong> Peta ini menampilkan <strong>2 lapisan klasifikasi sekaligus</strong>:<br>
+            &bull; <strong>Makro (500m)</strong> — Majority Voting ~1,5 juta sel seluruh Kalimantan<br>
+            &bull; <strong>Mikro (10m)</strong> — LightGBM ~198 ribu piksel di KIPP IKN (otomatis terlihat saat zoom-in)<br><br>
+            Geser tuas pemisah ke <strong>kiri</strong> untuk membuka 2024, ke <strong>kanan</strong> untuk 2019.
+            <strong>Zoom-out</strong> untuk melihat perubahan seluruh pulau Kalimantan.
         </div>
         """, unsafe_allow_html=True)
     with col_ctrl2:
-        opacity_pct = st.slider("Transparansi Lapisan Klasifikasi ML (%):", min_value=30, max_value=100, value=75, step=5)
+        opacity_pct = st.slider("Transparansi Lapisan Klasifikasi ML (%):", min_value=30, max_value=100, value=78, step=2)
         overlay_opacity = opacity_pct / 100.0
     
-    # Import and render high-performance Leaflet swipe map
+    # Import and render high-performance Leaflet swipe map (full Kalimantan)
     from components.kipp_swipe_map import render_kipp_swipe_map
-    render_kipp_swipe_map(split_pct=50, height=560, overlay_opacity=overlay_opacity)
+    render_kipp_swipe_map(split_pct=50, height=620, overlay_opacity=overlay_opacity)
     
     st.markdown("---")
     st.subheader("Statistik Perubahan Lahan Mikro — Prediksi Model LightGBM (10m)")
@@ -411,7 +415,7 @@ def micro_validation_ippk_view():
         st.warning("File prediksi LightGBM 10m tidak ditemukan.")
     
     st.markdown("""
-    <div class="forest-card" style="margin-top: 1.5rem;">
+    <div class="forest-card" style="margin-top: 0.8rem;">
         <span class="step-badge">SINTESIS MULTI-SKALA</span>
         <h4 style="margin: 0.3rem 0 0.5rem 0;">Resolusi Masalah MAUP dan Efek Piksel Campuran</h4>
         <div style="font-size: 0.88rem; color: #4B5A50; line-height: 1.6;">
@@ -425,7 +429,7 @@ def micro_validation_ippk_view():
 # MAIN ROUTING VIA PROMINENT TABS (FAST & DIRECT)
 # ============================================================
 tab_micro, tab_macro = st.tabs([
-    "Peta Slider Swipe Before (2019) vs After (2024) — KIPP IKN 10m",
+    "Peta Slider Swipe Dual-Layer Makro + Mikro (2019 vs 2024)",
     "Dekomposisi Makro 500m (Matriks Transisi 1,5 Juta Sel)"
 ])
 

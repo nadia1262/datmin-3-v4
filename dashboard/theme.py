@@ -66,18 +66,18 @@ def apply_theme():
             max-width: 1320px !important;
             margin-left: auto !important;
             margin-right: auto !important;
-            padding-top: 1.8rem !important;
-            padding-bottom: 4.5rem !important;
-            padding-left: 3rem !important;
-            padding-right: 3rem !important;
+            padding-top: 1rem !important;
+            padding-bottom: 2.5rem !important;
+            padding-left: 2rem !important;
+            padding-right: 2rem !important;
         }}
 
         @media (max-width: 1024px) {{
             .block-container,
             [data-testid="stAppViewContainer"] .main .block-container,
             .stMainBlockContainer {{
-                padding-left: 1.5rem !important;
-                padding-right: 1.5rem !important;
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
             }}
         }}
 
@@ -266,8 +266,8 @@ def apply_theme():
             font-weight: 700 !important;
             letter-spacing: -0.015em !important;
             color: {DASHBOARD_THEME['text_primary']} !important;
-            margin-top: 1.25rem !important;
-            margin-bottom: 0.75rem !important;
+            margin-top: 0.8rem !important;
+            margin-bottom: 0.5rem !important;
         }}
 
         h4 {{
@@ -281,9 +281,9 @@ def apply_theme():
             background: {DASHBOARD_THEME['bg_secondary']} !important;
             border: 1px solid {DASHBOARD_THEME['border']} !important;
             border-radius: 12px !important;
-            padding: 1.1rem 1.3rem !important;
-            box-shadow: 0 2px 8px rgba(22, 40, 28, 0.03) !important;
-            border-top: 3px solid {DASHBOARD_THEME['accent_green']} !important;
+            padding: 0.9rem 1rem !important;
+            box-shadow: none !important;
+            border-top: 2px solid {DASHBOARD_THEME['accent_green']} !important;
         }}
 
         div[data-testid="stMetricLabel"] {{
@@ -363,7 +363,7 @@ def apply_theme():
         /* ── Horizontal Rules ── */
         hr {{
             border-color: {DASHBOARD_THEME['border']} !important;
-            margin: 1.8rem 0 !important;
+            margin: 1.2rem 0 !important;
         }}
 
         /* ── Forest Editorial Custom Classes ── */
@@ -371,9 +371,9 @@ def apply_theme():
             background: #FFFFFF;
             border: 1px solid {DASHBOARD_THEME['border']};
             border-radius: 14px;
-            padding: 1.4rem 1.6rem;
-            box-shadow: 0 4px 16px rgba(22, 40, 28, 0.04);
-            margin-bottom: 1.25rem;
+            padding: 1rem 1.2rem;
+            box-shadow: none;
+            margin-bottom: 0.8rem;
             position: relative;
             overflow: hidden;
         }}
@@ -503,9 +503,9 @@ def render_botanical_footer():
     """Renders a grounded, elegant institutional footer card matching the presentation design system."""
     st.markdown("""
     <div style="
-        margin-top: 4.5rem;
-        margin-bottom: 2rem;
-        padding: 1.6rem 2rem;
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        padding: 1.2rem 1.5rem;
         background: #F2F6EF;
         border: 1px solid #D5E0D2;
         border-radius: 14px;

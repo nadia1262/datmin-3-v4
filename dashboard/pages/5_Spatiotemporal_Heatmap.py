@@ -12,7 +12,7 @@ from configs.color_palette import *
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 from theme import apply_theme, render_botanical_footer
 
-st.set_page_config(page_title="Spatiotemporal Heatmap", page_icon="◈", layout="wide")
+st.set_page_config(page_title="Spatiotemporal Heatmap", layout="wide")
 apply_theme()
 
 st.markdown("""
@@ -163,7 +163,7 @@ if df is not None:
             st.warning("Tidak ada titik perubahan yang terdeteksi untuk metrik ini.")
 
     st.markdown("""
-    <div class="forest-card" style="margin-top: 1.2rem;">
+    <div class="forest-card" style="margin-top: 0.8rem;">
         <div class="card-title">Interpretasi Agregasi Spasial 3D</div>
         <p class="card-desc">
             Elevasi kolom heksagonal merepresentasikan konsentrasi titik pergeseran tutupan lahan dalam radius tertentu.
